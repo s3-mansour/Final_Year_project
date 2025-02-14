@@ -1,62 +1,41 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './login.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./login.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/dashboard'); // Navigate to the dashboard
+    navigate("/dashboard");
   };
 
   return (
     <div className="login-container">
-      <div className="login-card">
-        {/* Logo Section */}
-        <div className="logo-section">
-          <img
-            src="https://via.placeholder.com/80"
-            alt="Healthcare Logo"
-            className="logo"
-          />
-          <h1 className="welcome-text">Welcome Back!</h1>
-          <p className="subtext">Sign in to your account</p>
+      {/* Outer Static Box */}
+      <div className="login-static-box">
+        <h1 className="login-title">Welcome Back!</h1>
+        <p className="login-subtext">Sign in to your account</p>
+
+        {/* Inner Hoverable Box */}
+        <div className="login-card">
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="Enter your email" required />
+            </div>
+
+            <div className="input-group">
+              <label>Password</label>
+              <input type="password" placeholder="Enter your password" required />
+            </div>
+
+            <button type="submit" className="login-button">Login</button>
+          </form>
         </div>
 
-        {/* Login Form */}
-        <form className="form-section" onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email Address"
-            className="input-field"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="input-field"
-          />
-          <button type="submit" className="login-button">
-            Login
-          </button>
-        </form>
-
-        {/* Additional Links */}
-        <div className="links-section">
-          <a href="#" className="link">
-            Forgot Password?
-          </a>
-        </div>
-
-        {/* Footer */}
-        <div className="footer-section">
-          <p>
-            Don't have an account?{' '}
-            <a href="#" className="link">
-              Sign up
-            </a>
-          </p>
-        </div>
+        <p className="forgot-password"><a href="#">Forgot Password?</a></p>
+        <p className="signup-link">Don't have an account? <a href="/signup">Sign up</a></p>
       </div>
     </div>
   );

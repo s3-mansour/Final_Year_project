@@ -1,98 +1,125 @@
+/* General Body Styling */
 body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-  }
-  
-  .login-card {
-    width: 350px;
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .logo-section img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
-  }
-  
-  .welcome-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
-  .subtext {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-  
-  .input-field:focus {
-    border-color: #00aaff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-  }
-  
-  .login-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .login-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .links-section {
-    margin-top: 15px;
-  }
-  
-  .link {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
-  
-  .footer-section {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #666;
-  }
-  
+  margin: 0;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(to bottom right, #4c6ef5, #d6336c);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-height: 100vh;
+}
+
+/* Centering the login container */
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Outer Static Box */
+.login-static-box {
+  background: #fff;
+  padding: 60px 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+}
+
+/* Static Title Section */
+.login-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 5px;
+}
+
+.login-subtext {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Inner Hoverable Box */
+.login-card {
+  background: #fff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  width: 90%;
+  max-width: 380px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-left: -10px; /* Pushing it slightly to the left */
+}
+
+/* Hover Effect: Moves Only the Inner Box */
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: #4c6ef5;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-button:hover {
+  background: #6a4ef5;
+}
+
+/* Forgot Password & Signup Links */
+.forgot-password,
+.signup-link {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.forgot-password a,
+.signup-link a {
+  color: #4c6ef5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.forgot-password a:hover,
+.signup-link a:hover {
+  text-decoration: underline;
+}
