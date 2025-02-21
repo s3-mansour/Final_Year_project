@@ -3,20 +3,32 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
+// Load environment variables
 dotenv.config();
+
+// Connect to MongoDB
 connectDB();
 
 const app = express();
-app.use(express.json()); // Middleware to handle JSON requests
-app.use(cors()); // Enable cross-origin requests
+app.use(express.json()); // Middleware for JSON parsing
+app.use(cors()); // Enable CORS
 
-// Routes
-app.use("/api/auth", require("./routes/authRoutes"));
+// Import Routes
+const authRoutes = require("./routes/authRoutes");
+
+// Use Routes
+app.use("/api/auth", authRoutes);
 
 // Default route
 app.get("/", (req, res) => {
-    res.send("API is running...");
+    res.send("🚀 API is running...");
 });
 
+// Handle 404 Errors
+app.use((req, res) => {
+    res.status(404).json({ message: "Route Not Found" });
+});
+
+// Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

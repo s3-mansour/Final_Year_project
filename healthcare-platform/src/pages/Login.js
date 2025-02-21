@@ -1,13 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService"; // Import API function
 import "./login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false); // State for loading indication
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+
+    if (!formData.email || !formData.password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+
+    setLoading(true); // Show loading state
+
+    try {
+      const response = await loginUser(formData); // Call API to authenticate user
+
+      if (!response || !response.token) {
+        throw new Error("No token received.");
+      }
+
+      // Store token and role
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("userRole", response.role || "user");
+
+      console.log("Stored Token:", localStorage.getItem("token"));
+
+      alert("Login successful!");
+
+      // Ensure storage is completed before redirecting
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Login Error:", error.response?.data || error.message);
+      alert("Login failed. " + (error.response?.data?.message || "Invalid credentials"));
+    } finally {
+      setLoading(false); // Hide loading state
+    }
   };
 
   return (
@@ -22,15 +63,29 @@ const Login = () => {
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-group">
               <label>Email Address</label>
-              <input type="email" placeholder="Enter your email" required />
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="Enter your email" 
+                required 
+                onChange={handleChange} 
+              />
             </div>
 
             <div className="input-group">
               <label>Password</label>
-              <input type="password" placeholder="Enter your password" required />
+              <input 
+                type="password" 
+                name="password" 
+                placeholder="Enter your password" 
+                required 
+                onChange={handleChange} 
+              />
             </div>
 
-            <button type="submit" className="login-button">Login</button>
+            <button type="submit" className="login-button" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
           </form>
         </div>
 

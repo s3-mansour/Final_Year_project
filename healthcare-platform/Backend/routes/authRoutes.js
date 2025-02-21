@@ -8,4 +8,9 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", protect, getUserProfile);
 
+// Handle invalid routes
+router.all("*", (req, res) => {
+    res.status(404).json({ message: "Invalid Auth Route" });
+});
+
 module.exports = router;

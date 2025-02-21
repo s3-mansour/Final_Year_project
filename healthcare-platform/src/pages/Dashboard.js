@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { getUserProfile, logoutUser } from "../services/authService"; // API Calls
 import "./Dashboard.css";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState({ name: "Loading...", role: "Patient" });
+
+  // Fetch user data from backend
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserProfile();
+        setUser(userData);
+      } catch (error) {
+        alert("Session expired. Please log in again.");
+        navigate("/login");
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/login");
   };
 
   return (
@@ -20,14 +44,14 @@ const Dashboard = () => {
         )}
         <div className="sidebar-header">
           <FaUser className="user-icon" />
-          <h3>John Doe</h3>
-          <p>Role: Patient</p>
+          <h3>{user.name}</h3>
+          <p>Role: {user.role}</p>
         </div>
         <ul className="sidebar-menu">
           <li>
             <FaCog /> Account Settings
           </li>
-          <li className="logout">
+          <li className="logout" onClick={handleLogout}>
             <FaSignOutAlt /> Sign Out
           </li>
         </ul>
