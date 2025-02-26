@@ -1,0 +1,162 @@
+/* ✅ Appointment Container */
+.appointment-container {
+    max-width: 550px !important;
+    margin: 50px auto !important;
+    padding: 40px !important;
+    background: #ffffff !important; /* Solid white background */
+    border-radius: 20px !important;
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2) !important;
+    text-align: center !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* ✅ Title */
+h1.appointment-title {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    color: #222 !important;
+    margin-bottom: 5px !important;
+    text-transform: capitalize !important;
+}
+
+/* ✅ Subtitle */
+.appointment-subtext {
+    font-size: 16px !important;
+    color: #666 !important;
+    margin-bottom: 20px !important;
+}
+
+/* ✅ Form Group */
+.input-group {
+    margin-bottom: 20px !important;
+    text-align: left !important;
+}
+
+/* ✅ Labels */
+label {
+    display: block !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    color: #444 !important;
+    margin-bottom: 5px !important;
+}
+
+/* ✅ Input Fields */
+input,
+select,
+textarea {
+    width: 100% !important;
+    padding: 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid #ccc !important;
+    font-size: 16px !important;
+    background: #f9f9f9 !important;
+    color: #333 !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* ✅ Placeholder */
+input::placeholder,
+textarea::placeholder {
+    color: #aaa !important;
+}
+
+/* ✅ Input Focus */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #0072ff !important;
+    box-shadow: 0px 0px 12px rgba(0, 114, 255, 0.4) !important;
+    outline: none !important;
+}
+
+/* ✅ Submit Button */
+.appointment-button {
+    width: 100% !important;
+    padding: 16px !important;
+    border: none !important;
+    background: linear-gradient(90deg, #0072ff, #0052d4) !important;
+    color: white !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border-radius: 50px !important;
+    cursor: pointer !important;
+    transition: transform 0.3s ease, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0px 7px 20px rgba(0, 114, 255, 0.3) !important;
+}
+
+/* ✅ Button Hover Effect */
+.appointment-button:hover {
+    background: linear-gradient(90deg, #0052d4, #0072ff) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0px 10px 25px rgba(0, 114, 255, 0.5) !important;
+    animation: pulse 1.5s infinite alternate !important;
+}
+
+/* ✅ Active (Click) Effect */
+.appointment-button:active {
+    transform: scale(0.98) !important;
+}
+
+/* ✅ Disabled Button */
+.appointment-button:disabled {
+    background: gray !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* ✅ Button Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1) !important;
+        box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3) !important;
+    }
+    50% {
+        transform: scale(1.02) !important;
+        box-shadow: 0px 10px 20px rgba(0, 114, 255, 0.5) !important;
+    }
+    100% {
+        transform: scale(1) !important;
+        box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3) !important;
+    }
+}
+
+
+/* ✅ Input Fields Styling */
+input,
+select,
+textarea {
+    display: block !important;
+    border: 2px solid transparent !important;
+    background-color: #f0f0f0 !important;
+    padding: 12px 15px !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* ✅ Input Fields Focus */
+input:focus,
+select:focus,
+textarea:focus {
+    background-color: white !important;
+    border-color: #0072ff !important;
+    box-shadow: 0px 0px 10px rgba(0, 114, 255, 0.4) !important;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 600px) {
+    .appointment-container {
+        padding: 20px !important;
+    }
+    .appointment-button {
+        width: auto !important;
+        font-size: 16px !important;
+    }
+}

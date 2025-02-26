@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt, FaPills, FaChartBar, FaComments, FaBookMedical, FaUserMd } from "react-icons/fa";
 import { getUserProfile, logoutUser } from "../services/authService"; // API Calls
 import "./Dashboard.css";
 
@@ -66,7 +66,7 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {/* Dashboard Header with Background Image */}
+        {/* Dashboard Header */}
         <div className="dashboard-header">
           <h2>Healthcare Management Dashboard</h2>
         </div>
@@ -74,17 +74,17 @@ const Dashboard = () => {
         {/* Dashboard Features - Arranged in Two Columns */}
         <div className="dashboard-grid">
           {[
-            { title: "Medication Tracking", desc: "Track your medication schedule and set reminders.", btn: "View Schedule" },
-            { title: "Appointment Scheduling", desc: "Book, modify, or cancel appointments.", btn: "Manage Appointments" },
-            { title: "Data Sharing", desc: "Securely share health records.", btn: "Share Data" },
-            { title: "Consultant-Patient Chat", desc: "Communicate with your healthcare provider in real-time.", btn: "Start Chat" },
-            { title: "Health Tips", desc: "Get personalized tips to improve your health.", btn: "View Tips" },
-            { title: "Reports and Analytics", desc: "View detailed analytics of your health progress.", btn: "View Reports" }
+            { title: "Medication Tracking", desc: "Track your medication schedule and set reminders.", icon: <FaPills />, btn: "View Schedule", link:"/MedicationTracking" },
+            { title: "Appointment Scheduling", desc: "Book, modify, or cancel appointments.", icon: <FaCalendarAlt />, btn: "Manage Appointments", link: "/appointment" },
+            { title: "Data Sharing", desc: "Securely share health records.", icon: <FaUserMd />, btn: "Share Data" },
+            { title: "Consultant-Patient Chat", desc: "Communicate with your healthcare provider in real-time.", icon: <FaComments />, btn: "Start Chat" ,link: "/Chat"},
+            { title: "Health Tips", desc: "Get personalized tips to improve your health.", icon: <FaBookMedical />, btn: "View Tips" },
+            { title: "Reports and Analytics", desc: "View detailed analytics of your health progress.", icon: <FaChartBar />, btn: "View Reports" }
           ].map((feature, index) => (
             <div key={index} className="dashboard-card">
-              <h3>{feature.title}</h3>
+              <h3>{feature.icon} {feature.title}</h3>
               <p>{feature.desc}</p>
-              <button>{feature.btn}</button>
+              <button onClick={() => feature.link && navigate(feature.link)}>{feature.btn}</button>
             </div>
           ))}
         </div>

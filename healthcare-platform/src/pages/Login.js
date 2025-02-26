@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { loginUser } from "../services/authService"; // Import API function
 import "./login.css";
 
@@ -89,8 +89,13 @@ const Login = () => {
           </form>
         </div>
 
-        <p className="forgot-password"><a href="#">Forgot Password?</a></p>
-        <p className="signup-link">Don't have an account? <a href="/signup">Sign up</a></p>
+        {/* Updated Links */}
+        <p className="forgot-password">
+          <a href="/" onClick={(e) => e.preventDefault()}>Forgot Password?</a>
+        </p>
+        <p className="signup-link">
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </p>
       </div>
     </div>
   );
