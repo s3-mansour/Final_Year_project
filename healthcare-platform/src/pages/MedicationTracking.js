@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import MedicationForm from "./MedicationForm";
-import "./MedicationTracking.css";
+import "./styles/MedicationTracking.css";
 
 const MedicationTracking = () => {
   const [selectedDate, setSelectedDate] = useState(null);

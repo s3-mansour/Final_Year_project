@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Chat.css";
+import "./styles/Chat.css";
 
 const Chat = () => {
   const navigate = useNavigate();

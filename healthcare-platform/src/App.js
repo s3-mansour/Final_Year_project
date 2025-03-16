@@ -1,46 +1,99 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Welcome from './pages/Welcome';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Signup from './pages/signup';
-import { getUserProfile } from './services/authService'; // Import API calls
-import Appointment from './pages/Appointment';
+// src/App.js
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Welcome from "./pages/Welcome";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard"; // Patient dashboard
+import Signup from "./pages/signup";
+import ConsultantDashboard from "./pages/ConsultantDashboard"; // Doctor dashboard
+import { getUserProfile } from "./services/authService";
+import Appointment from "./pages/Appointment";
+import PatientAppointments from "./pages/PatientAppointments";
 import MedicationTracking from "./pages/MedicationTracking";
 import Chat from "./pages/Chat";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null); // Full user data including role
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
       try {
-        await getUserProfile();
+        const userData = await getUserProfile();
+        console.log("Fetched user data:", userData);
+        setUser(userData);
         setIsAuthenticated(true);
       } catch (error) {
+        console.error("Auth check failed:", error);
+        setUser(null);
         setIsAuthenticated(false);
       }
       setLoading(false);
     };
-    
+
     checkAuth();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Prevents flickering on load
+    return <div>Loading...</div>;
   }
+
+  const isDoctor = user && user.role === "doctor";
+  console.log("Computed isDoctor:", isDoctor, "User role:", user ? user.role : "none");
 
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/appointment" element={<Appointment />}/>
-        <Route path="/MedicationTracking" element={<MedicationTracking />}/>
-        <Route path="/Chat" element={<Chat />}/>
+
+        {/* Patient Dashboard Route */}
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              isDoctor ? (
+                <Navigate to="/consultant/dashboard" replace />
+              ) : (
+                <Dashboard />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        {/* Consultant (Doctor) Dashboard Route */}
+        <Route
+          path="/consultant/dashboard"
+          element={
+            isAuthenticated ? (
+              isDoctor ? (
+                <ConsultantDashboard />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        {/* Other Routes */}
+        <Route path="/appointment" element={<Appointment />} />
+      
+        <Route path="/patient-appointments" element={<PatientAppointments />} />
+        <Route path="/MedicationTracking" element={<MedicationTracking />} />
+        <Route path="/Chat" element={<Chat />} />
       </Routes>
     </Router>
   );

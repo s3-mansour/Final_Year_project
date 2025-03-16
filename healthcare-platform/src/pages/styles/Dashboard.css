@@ -115,7 +115,7 @@
 
 /* Dashboard Header with Background Image */
 .dashboard-header {
-    background: url("./imgs/dashboard-bg.jpg") no-repeat center center/cover;
+    background: url("../imgs/dashboard-bg.jpg") no-repeat center center/cover;
     padding: 80px 20px;
     border-radius: 10px;
     text-align: center;

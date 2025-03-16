@@ -1,0 +1,200 @@
+/* --------------------------
+   Global Container
+--------------------------- */
+.appointment-page {
+    background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* --------------------------
+     Appointment Container
+  --------------------------- */
+  .appointment-page .appointment-container {
+    /* Fixed width to prevent expansion beyond 550px */
+    width: 550px;
+    /* Reserve vertical space for error messages */
+    min-height: 600px;
+  
+    margin: 50px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* --------------------------
+     Title & Subtitle
+  --------------------------- */
+  .appointment-page h1.appointment-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+  }
+  
+  .appointment-page .appointment-subtext {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  /* --------------------------
+     Input Groups
+  --------------------------- */
+  .appointment-page .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .appointment-page .input-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 5px;
+  }
+  
+  .appointment-page .input-group input,
+  .appointment-page .input-group select,
+  .appointment-page .input-group textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .appointment-page .input-group input::placeholder,
+  .appointment-page .input-group textarea::placeholder {
+    color: #aaa;
+  }
+  
+  .appointment-page .input-group input:focus,
+  .appointment-page .input-group select:focus,
+  .appointment-page .input-group textarea:focus {
+    border-color: #0072ff;
+    box-shadow: 0px 0px 12px rgba(0, 114, 255, 0.4);
+    outline: none;
+  }
+  
+  /* --------------------------
+     Appointment Button
+  --------------------------- */
+  .appointment-page .appointment-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    background: linear-gradient(90deg, #0072ff, #0052d4);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0px 7px 20px rgba(0, 114, 255, 0.3);
+  }
+  
+  .appointment-page .appointment-button:hover {
+    background: linear-gradient(90deg, #0052d4, #0072ff);
+    transform: scale(1.05);
+    box-shadow: 0px 10px 25px rgba(0, 114, 255, 0.5);
+    animation: pulse 1.5s infinite alternate;
+  }
+  
+  .appointment-page .appointment-button:active {
+    transform: scale(0.98);
+  }
+  
+  .appointment-page .appointment-button:disabled {
+    background: gray;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* Pulse Animation for Button Hover */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3);
+    }
+    50% {
+      transform: scale(1.02);
+      box-shadow: 0px 10px 20px rgba(0, 114, 255, 0.5);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3);
+    }
+  }
+  
+  /* --------------------------
+     Error Message
+  --------------------------- */
+  .error-message {
+    color: red;
+    margin: 0.5rem 0 1rem; /* Smaller top margin, normal bottom margin */
+    font-weight: bold;
+    text-align: center;
+    /* Force wrapping if the message is long */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* --------------------------
+     Additional Input Field Styling
+  --------------------------- */
+  .appointment-page input,
+  .appointment-page select,
+  .appointment-page textarea {
+    display: block;
+    border: 2px solid transparent;
+    background-color: #f0f0f0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .appointment-page input:focus,
+  .appointment-page select:focus,
+  .appointment-page textarea:focus {
+    background-color: white;
+    border-color: #0072ff;
+    box-shadow: 0px 0px 10px rgba(0, 114, 255, 0.4);
+  }
+  
+  /* --------------------------
+     Responsive Design
+  --------------------------- */
+  @media (max-width: 600px) {
+    .appointment-page .appointment-container {
+      /* Let it adapt on smaller screens if needed */
+      width: 90%;
+      min-height: auto;
+      padding: 20px;
+    }
+    .appointment-page .appointment-button {
+      width: auto;
+      font-size: 16px;
+    }
+  }
+  

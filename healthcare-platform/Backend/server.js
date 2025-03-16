@@ -15,9 +15,11 @@ app.use(cors()); // Enable CORS
 
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
-
+const appointmentRoutes = require("./routes/appointmentRoutes");
 // Use Routes
 app.use("/api/auth", authRoutes);
+
+app.use("/api/appointments", appointmentRoutes);
 
 // Default route
 app.get("/", (req, res) => {

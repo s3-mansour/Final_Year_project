@@ -1,15 +1,15 @@
-/* Global Reset */
-body {
+/* Container for Signup Page - Styles only apply within this container */
+.signup-page {
   margin: 0;
   font-family: 'Poppins', Arial, sans-serif;
   background: linear-gradient(to bottom right, #4c6ef5, #d6336c);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* Container */
+/* Centering the signup container */
 .signup-container {
   text-align: center;
   width: 100%;
@@ -31,6 +31,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: left;
+  margin-top: 20px;
 }
 
 /* Input Group */
@@ -82,7 +83,7 @@ body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s ease;
 }
 
 .signup-button:hover {
@@ -96,6 +97,7 @@ body {
   align-items: center;
   gap: 5px;
   font-size: 14px;
+  margin-top: 15px;
 }
 
 .login-btn {

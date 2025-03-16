@@ -1,0 +1,169 @@
+/* Consultant Dashboard Wrapper */
+.cd-wrapper {
+  min-height: 100vh;
+  margin: 0;
+  background: #f7f7f7; /* Plain neutral background */
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", Arial, sans-serif;
+  color: #333;
+  position: relative;
+}
+
+/* Top Bar for Logout */
+.cd-topbar {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 3;
+}
+
+.cd-logout-btn {
+  background-color: #e53e3e;
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cd-logout-btn:hover {
+  background-color: #c53030;
+}
+
+/* Header with SVG Wave */
+.cd-header {
+  width: 100%;
+  background-color: #4c6ef5; /* Main accent color */
+  color: #fff;
+  text-align: center;
+  padding: 3rem 2rem 2rem; /* Extra top/bottom padding for wave area */
+  position: relative;
+  overflow: hidden;
+}
+
+.cd-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.cd-header p {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* The wave SVG sits at the bottom of the header */
+.cd-wave {
+  display: block;
+  margin-top: -1px; /* Minimizes seam between header & wave */
+  width: 100%;
+  height: auto;
+}
+
+/* Main Content Area */
+.cd-content {
+  width: 90%;
+  max-width: 800px;
+  margin: -2rem auto 2rem; /* negative top margin to pull content up under wave */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* above the wave */
+}
+
+/* Cards Grid */
+.cd-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .cd-cards {
+    grid-template-columns: 1fr; /* single column on small screens */
+  }
+}
+
+/* Card Styles */
+.cd-card {
+  background: #fafafa;
+  color: #333;
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cd-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
+
+.cd-card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #4c6ef5;
+  margin-bottom: 0.5rem;
+}
+
+.cd-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.cd-card button {
+  background: #4c6ef5;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cd-card button:hover {
+  background: #5a7ef5;
+}
+
+/* Emergency Section */
+.cd-emergency {
+  background: #ff4c4c;
+  color: #fff;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.cd-emergency h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cd-emergency p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.cd-emergency-btn {
+  background: #fff;
+  color: #ff4c4c;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cd-emergency-btn:hover {
+  background: #ffe2e2;
+}

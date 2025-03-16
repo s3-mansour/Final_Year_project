@@ -1,5 +1,6 @@
-/* General Body Styling */
-body {
+/* Scope these styles under .login-page so they only affect login/welcome/signup pages */
+
+.login-page {
   margin: 0;
   font-family: 'Poppins', Arial, sans-serif;
   background: linear-gradient(to bottom right, #4c6ef5, #d6336c);
@@ -58,7 +59,6 @@ body {
   margin-left: -10px; /* Pushing it slightly to the left */
 }
 
-/* Hover Effect: Moves Only the Inner Box */
 .login-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
