@@ -1,0 +1,60 @@
+/* src/pages/styles/ConsultantAppointments.css */
+
+/* Page Container */
+.consultant-appointments-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.consultant-appointments-page h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Loading Indicator */
+.loading {
+  text-align: center;
+  color: #666;
+}
+
+/* List of Appointments */
+.appointments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.appointment-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.appointment-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-item p {
+  margin: 0.3rem 0;
+  color: #555;
+  line-height: 1.4;
+}
+
+.appointment-item p strong {
+  color: #333;
+}

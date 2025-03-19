@@ -1,169 +1,203 @@
-/* Consultant Dashboard Wrapper */
-.cd-wrapper {
-  min-height: 100vh;
-  margin: 0;
-  background: #f7f7f7; /* Plain neutral background */
+/* src/pages/styles/ConsultantDashboard.css */
+
+/* Overall Layout */
+.consultant-dashboard {
   display: flex;
-  flex-direction: column;
-  font-family: "Poppins", Arial, sans-serif;
-  color: #333;
-  position: relative;
+  min-height: 100vh;
+  background: #f0f2f5; /* a light background */
 }
 
-/* Top Bar for Logout */
-.cd-topbar {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  z-index: 3;
+/* Sidebar */
+.consultant-sidebar {
+  width: 250px;
+  background-color: #1e3264;
+  color: #fff;
+  position: fixed;
+  left: -250px;
+  top: 0;
+  bottom: 0;
+  padding: 1rem;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.cd-logout-btn {
-  background-color: #e53e3e;
+.consultant-sidebar.open {
+  left: 0;
+}
+
+.close-btn {
+  background: none;
   border: none;
   color: #fff;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  border-radius: 4px;
+  font-size: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
-.cd-logout-btn:hover {
-  background-color: #c53030;
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-/* Header with SVG Wave */
-.cd-header {
-  width: 100%;
-  background-color: #4c6ef5; /* Main accent color */
+.user-icon {
+  font-size: 3rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.sidebar-menu li:hover {
+  color: #ffcc00;
+}
+
+.logout {
+  color: #ff4c4c;
+}
+
+.logout:hover {
+  color: #ffcccc;
+}
+
+/* Main Content */
+.consultant-main-content {
+  flex: 1;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding: 1rem;
+}
+
+.consultant-sidebar.open ~ .consultant-main-content {
+  margin-left: 250px;
+}
+
+/* Top Bar */
+.topbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: #1e3264;
   color: #fff;
-  text-align: center;
-  padding: 3rem 2rem 2rem; /* Extra top/bottom padding for wave area */
-  position: relative;
-  overflow: hidden;
-}
-
-.cd-header h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.cd-header p {
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
-}
-
-/* The wave SVG sits at the bottom of the header */
-.cd-wave {
-  display: block;
-  margin-top: -1px; /* Minimizes seam between header & wave */
-  width: 100%;
-  height: auto;
-}
-
-/* Main Content Area */
-.cd-content {
-  width: 90%;
-  max-width: 800px;
-  margin: -2rem auto 2rem; /* negative top margin to pull content up under wave */
-  background: #fff;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  padding: 2rem;
-  text-align: center;
-  position: relative;
-  z-index: 1; /* above the wave */
-}
-
-/* Cards Grid */
-.cd-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-@media (max-width: 600px) {
-  .cd-cards {
-    grid-template-columns: 1fr; /* single column on small screens */
-  }
-}
-
-/* Card Styles */
-.cd-card {
-  background: #fafafa;
-  color: #333;
-  border-radius: 6px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.cd-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.12);
-}
-
-.cd-card h3 {
-  margin-top: 0;
-  font-size: 1.2rem;
-  color: #4c6ef5;
-  margin-bottom: 0.5rem;
-}
-
-.cd-card p {
-  font-size: 0.95rem;
-  color: #555;
   margin-bottom: 1rem;
 }
 
-.cd-card button {
+.menu-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Header */
+.consultant-header {
+  background: #4c6ef5;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.consultant-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Cards Section */
+.consultant-cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.consultant-card {
+  background: #fff;
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.consultant-card:hover {
+  transform: translateY(-5px);
+}
+
+.consultant-card h2 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.consultant-card p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.consultant-card button {
+  margin-top: 0.5rem;
   background: #4c6ef5;
   color: #fff;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-size: 0.9rem;
 }
 
-.cd-card button:hover {
-  background: #5a7ef5;
+.consultant-card button:hover {
+  background: #5a7ffa;
 }
 
 /* Emergency Section */
-.cd-emergency {
+.consultant-emergency {
   background: #ff4c4c;
   color: #fff;
-  border-radius: 6px;
-  padding: 1.5rem;
-  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
   text-align: center;
 }
 
-.cd-emergency h3 {
-  margin-top: 0;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-
-.cd-emergency p {
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-}
-
-.cd-emergency-btn {
+.emergency-btn {
+  margin-top: 0.5rem;
   background: #fff;
   color: #ff4c4c;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-size: 0.9rem;
 }
 
-.cd-emergency-btn:hover {
-  background: #ffe2e2;
+.emergency-btn:hover {
+  background: #ffd2d2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .consultant-cards {
+    flex-direction: column;
+    align-items: center;
+  }
 }

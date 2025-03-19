@@ -1,0 +1,61 @@
+/* src/pages/styles/ConsultantPatients.css */
+
+/* Page Container */
+.consultant-patients-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.consultant-patients-page h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Loading Indicator */
+.loading {
+  text-align: center;
+  color: #666;
+}
+
+/* List of Patients */
+.patients-list {
+  list-style: none;
+  padding: 0;
+}
+
+.patient-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.patient-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.patient-item h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.patient-item p {
+  margin: 0.3rem 0;
+  color: #555;
+}

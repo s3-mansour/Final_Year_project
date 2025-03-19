@@ -1,8 +1,6 @@
+// src/services/authService.js
 import API from "./api";
 
-/**
- * Registers a new user.
- */
 export const registerUser = async (userData) => {
   try {
     const response = await API.post("/api/auth/register", userData);
@@ -13,9 +11,6 @@ export const registerUser = async (userData) => {
   }
 };
 
-/**
- * Logs in a user and stores token & role in localStorage.
- */
 export const loginUser = async (userData) => {
   try {
     const response = await API.post("/api/auth/login", userData);
@@ -28,17 +23,11 @@ export const loginUser = async (userData) => {
   }
 };
 
-/**
- * Logs out user by clearing localStorage.
- */
 export const logoutUser = () => {
   localStorage.clear();
   return { message: "Logged out successfully" };
 };
 
-/**
- * Fetch user profile from the server using stored token.
- */
 export const getUserProfile = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -46,7 +35,9 @@ export const getUserProfile = async () => {
       throw new Error("Unauthorized: No token found");
     }
     const response = await API.get("/api/auth/profile", {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   } catch (error) {
@@ -56,5 +47,21 @@ export const getUserProfile = async () => {
       window.location.href = "/login";
     }
     throw new Error(error.response?.data?.message || "Failed to fetch profile.");
+  }
+};
+
+export const updateUserProfile = async (profileData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await API.put("/api/auth/profile", profileData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // Optionally update localStorage if needed
+    return response.data;
+  } catch (error) {
+    console.error("Updating profile failed:", error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || "Profile update failed.");
   }
 };

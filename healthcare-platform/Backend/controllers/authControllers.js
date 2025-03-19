@@ -97,4 +97,37 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, getUserProfile };
+/**
+ * @desc Update user profile
+ * @route PUT /api/auth/profile
+ * @access Private
+ */
+const updateUserProfile = asyncHandler(async (req, res) => {
+  // Get user from the request (set by protect middleware)
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    // Allow updates for firstName, lastName, email, and location.
+    // (You may want to handle password changes separately.)
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName  = req.body.lastName  || user.lastName;
+    user.email     = req.body.email     || user.email;
+    user.location  = req.body.location  || user.location;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      location: updatedUser.location,
+      token: generateToken(updatedUser._id), // Optionally re-issue token
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+module.exports = { registerUser, loginUser, getUserProfile,updateUserProfile };

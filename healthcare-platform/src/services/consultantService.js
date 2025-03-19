@@ -1,12 +1,12 @@
-// Example:
-import API from "./api";
+// src/services/consultantService.js
+import API from "./api"; // your configured axios instance
 
-export const getPatients = async () => {
+export const getConsultantPatients = async () => {
   const response = await API.get("/api/consultant/patients");
-  return response.data;
+  return response.data; // array of patient objects
 };
 
-export const getAppointments = async () => {
+export const getConsultantAppointments = async () => {
   const response = await API.get("/api/consultant/appointments");
-  return response.data;
+  return response.data; // array of appointment objects
 };

@@ -1,62 +1,129 @@
-import React from "react";
-import { logoutUser } from "../services/authService";
+// src/pages/ConsultantDashboard.js
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  FaBars,
+  FaTimes,
+  FaUser,
+  FaSignOutAlt,
+  FaUserFriends,
+  FaCalendarAlt,
+  FaCog
+} from "react-icons/fa";
+import { getUserProfile, logoutUser } from "../services/authService";
 import "./styles/consultantDashboard.css";
 
 const ConsultantDashboard = () => {
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState({ firstName: "Loading...", role: "doctor" });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserProfile();
+        setUser(userData);
+      } catch (error) {
+        alert("Session expired. Please log in again.");
+        navigate("/login");
+      }
+    };
+    fetchUserData();
+  }, [navigate]);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   const handleLogout = () => {
     logoutUser();
-    window.location.href = "/login"; // Force reload
+    window.location.href = "/login";
+  };
+
+  // Navigation handlers
+  const handleViewPatients = () => {
+    navigate("/consultant/patients");
+  };
+  const handleViewAppointments = () => {
+    navigate("/consultant/appointments");
+  };
+  const handleViewProfile = () => {
+    // Navigate to the same profile page used by patients/doctors
+    navigate("/profile");
   };
 
   return (
-    <div className="cd-wrapper">
-      {/* Top Bar (Logout) */}
-      <div className="cd-topbar">
-        <button className="cd-logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
-
-      {/* Header with Inline SVG Wave */}
-      <header className="cd-header">
-        <h1>Consultant Dashboard</h1>
-        <p>Welcome, Doctor!</p>
-        {/* Wave SVG at the bottom */}
-        <svg
-          className="cd-wave"
-          viewBox="0 0 1440 80"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="#f7f7f7"
-            d="M0,0 C360,80 1080,0 1440,80 L1440,0 L0,0 Z"
-          />
-        </svg>
-      </header>
+    <div className="consultant-dashboard">
+      {/* Sidebar */}
+      <aside className={`consultant-sidebar ${sidebarOpen ? "open" : ""}`}>
+        {sidebarOpen && (
+          <button
+            className="close-btn"
+            onClick={toggleSidebar}
+            aria-label="Close sidebar"
+          >
+            <FaTimes />
+          </button>
+        )}
+        <div className="sidebar-header">
+          <FaUser className="user-icon" />
+          <h3>{user.firstName}</h3>
+          <p>Role: {user.role}</p>
+        </div>
+        <ul className="sidebar-menu">
+          <li onClick={handleViewPatients}>
+            <FaUserFriends /> View Patients
+          </li>
+          <li onClick={handleViewAppointments}>
+            <FaCalendarAlt /> View Appointments
+          </li>
+          {/* NEW: Account Details / Profile */}
+          <li onClick={handleViewProfile}>
+            <FaCog /> Account Details
+          </li>
+          <li className="logout" onClick={handleLogout}>
+            <FaSignOutAlt /> Logout
+          </li>
+        </ul>
+      </aside>
 
       {/* Main Content */}
-      <div className="cd-content">
-        {/* Two-Column Cards */}
-        <div className="cd-cards">
-          <div className="cd-card">
-            <h3>Patients</h3>
+      <main className={`consultant-main-content ${sidebarOpen ? "shifted" : ""}`}>
+        {/* Top Bar */}
+        <div className="topbar">
+          <button className="menu-btn" onClick={toggleSidebar} aria-label="Open sidebar">
+            <FaBars />
+          </button>
+        </div>
+
+        {/* Dashboard Header */}
+        <header className="consultant-header">
+          <h1>Consultant Dashboard</h1>
+          <p>Welcome, Doctor!</p>
+        </header>
+
+        {/* Quick Links or Cards */}
+        <div className="consultant-cards">
+          <div className="consultant-card" onClick={handleViewPatients}>
+            <FaUserFriends size={40} />
+            <h2>Patients</h2>
             <p>Manage your patients here.</p>
             <button>View Patients</button>
           </div>
-          <div className="cd-card">
-            <h3>Appointments</h3>
+          <div className="consultant-card" onClick={handleViewAppointments}>
+            <FaCalendarAlt size={40} />
+            <h2>Appointments</h2>
             <p>Schedule or modify appointments.</p>
             <button>View Appointments</button>
           </div>
         </div>
 
-        {/* Emergency Section */}
-        <div className="cd-emergency">
+        <section className="consultant-emergency">
           <h3>Emergency Contact Support</h3>
           <p>Quickly connect with emergency providers in critical situations.</p>
-          <button className="cd-emergency-btn">Access Emergency Support</button>
-        </div>
-      </div>
+          <button className="emergency-btn">Access Emergency Support</button>
+        </section>
+      </main>
     </div>
   );
 };

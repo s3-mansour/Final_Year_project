@@ -1,3 +1,4 @@
+// Backend/server.js
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -10,27 +11,28 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(express.json()); // Middleware for JSON parsing
-app.use(cors()); // Enable CORS
+app.use(express.json());
+app.use(cors());
 
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
-// Use Routes
-app.use("/api/auth", authRoutes);
+const consultantRoutes = require("./routes/consultantRoutes");
 
+// Mount Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/consultant", consultantRoutes); // Consultant endpoints
 
 // Default route
 app.get("/", (req, res) => {
-    res.send("🚀 API is running...");
+  res.send("🚀 API is running...");
 });
 
-// Handle 404 Errors
+// 404 Handler
 app.use((req, res) => {
-    res.status(404).json({ message: "Route Not Found" });
+  res.status(404).json({ message: "Route Not Found" });
 });
 
-// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

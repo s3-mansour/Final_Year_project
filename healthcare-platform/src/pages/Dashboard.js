@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { 
   FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt, 
   FaPills, FaChartBar, FaComments, FaBookMedical, FaUserMd 
@@ -10,7 +10,7 @@ import "./styles/Dashboard.css";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState({ name: "Loading...", role: "Patient" });
+  const [user, setUser] = useState({ firstName: "Loading...", role: "Patient" });
 
   // Fetch user data from backend on component mount
   useEffect(() => {
@@ -35,7 +35,11 @@ const Dashboard = () => {
     logoutUser(); // Clears localStorage
     window.location.href = "/login"; // Hard reload
   };
-  
+
+  // Navigate to profile when account settings is clicked
+  const handleAccountSettings = () => {
+    navigate("/profile"); // Adjust route as needed
+  };
 
   return (
     <div className="dashboard-container">
@@ -56,7 +60,7 @@ const Dashboard = () => {
           <p>Role: {user.role}</p>
         </div>
         <ul className="sidebar-menu">
-          <li>
+          <li onClick={handleAccountSettings} style={{ cursor: "pointer" }}>
             <FaCog /> Account Settings
           </li>
           <li className="logout" onClick={handleLogout}>
@@ -110,7 +114,7 @@ const Dashboard = () => {
               title: "Consultant-Patient Chat", 
               desc: "Communicate with your healthcare provider in real-time.", 
               icon: <FaComments />, 
-              btn: "Start Chat" ,
+              btn: "Start Chat",
               link: "/Chat"
             },
             { 

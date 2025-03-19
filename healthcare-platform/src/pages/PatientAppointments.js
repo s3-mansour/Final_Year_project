@@ -1,5 +1,6 @@
 // src/pages/PatientAppointments.js
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getAppointments,
   updateAppointment,
@@ -8,6 +9,8 @@ import {
 import "./styles/PatientAppointments.css";
 
 const PatientAppointments = () => {
+  const navigate = useNavigate();
+
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -97,6 +100,11 @@ const PatientAppointments = () => {
     }
   };
 
+  // NEW: Navigate to create a new appointment
+  const handleCreateAppointment = () => {
+    navigate("/appointment");
+  };
+
   return (
     <div className="patient-appointments-page">
       <h1>Your Appointments</h1>
@@ -110,13 +118,21 @@ const PatientAppointments = () => {
           {appointments.map((appt) => (
             <li key={appt._id} className="appointment-item">
               <div className="appointment-info">
-                <p><strong>Date:</strong> {new Date(appt.date).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {appt.time}</p>
                 <p>
-                  <strong>Doctor:</strong> 
-                  {appt.doctor?.firstName} {appt.doctor?.lastName} ({appt.doctor?.location})
+                  <strong>Date:</strong>{" "}
+                  {new Date(appt.date).toLocaleDateString()}
                 </p>
-                <p><strong>Notes:</strong> {appt.notes || "None"}</p>
+                <p>
+                  <strong>Time:</strong> {appt.time}
+                </p>
+                <p>
+                  <strong>Doctor:</strong>{" "}
+                  {appt.doctor?.firstName} {appt.doctor?.lastName} (
+                  {appt.doctor?.location})
+                </p>
+                <p>
+                  <strong>Notes:</strong> {appt.notes || "None"}
+                </p>
               </div>
               <div className="appointment-actions">
                 <button onClick={() => handleEditClick(appt)}>Edit</button>
@@ -125,7 +141,10 @@ const PatientAppointments = () => {
 
               {/* Inline edit form if this appointment is being edited */}
               {editingId === appt._id && (
-                <form className="edit-form" onSubmit={(e) => handleEditSubmit(e, appt._id)}>
+                <form
+                  className="edit-form"
+                  onSubmit={(e) => handleEditSubmit(e, appt._id)}
+                >
                   <div className="input-group">
                     <label>Date</label>
                     <input
@@ -157,7 +176,9 @@ const PatientAppointments = () => {
                   </div>
                   <div className="edit-form-actions">
                     <button type="submit">Update</button>
-                    <button type="button" onClick={cancelEditing}>Cancel</button>
+                    <button type="button" onClick={cancelEditing}>
+                      Cancel
+                    </button>
                   </div>
                 </form>
               )}
@@ -165,6 +186,16 @@ const PatientAppointments = () => {
           ))}
         </ul>
       )}
+
+      {/* NEW: Button to create an appointment */}
+      <div className="create-appointment-container">
+        <button
+          className="create-appointment-btn"
+          onClick={handleCreateAppointment}
+        >
+          Create New Appointment
+        </button>
+      </div>
     </div>
   );
 };

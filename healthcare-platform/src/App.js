@@ -11,6 +11,9 @@ import Appointment from "./pages/Appointment";
 import PatientAppointments from "./pages/PatientAppointments";
 import MedicationTracking from "./pages/MedicationTracking";
 import Chat from "./pages/Chat";
+import Profile from "./pages/Profile";
+import ConsultantPatients from "./pages/ConsultantPatients";
+import ConsultantAppointments from "./pages/ConsultantAppointments";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -90,10 +93,12 @@ function App() {
 
         {/* Other Routes */}
         <Route path="/appointment" element={<Appointment />} />
-      
         <Route path="/patient-appointments" element={<PatientAppointments />} />
-        <Route path="/MedicationTracking" element={<MedicationTracking />} />
-        <Route path="/Chat" element={<Chat />} />
+        <Route path="/consultant/patients" element={<ConsultantPatients />} />
+        <Route path="/consultant/appointments" element={<ConsultantAppointments />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/medicationtracking" element={<MedicationTracking />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </Router>
   );
