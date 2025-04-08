@@ -1,0 +1,254 @@
+/* src/pages/styles/Availability.css */
+
+/* Overall Container */
+.availability-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", Arial, sans-serif;
+  }
+  
+  .availability-page h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: red;
+    margin-bottom: 1rem;
+  }
+  
+  /* Availability List */
+  .availability-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+  
+  .availability-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .availability-item:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .availability-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .availability-info p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  /* Inline Editing in the List */
+  .availability-info label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 4px;
+    color: #333;
+  }
+  
+  /* For date/time inputs in inline edit */
+  .availability-info input[type="date"],
+  .availability-info input[type="time"] {
+    padding: 0.3rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .availability-info input[type="date"]:focus,
+  .availability-info input[type="time"]:focus {
+    outline: none;
+    border-color: #4c6ef5;
+  }
+  
+  /* Buttons beside each availability item */
+  .availability-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .availability-actions button {
+    padding: 0.4rem 0.8rem;
+    background-color: #4c6ef5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .availability-actions button:hover {
+    background-color: #5a7ffa;
+  }
+  
+  /* Add/Edit Form at Bottom */
+  .availability-form {
+    background-color: #f0f2f5;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+  
+  .availability-form .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .availability-form label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    color: #333;
+  }
+  
+  .availability-form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border 0.3s ease;
+  }
+  
+  .availability-form input:focus {
+    border-color: #4c6ef5;
+    outline: none;
+  }
+  
+  /* Submit Button for the Form */
+  .availability-form button.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4c6ef5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .availability-form button.submit-btn:hover {
+    background-color: #0052d4;
+  }
+  /* Modal overlay */
+.my-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  /* Modal container */
+  .my-modal-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    font-family: "Poppins", Arial, sans-serif;
+  }
+  
+  /* Title & message */
+  .my-modal-title {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .my-modal-message {
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Buttons container */
+  .my-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* OK button */
+  .my-confirm-button {
+    background-color: #4c6ef5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .my-confirm-button:hover {
+    background-color: #0052d4;
+    transform: scale(1.03);
+  }
+  
+  /* Cancel button */
+  .my-cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .my-cancel-button:hover {
+    background-color: #ccc;
+    transform: scale(1.03);
+  }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .availability-page {
+      padding: 1rem;
+    }
+  
+    .availability-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+    }
+  
+    .availability-actions {
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+  }
+  

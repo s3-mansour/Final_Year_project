@@ -14,7 +14,8 @@ import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import ConsultantPatients from "./pages/ConsultantPatients";
 import ConsultantAppointments from "./pages/ConsultantAppointments";
-
+import Availability from "./pages/Availability"
+import ManagePatientMedications from './pages/ManagePatientMedications';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Full user data including role
@@ -58,6 +59,7 @@ function App() {
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/availability" element={<Availability />} />
 
         {/* Patient Dashboard Route */}
         <Route
@@ -99,6 +101,17 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/medicationtracking" element={<MedicationTracking />} />
         <Route path="/chat" element={<Chat />} />
+        <Route
+    path="/consultant/manage-medications" // Or your preferred path
+    element={
+        /* Use your ProtectedRoute logic here */
+        isAuthenticated && isDoctor ? (
+            <ManagePatientMedications />
+        ) : (
+            <Navigate to="/login" replace /> /* Or appropriate redirect */
+        )
+    }
+/>
       </Routes>
     </Router>
   );

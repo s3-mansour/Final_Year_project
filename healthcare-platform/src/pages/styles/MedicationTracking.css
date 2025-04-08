@@ -1,31 +1,366 @@
+/* src/pages/styles/MedicationTracking.css */
+
+/* --- Page Container --- */
 .medication-page {
-    max-width: 800px;
-    margin: auto;
+    max-width: 1200px; /* Wider layout */
+    margin: 20px auto;
     padding: 20px;
-    text-align: center;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    background: #f4f7f6; /* Light background for the page */
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* --- Top Header Bar --- */
 .top-bar {
     background: linear-gradient(90deg, #0072ff, #0052d4);
     color: white;
-    padding: 15px;
+    padding: 15px 25px;
     font-size: 20px;
     font-weight: bold;
-    border-radius: 10px;
+    border-radius: 8px 8px 0 0; /* Match top corners of page container */
+    margin: -20px -20px 20px -20px; /* Extend to page edges */
+    text-align: center;
+}
+.top-bar h1 {
+    margin: 0;
+    font-size: 1.5em; /* Adjust title size */
 }
 
+/* --- Layout Wrapper --- */
+.medication-content-wrapper {
+    display: flex;
+    gap: 30px; /* Space between columns */
+    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+}
+
+/* --- Left Column (Calendar & Schedule) --- */
+.calendar-schedule-column {
+    flex: 1; /* Take up available space */
+    min-width: 350px; /* Minimum width before wrapping */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between calendar and schedule */
+}
+
+/* --- Right Column (Medication List) --- */
+.medication-list-column {
+    flex: 1; /* Take up available space */
+    min-width: 350px; /* Minimum width before wrapping */
+}
+
+/* --- Calendar Container & Styling --- */
 .calendar-container {
-    margin-top: 20px;
-    background: #f9f9f9;
+    background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.calendar-container p {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #555;
+    font-size: 0.95em;
+}
+.styled-calendar {
+    border: none; /* Remove default calendar border */
+    border-radius: 8px;
+    box-shadow: none;
+    width: 100%; /* Make calendar fill container */
+    font-family: inherit; /* Use page font */
+}
+/* Customize react-calendar elements */
+.react-calendar__navigation button {
+    min-width: 40px;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: #0072ff;
+    cursor: pointer;
+}
+.react-calendar__navigation button:hover {
+    background-color: #f0f0f0;
+}
+.react-calendar__month-view__weekdays__weekday {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    padding: .5em;
+    text-decoration: none; /* Remove underline */
+}
+.react-calendar__month-view__weekdays__weekday abbr[title] { /* Target the abbr element if default styles add underline */
+    text-decoration: none;
+}
+.react-calendar__tile {
+    border-radius: 4px;
+    padding: 0.75em 0.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background-color: #e6f2ff; /* Light blue hover */
+}
+.react-calendar__tile--now { /* Today's date */
+    background: #e6f2ff;
+    font-weight: bold;
+}
+.react-calendar__tile--active { /* Selected date */
+    background: #0072ff !important;
+    color: white !important;
+    font-weight: bold;
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: #005bb5 !important; /* Darker blue on hover/focus */
 }
 
-.styled-calendar {
-    border-radius: 10px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+/* --- Daily Schedule Section --- */
+.daily-schedule-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    min-height: 200px; /* Give it some default height */
+}
+.daily-schedule-section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.3em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.schedule-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.schedule-item {
+    display: flex;
+    justify-content: space-between; /* Push button to the right */
+    align-items: center;
+    padding: 10px 5px;
+    border-bottom: 1px dashed #eee;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.schedule-item:last-child {
+    border-bottom: none;
+}
+/* Style for items marked as taken */
+.schedule-item.taken {
+    background-color: #e8f5e9; /* Light green background */
+    opacity: 0.8;
+}
+
+.schedule-details {
+    flex-grow: 1; /* Take available space */
+    margin-right: 15px; /* Space before button */
+    display: flex;
+    align-items: center;
+}
+.schedule-time {
+    font-weight: bold;
+    color: #0072ff;
+    margin-right: 15px;
+    min-width: 80px; /* Helps align times */
+    flex-shrink: 0; /* Prevent time from shrinking */
+}
+.schedule-name {
+    color: #444;
+    word-break: break-word; /* Prevent long names overflowing */
+}
+
+.mark-taken-button {
+    background-color: #007bff; /* Blue */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    white-space: nowrap; /* Prevent button text wrapping */
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.mark-taken-button:hover:not(:disabled) { /* Only apply hover if not disabled */
+    background-color: #0056b3;
+}
+.mark-taken-button.button-taken {
+    background-color: #28a745; /* Green when taken */
+    cursor: default;
+    opacity: 0.7;
+}
+/* Explicit disabled style for clarity, though .button-taken achieves similar visual */
+.mark-taken-button:disabled {
+    background-color: #28a745; /* Keep green when disabled (means it's taken) */
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* --- Prescribed Medication List Section --- */
+.medication-list-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.med-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.med-list-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.3em;
+}
+
+.medication-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px; /* Example: Add scroll if list gets very long */
+    overflow-y: auto;
+}
+.medication-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px;
+    border-bottom: 1px solid #eee;
+}
+.medication-item:last-child {
+    border-bottom: none;
+}
+.med-info {
+    flex-grow: 1;
+    margin-right: 15px;
+    color: #444;
+}
+.med-info strong {
+    color: #333;
+    display: block; /* Ensure name is on its own line if needed */
+    margin-bottom: 3px;
+    margin-right: 5px; /* Space for status text */
+}
+.med-notes {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Styling for the Start/End Date line */
+.med-dates {
+    font-size: 0.8em; /* Smaller text for dates */
+    color: #777;      /* Grey color */
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+/* Style for displaying date parsing errors specifically */
+.med-dates.error-message {
+    color: #dc3545; /* Use error color */
+    background-color: transparent; /* No background needed here */
+    padding: 0;
+    border: none;
+    text-align: left;
+    font-weight: normal; /* Don't need bold */
+}
+
+
+/* Styling based on medication status class added to .medication-item */
+
+/* Style for 'Active' status (optional, mostly default) */
+.medication-item.med-active .med-info strong {
+   /* No specific style needed unless desired */
+}
+
+/* Style for 'Upcoming' status */
+.medication-item.med-upcoming .med-info strong {
+   color: #ff9800; /* Example: Orange for upcoming */
+}
+.medication-item.med-upcoming .med-dates {
+   color: #ff9800; /* Match color? Optional */
+}
+
+/* Style for 'Finished' status */
+.medication-item.med-finished {
+   opacity: 0.7; /* Fade out finished items slightly */
+}
+.medication-item.med-finished .med-info {
+   color: #888; /* Grey out text */
+   text-decoration: line-through; /* Strike-through */
+}
+.medication-item.med-finished .med-info strong {
+    color: #888; /* Grey out name */
+}
+.medication-item.med-finished .med-dates {
+    color: #aaa;
+}
+
+
+/* Style for 'Inactive' status (manually set) */
+.medication-item.med-inactive {
+   opacity: 0.7;
+}
+.medication-item.med-inactive .med-info {
+   color: #888;
+   text-decoration: line-through;
+}
+.medication-item.med-inactive .med-info strong {
+    color: #888;
+}
+.medication-item.med-inactive .med-dates {
+    color: #aaa;
+}
+
+
+/* Style for 'Date Error' status */
+.medication-item.med-error .med-info strong {
+   color: #dc3545; /* Error color for name */
+}
+.medication-item.med-error .med-info {
+    /* Maybe add a light red background or border */
+    /* background-color: #f8d7da; */
+}
+
+
+/* --- Utility Styles --- */
+.error-message {
+  color: #dc3545; /* Red */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* --- Responsive Adjustments (Example) --- */
+@media (max-width: 768px) {
+    .medication-content-wrapper {
+        flex-direction: column; /* Stack columns on smaller screens */
+    }
+    .calendar-schedule-column,
+    .medication-list-column {
+        min-width: 100%; /* Allow columns to take full width */
+    }
+    .top-bar h1 {
+        font-size: 1.3em;
+    }
+    .daily-schedule-section h2,
+    .med-list-header h2 {
+        font-size: 1.2em;
+    }
+    .schedule-item {
+        flex-wrap: wrap; /* Allow button to wrap below details */
+    }
+    .mark-taken-button {
+        margin-top: 8px; /* Add space when wrapped */
+    }
 }

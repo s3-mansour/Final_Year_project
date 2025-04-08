@@ -18,12 +18,16 @@ app.use(cors());
 const authRoutes = require("./routes/authRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const consultantRoutes = require("./routes/consultantRoutes");
-
+const availabilityRoutes = require("./routes/availabilityRoutes"); 
+const medicationRoutes = require("./routes/medicationRoutes");
+const medicationLogRoutes = require("./routes/medicationLogRoutes");
 // Mount Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/appointments", appointmentRoutes);
-app.use("/api/consultant", consultantRoutes); // Consultant endpoints
-
+app.use("/api/consultant", consultantRoutes);
+app.use("/api/availability", availabilityRoutes); 
+app.use("/api/medications", medicationRoutes);
+app.use("/api/medication-logs", medicationLogRoutes);
 // Default route
 app.get("/", (req, res) => {
   res.send("🚀 API is running...");

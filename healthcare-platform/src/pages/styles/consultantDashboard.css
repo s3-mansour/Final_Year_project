@@ -4,7 +4,9 @@
 .consultant-dashboard {
   display: flex;
   min-height: 100vh;
-  background: #f0f2f5; /* a light background */
+  background: #f0f2f5; /* subtle light gray background */
+  font-family: "Poppins", Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 /* Sidebar */
@@ -26,16 +28,17 @@
 }
 
 .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
   background: none;
   border: none;
   color: #fff;
   font-size: 20px;
   cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
 }
 
+/* Sidebar Header */
 .sidebar-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -45,6 +48,17 @@
   font-size: 3rem;
 }
 
+.sidebar-header h3 {
+  margin: 10px 0 5px;
+  font-size: 1.2rem;
+}
+
+.sidebar-header p {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Sidebar Menu */
 .sidebar-menu {
   list-style: none;
   padding: 0;
@@ -57,6 +71,7 @@
   gap: 0.5rem;
   cursor: pointer;
   font-size: 1rem;
+  transition: color 0.3s;
 }
 
 .sidebar-menu li:hover {
@@ -71,12 +86,24 @@
   color: #ffcccc;
 }
 
+/* Sidebar Toggle Button */
+.menu-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
 /* Main Content */
 .consultant-main-content {
   flex: 1;
-  margin-left: 0;
-  transition: margin-left 0.3s ease;
   padding: 1rem;
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
 }
 
 .consultant-sidebar.open ~ .consultant-main-content {
@@ -86,7 +113,6 @@
 /* Top Bar */
 .topbar {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   background: #1e3264;
   color: #fff;
@@ -95,22 +121,14 @@
   margin-bottom: 1rem;
 }
 
-.menu-btn {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* Header */
+/* Dashboard Header */
 .consultant-header {
   background: #4c6ef5;
   color: #fff;
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .consultant-header h1 {
@@ -138,25 +156,31 @@
   padding: 1rem;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .consultant-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 .consultant-card h2 {
   margin: 1rem 0 0.5rem;
   font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #444;
 }
 
 .consultant-card p {
   font-size: 0.9rem;
   color: #666;
+  margin-bottom: 1rem;
 }
 
 .consultant-card button {
-  margin-top: 0.5rem;
   background: #4c6ef5;
   color: #fff;
   border: none;
@@ -164,6 +188,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
+  transition: background 0.3s;
 }
 
 .consultant-card button:hover {
@@ -177,6 +202,7 @@
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.2);
 }
 
 .emergency-btn {
@@ -188,6 +214,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .emergency-btn:hover {

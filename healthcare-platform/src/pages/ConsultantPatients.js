@@ -1,6 +1,6 @@
 // src/pages/ConsultantPatients.js
 import React, { useEffect, useState } from "react";
-import { getConsultantPatients } from "../services/consultantService";
+import { getPatientsList } from "../services/consultantService";
 import "./styles/ConsultantPatients.css";
 
 const ConsultantPatients = () => {
@@ -16,7 +16,7 @@ const ConsultantPatients = () => {
     setLoading(true);
     setError("");
     try {
-      const data = await getConsultantPatients();
+      const data = await getPatientsList();
       setPatients(data);
     } catch (err) {
       console.error("Error fetching patients:", err);

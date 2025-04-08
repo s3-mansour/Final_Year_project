@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { 
-  FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt, 
-  FaPills, FaChartBar, FaComments, FaBookMedical, FaUserMd 
+import { useNavigate } from "react-router-dom";
+import {
+  FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt,
+  FaPills, FaChartBar, FaComments, FaFilePrescription, FaAppleAlt
 } from "react-icons/fa";
-import { getUserProfile, logoutUser } from "../services/authService"; // API Calls
+import { getUserProfile, logoutUser } from "../services/authService"; 
 import "./styles/Dashboard.css";
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState({ firstName: "Loading...", role: "Patient" });
 
-  // Fetch user data from backend on component mount
+  // Fetch user data on mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -23,7 +23,6 @@ const Dashboard = () => {
         navigate("/login");
       }
     };
-
     fetchUserData();
   }, [navigate]);
 
@@ -32,13 +31,12 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    logoutUser(); // Clears localStorage
+    logoutUser();
     window.location.href = "/login"; // Hard reload
   };
 
-  // Navigate to profile when account settings is clicked
   const handleAccountSettings = () => {
-    navigate("/profile"); // Adjust route as needed
+    navigate("/profile");
   };
 
   return (
@@ -87,51 +85,57 @@ const Dashboard = () => {
           <h2>Healthcare Management Dashboard</h2>
         </div>
 
-        {/* Dashboard Features - Arranged in Two Columns */}
+        {/* Feature Cards */}
         <div className="dashboard-grid">
           {[
-            { 
-              title: "Medication Tracking", 
-              desc: "Track your medication schedule and set reminders.", 
-              icon: <FaPills />, 
-              btn: "View Schedule", 
-              link:"/MedicationTracking" 
+            {
+              title: "Medication Tracking",
+              desc: "Track your medication schedule and set reminders.",
+              icon: <FaPills />,
+              btn: "View Schedule",
+              link: "/MedicationTracking"
             },
-            { 
-              title: "Appointment Scheduling", 
-              desc: "Book, modify, or cancel appointments.", 
-              icon: <FaCalendarAlt />, 
-              btn: "Manage Appointments", 
-              link: "/patient-appointments" 
+            {
+              title: "Appointment Scheduling",
+              desc: "Book, modify, or cancel appointments.",
+              icon: <FaCalendarAlt />,
+              btn: "Manage Appointments",
+              link: "/patient-appointments"
             },
-            { 
-              title: "Data Sharing", 
-              desc: "Securely share health records.", 
-              icon: <FaUserMd />, 
-              btn: "Share Data" 
+            {
+              // REPLACED "Data Sharing" with "Prescription Management"
+              title: "Prescription Management",
+              desc: "Manage your prescriptions and request refills easily.",
+              icon: <FaFilePrescription />,
+              btn: "Manage Prescriptions",
+              link: "/prescriptions" // create this route/page as needed
             },
-            { 
-              title: "Consultant-Patient Chat", 
-              desc: "Communicate with your healthcare provider in real-time.", 
-              icon: <FaComments />, 
+            {
+              title: "Consultant-Patient Chat",
+              desc: "Communicate with your healthcare provider in real-time.",
+              icon: <FaComments />,
               btn: "Start Chat",
               link: "/Chat"
             },
-            { 
-              title: "Health Tips", 
-              desc: "Get personalized tips to improve your health.", 
-              icon: <FaBookMedical />, 
-              btn: "View Tips" 
+            {
+              // REPLACED "Health Tips" with "Lifestyle & Nutrition"
+              title: "Lifestyle & Nutrition",
+              desc: "Personalized diet and exercise tips for a healthier life.",
+              icon: <FaAppleAlt />,
+              btn: "View Lifestyle Tips",
+              link: "/lifestyle" // create this route/page as needed
             },
-            { 
-              title: "Reports and Analytics", 
-              desc: "View detailed analytics of your health progress.", 
-              icon: <FaChartBar />, 
-              btn: "View Reports" 
+            {
+              title: "Reports and Analytics",
+              desc: "View detailed analytics of your health progress.",
+              icon: <FaChartBar />,
+              btn: "View Reports"
             }
           ].map((feature, index) => (
             <div key={index} className="dashboard-card">
-              <h3>{feature.icon} {feature.title}</h3>
+              <h3>
+                {feature.icon} {feature.title}
+              </h3>
               <p>{feature.desc}</p>
               <button onClick={() => feature.link && navigate(feature.link)}>
                 {feature.btn}

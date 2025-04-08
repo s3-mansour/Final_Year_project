@@ -1,0 +1,96 @@
+/* src/pages/ConfirmModal.css (or wherever your CSS is stored) */
+
+/* Dimmed background overlay */
+.my-modal-overlay {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  /* Container for the modal box */
+  .my-modal-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: slideIn 0.3s ease;
+    font-family: "Poppins", Arial, sans-serif;
+  }
+  
+  /* Title and message */
+  .my-modal-title {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #333;
+  }
+  
+  .my-modal-message {
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Buttons container */
+  .my-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* OK button */
+  .my-confirm-button {
+    background-color: #4c6ef5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .my-confirm-button:hover {
+    background-color: #0052d4;
+    transform: scale(1.03);
+  }
+  
+  /* Cancel button */
+  .my-cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .my-cancel-button:hover {
+    background-color: #ccc;
+    transform: scale(1.03);
+  }
+  
+  /* Simple fadeIn + slideIn animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(-20px); }
+    to   { transform: translateY(0); }
+  }
+  
