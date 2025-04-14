@@ -1,0 +1,45 @@
+/* src/components/styles/TopNavbar.css */
+
+.top-navbar {
+  background-color: #1e3264; /* Match sidebar */
+  color: #fff;
+  padding: 0 1.5rem; /* Horizontal padding */
+  height: 60px; /* Fixed height */
+  position: fixed; /* Fixed at the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050; /* Above sidebar */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-toggle-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem; /* Larger icon */
+  cursor: pointer;
+  padding: 5px 10px; /* Click area */
+  margin-right: 1rem; /* Space after button */
+  line-height: 1;
+}
+
+.navbar-toggle-btn:hover {
+  color: #ffcc00; /* Highlight */
+}
+
+.navbar-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Optional: Add styles for user menu, etc. on the right */
+/* .navbar-user-menu { margin-left: auto; } */

@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+// Import necessary icons
 import {
-  FaBars, FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt,
-  FaPills, FaChartBar, FaComments, FaFilePrescription, FaAppleAlt
+   FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt,
+  FaPills, FaChartBar, FaComments, FaFilePrescription, FaAppleAlt, FaPhoneAlt
 } from "react-icons/fa";
-import { getUserProfile, logoutUser } from "../services/authService"; 
-import "./styles/Dashboard.css";
+import { getUserProfile, logoutUser } from "../services/authService";
+// Assuming TopNavbar component exists in ../components/
+import TopNavbar from "../components/TopNavbar";
+import "./styles/Dashboard.css"; // Ensure this path is correct
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState({ firstName: "Loading...", role: "Patient" });
+  const [user, setUser] = useState({ firstName: "Loading...", lastName: "", role: "Patient" });
 
-  // Fetch user data on mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userData = await getUserProfile();
         setUser(userData);
       } catch (error) {
-        alert("Session expired. Please log in again.");
-        navigate("/login");
+        console.error("Auth Error in Dashboard:", error);
+        logoutUser();
+        navigate("/login", { replace: true });
       }
     };
     fetchUserData();
@@ -32,113 +35,86 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logoutUser();
-    window.location.href = "/login"; // Hard reload
+    window.location.href = "/login"; // Or navigate('/login') after state clears
   };
 
   const handleAccountSettings = () => {
     navigate("/profile");
   };
 
+  // Placeholder for emergency action
+  const handleEmergency = () => alert("Emergency support feature not yet implemented.");
+
+  // --- Define Features with Accent Colors ---
+  const features = [
+    { title: "Medication Tracking", desc: "Track your medication schedule.", icon: <FaPills />, btn: "View Schedule", link: "/MedicationTracking", accent: "#20c997" }, // Teal
+    { title: "Appointment Scheduling", desc: "Book, modify, or cancel appointments.", icon: <FaCalendarAlt />, btn: "Manage Appointments", link: "/patient-appointments", accent: "#fd7e14" }, // Orange
+    { title: "Prescription Management", desc: "View your prescriptions.", icon: <FaFilePrescription />, btn: "View Prescriptions", link: "/prescriptions", accent: "#6f42c1" }, // Purple
+    { title: "Consultant-Patient Chat", desc: "Communicate with your provider.", icon: <FaComments />, btn: "Start Chat", link: "/chat", accent: "#0dcaf0" }, // Cyan
+    { title: "Lifestyle & Nutrition", desc: "Personalized health tips.", icon: <FaAppleAlt />, btn: "View Tips", link: "/lifestyle", accent: "#198754" }, // Green
+    { title: "Reports and Analytics", desc: "View your health progress.", icon: <FaChartBar />, btn: "View Reports", link: "/reports", accent: "#6c757d" } // Gray
+  ];
+
+
   return (
+    // Main container using dashboard-container class
     <div className="dashboard-container">
-      {/* Sidebar */}
+
+      {/* --- Top Navbar (Fixed) --- */}
+      <TopNavbar onToggleSidebar={toggleSidebar} />
+
+      {/* --- Sidebar (Fixed Position) --- */}
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        {sidebarOpen && (
-          <button 
-            className="close-btn" 
-            onClick={toggleSidebar}
-            aria-label="Close sidebar"
-          >
-            <FaTimes />
-          </button>
-        )}
+        <button className="close-btn" onClick={toggleSidebar} aria-label="Close sidebar"><FaTimes /></button>
         <div className="sidebar-header">
           <FaUser className="user-icon" />
-          <h3>{user.firstName}</h3>
+          <h3>{user.firstName} {user.lastName}</h3>
           <p>Role: {user.role}</p>
         </div>
         <ul className="sidebar-menu">
-          <li onClick={handleAccountSettings} style={{ cursor: "pointer" }}>
-            <FaCog /> Account Settings
-          </li>
-          <li className="logout" onClick={handleLogout}>
-            <FaSignOutAlt /> Sign Out
-          </li>
+           {/* Add relevant patient menu items */}
+           
+           <li onClick={() => navigate('/MedicationTracking"')} style={{cursor: 'pointer'}}><FaPills /> Medication</li>
+           <li onClick={() => navigate('/patient-appointments')} style={{cursor: 'pointer'}}><FaCalendarAlt /> Appointments</li>
+           <li onClick={() => navigate('/chat')} style={{cursor: 'pointer'}}><FaComments/> Chat</li>
+           <hr className="sidebar-divider"/>
+           <li onClick={handleAccountSettings} style={{cursor: 'pointer'}}><FaCog /> Settings</li>
+           <li className="logout" onClick={handleLogout} style={{cursor: 'pointer'}}><FaSignOutAlt /> Sign Out</li>
         </ul>
       </div>
 
-      {/* Main Content */}
+      {/* --- Main Content Area (Shifts with Margin) --- */}
       <div className={`main-content ${sidebarOpen ? "shifted" : ""}`}>
-        {/* Top Bar */}
-        <div className="topbar">
-          <button 
-            className="menu-btn" 
-            onClick={toggleSidebar}
-            aria-label="Open sidebar"
-          >
-            <FaBars />
-          </button>
-        </div>
 
-        {/* Dashboard Header */}
+        {/* Dashboard Header Section */}
         <div className="dashboard-header">
-          <h2>Healthcare Management Dashboard</h2>
+           <h1>Healthcare Management Dashboard</h1>
+           <p>Welcome, {user.firstName}! Access your health tools below.</p>
         </div>
 
         {/* Feature Cards */}
         <div className="dashboard-grid">
-          {[
-            {
-              title: "Medication Tracking",
-              desc: "Track your medication schedule and set reminders.",
-              icon: <FaPills />,
-              btn: "View Schedule",
-              link: "/MedicationTracking"
-            },
-            {
-              title: "Appointment Scheduling",
-              desc: "Book, modify, or cancel appointments.",
-              icon: <FaCalendarAlt />,
-              btn: "Manage Appointments",
-              link: "/patient-appointments"
-            },
-            {
-              // REPLACED "Data Sharing" with "Prescription Management"
-              title: "Prescription Management",
-              desc: "Manage your prescriptions and request refills easily.",
-              icon: <FaFilePrescription />,
-              btn: "Manage Prescriptions",
-              link: "/prescriptions" // create this route/page as needed
-            },
-            {
-              title: "Consultant-Patient Chat",
-              desc: "Communicate with your healthcare provider in real-time.",
-              icon: <FaComments />,
-              btn: "Start Chat",
-              link: "/Chat"
-            },
-            {
-              // REPLACED "Health Tips" with "Lifestyle & Nutrition"
-              title: "Lifestyle & Nutrition",
-              desc: "Personalized diet and exercise tips for a healthier life.",
-              icon: <FaAppleAlt />,
-              btn: "View Lifestyle Tips",
-              link: "/lifestyle" // create this route/page as needed
-            },
-            {
-              title: "Reports and Analytics",
-              desc: "View detailed analytics of your health progress.",
-              icon: <FaChartBar />,
-              btn: "View Reports"
-            }
-          ].map((feature, index) => (
-            <div key={index} className="dashboard-card">
-              <h3>
-                {feature.icon} {feature.title}
-              </h3>
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="dashboard-card"
+              // Apply accent color to the top border
+              style={{ borderTop: `5px solid ${feature.accent}` }}
+            >
+              {/* Icon wrapped for background styling */}
+              <div className="card-icon-wrapper" style={{ backgroundColor: `${feature.accent}25`}}> {/* Slightly stronger bg */}
+                 {feature.icon}
+              </div>
+              <h3>{feature.title}</h3> {/* Icon removed from here */}
               <p>{feature.desc}</p>
-              <button onClick={() => feature.link && navigate(feature.link)}>
-                {feature.btn}
+              <button
+                className="card-button"
+                onClick={() => feature.link && navigate(feature.link)}
+                disabled={!feature.link}
+                // Apply accent color to button background
+                style={{ backgroundColor: feature.accent }}
+              >
+                  {feature.btn}
               </button>
             </div>
           ))}
@@ -146,12 +122,12 @@ const Dashboard = () => {
 
         {/* Emergency Section */}
         <div className="emergency-section">
-          <h3>Emergency Contact Support</h3>
-          <p>Quickly connect with emergency providers in critical situations.</p>
-          <button className="emergency-btn">Access Emergency Support</button>
+          <h3><FaPhoneAlt /> Emergency Contact Support</h3>
+          <p>Quickly connect with emergency providers.</p>
+          <button className="emergency-btn" onClick={handleEmergency}>Access Support</button>
         </div>
-      </div>
-    </div>
+      </div> {/* End Main Content */}
+    </div> // End dashboard-container
   );
 };
 

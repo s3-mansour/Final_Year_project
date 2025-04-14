@@ -4,23 +4,27 @@ const Appointment = require("../models/Appointment");
 const User = require("../models/User");
 
 /**
- * Get all patients in the same city as the consultant.
+ * Get all patients (optionally filtered by consultant's location).
  * @route GET /api/consultant/patients
  * @access Private (doctor)
  */
-const getPatientsForConsultant = asyncHandler(async (req, res) => {
-  // Get consultant's city from req.user (set by protect middleware)
+// *** RENAMED for consistency ***
+const getPatientsList = asyncHandler(async (req, res) => {
   const consultantLocation = req.user.location;
-  if (!consultantLocation) {
-    res.status(400);
-    throw new Error("Consultant location not found");
+  let query = { role: "patient" }; // Base query
+
+  // Optionally filter by location if the doctor has one set
+  if (consultantLocation) {
+    console.log(`Doctor ${req.user.email} fetching patients for location: ${consultantLocation}`);
+    query.location = consultantLocation; // Add location filter
+  } else {
+      console.warn(`Doctor ${req.user.email} has no location set, fetching all patients.`);
   }
-  // Find all patients with role "patient" in that location
-  const patients = await User.find({
-    role: "patient",
-    location: consultantLocation,
-  });
-  res.json(patients);
+
+  // Find patients based on the query
+  const patients = await User.find(query)
+                             .select('_id firstName lastName email location role'); // Select needed fields
+  res.status(200).json(patients);
 });
 
 /**
@@ -30,16 +34,55 @@ const getPatientsForConsultant = asyncHandler(async (req, res) => {
  */
 const getAppointmentsForConsultant = asyncHandler(async (req, res) => {
   const consultantId = req.user._id;
-  if (!consultantId) {
-    res.status(400);
-    throw new Error("Consultant ID not found");
-  }
   // Find appointments where doctor._id matches consultant's _id
-  const appointments = await Appointment.find({ "doctor._id": consultantId });
-  res.json(appointments);
+  // Consider populating patient details if needed on frontend
+  const appointments = await Appointment.find({ "doctor._id": consultantId })
+                                      // .populate('patient', 'firstName lastName') // Optional populate
+                                      .sort({ date: -1, time: -1 }); // Sort by most recent first
+  res.status(200).json(appointments);
 });
 
+
+// *** NEW FUNCTION ***
+/**
+ * Get a list of all users with the role 'doctor'.
+ * @route GET /api/consultant/doctors (or could be /api/users/doctors)
+ * @access Private (e.g., authenticated users, or specifically patients)
+ */
+const getConsultantsList = asyncHandler(async (req, res) => {
+  // Get the location of the user making the request (the patient)
+  const requesterLocation = req.user.location; // req.user comes from 'protect' middleware
+
+  // Base query to find doctors
+  let query = { role: 'doctor' };
+
+  // *** ADD Location Filter based on requester ***
+  if (requesterLocation) {
+      console.log(`Fetching doctors for location: ${requesterLocation} (requested by ${req.user.email})`);
+      query.location = requesterLocation; // Find doctors in the same location
+  } else {
+      // Decide behavior if requester has no location:
+      // Option A: Return error - Doctor cannot be found without patient location
+       // res.status(400); throw new Error("Your location is not set. Cannot find nearby doctors.");
+      // Option B: Return all doctors (less ideal for this feature)
+       console.warn(`User ${req.user.email} has no location set. Fetching ALL doctors.`);
+       // query remains { role: 'doctor' }
+      // Option C: Return empty list
+      // console.warn(`User ${req.user.email} has no location set. Returning no doctors.`);
+      // return res.status(200).json([]);
+  }
+
+  // Find doctors based on the constructed query
+  const consultants = await User.find(query)
+                               .select('_id firstName lastName email location role specialties'); // Select relevant fields
+
+  console.log(`Found ${consultants.length} consultants matching query.`);
+  res.status(200).json(consultants);
+});
+
+// *** UPDATED EXPORTS ***
 module.exports = {
-  getPatientsForConsultant,
+  getPatientsList, // Renamed export
   getAppointmentsForConsultant,
+  getConsultantsList, // Export new function
 };

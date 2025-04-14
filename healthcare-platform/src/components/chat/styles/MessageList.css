@@ -1,0 +1,91 @@
+/* src/components/chat/styles/MessageList.css */
+
+.message-list-container {
+  flex-grow: 1; /* Take available space */
+  overflow-y: auto; /* Enable scrolling */
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column; /* Stack messages vertically */
+  gap: 10px; /* Space between messages */
+  background-color: #ffffff; /* White background */
+}
+
+.message-bubble-container {
+  display: flex;
+  max-width: 75%; /* Prevent bubbles from being full width */
+  margin-bottom: 5px; /* Small gap below bubble */
+}
+
+.message-bubble-container.sent {
+  justify-content: flex-end; /* Align sent messages to the right */
+  margin-left: auto; /* Push to right */
+}
+
+.message-bubble-container.received {
+  justify-content: flex-start; /* Align received messages to the left */
+  margin-right: auto; /* Push to left */
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 18px; /* Rounded bubbles */
+  word-wrap: break-word; /* Wrap long words */
+  max-width: 100%; /* Ensure bubble fits container */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sent-bubble {
+  background-color: #007bff; /* Blue for sent messages */
+  color: white;
+  border-bottom-right-radius: 5px; /* Slightly flatten corner */
+}
+
+.received-bubble {
+  background-color: #e9ecef; /* Light grey for received messages */
+  color: #333;
+  border-bottom-left-radius: 5px; /* Slightly flatten corner */
+}
+
+.message-sender-name {
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #555; /* Distinct color for sender name */
+    /* For received bubbles only */
+    .received-bubble & {
+        /* specific styles if needed */
+    }
+}
+
+.message-content {
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.message-timestamp {
+  font-size: 0.7em;
+  color: inherit; /* Inherit color from bubble (white for sent, grey for received) */
+  opacity: 0.8;
+  text-align: right;
+  margin-top: 5px;
+  display: block; /* Ensure it takes its own line */
+}
+.sent-bubble .message-timestamp {
+    color: rgba(255, 255, 255, 0.8);
+}
+.received-bubble .message-timestamp {
+    color: #6c757d;
+}
+
+/* Style for loading/error messages within the list container */
+.message-list-container > p {
+    text-align: center;
+    color: #6c757d;
+    margin-top: 20px;
+    font-style: italic;
+}
+.message-list-container > .error-message {
+    color: #dc3545;
+    font-style: normal;
+    font-weight: 500;
+}

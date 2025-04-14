@@ -5,209 +5,195 @@ import * as medicationService from "../services/medicationService";
 import * as medicationLogService from '../services/medicationLogService';
 import "./styles/MedicationTracking.css";
 
+// Define days of the week consistently - used for calculation
+const DAYS_OF_WEEK_ORDERED = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 const MedicationTracking = () => {
-  // State for medication list (prescriptions)
+  // --- State ---
   const [medications, setMedications] = useState([]); // Initialize as empty array
   const [isLoadingMeds, setIsLoadingMeds] = useState(false);
   const [errorMeds, setErrorMeds] = useState("");
-
-  // State for calendar and daily schedule
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailySchedule, setDailySchedule] = useState([]); // Initialize as empty array
   const [isLoadingSchedule, setIsLoadingSchedule] = useState(false);
   const [errorSchedule, setErrorSchedule] = useState("");
-
-  // State to track which specific dose logging is in progress
   const [loggingItemId, setLoggingItemId] = useState(null);
 
 
   // --- Data Fetching (Prescriptions) ---
   const fetchMedications = useCallback(async () => {
-    setIsLoadingMeds(true);
-    setErrorMeds("");
+    setIsLoadingMeds(true); setErrorMeds("");
     try {
       const data = await medicationService.getMedications();
-      // Ensure data is an array before setting state
       setMedications(Array.isArray(data) ? data : []);
     } catch (err) {
-      setErrorMeds("Failed to load prescribed medications.");
-      console.error("Fetch Meds Error:", err);
-      setMedications([]); // Set to empty array on error
-    } finally {
-      setIsLoadingMeds(false);
-    }
+      setErrorMeds("Failed to load prescribed medications."); console.error("Fetch Meds Error:", err); setMedications([]);
+    } finally { setIsLoadingMeds(false); }
   }, []);
 
-  useEffect(() => {
-    fetchMedications();
-  }, [fetchMedications]);
+  useEffect(() => { fetchMedications(); }, [fetchMedications]);
 
-  // --- Schedule Calculation & Fetching Log Status ---
+  // --- Helper function to get day difference ---
+   const getDayDifference = (startDate, endDate) => {
+        const date1 = new Date(startDate); const date2 = new Date(endDate);
+        date1.setHours(12, 0, 0, 0); date2.setHours(12, 0, 0, 0);
+        const msPerDay = 1000 * 60 * 60 * 24; const diffInMs = date2.getTime() - date1.getTime();
+        // Rounding helps account for minor DST shifts if not using UTC fully
+        return Math.round(diffInMs / msPerDay);
+    };
+
+  // --- Schedule Calculation & Fetching Log Status (with complex frequency logic) ---
   const updateDailySchedule = useCallback(async (date, meds) => {
-    // Ensure meds is an array before proceeding
-    if (!Array.isArray(meds)) {
-        console.error("updateDailySchedule called with non-array meds:", meds);
-        setIsLoadingSchedule(false); // Stop loading if input is bad
-        setErrorSchedule("Error preparing schedule data."); // Set an error
-        return; // Prevent further execution
-    }
-
-    setIsLoadingSchedule(true);
-    setErrorSchedule("");
-    setDailySchedule([]);
-
+    if (!Array.isArray(meds)) { console.error("Invalid meds array passed", meds); return; }
+    setIsLoadingSchedule(true); setErrorSchedule(""); setDailySchedule([]);
     let loggedItems = new Set();
 
-    // Get start of the selected day (local time) for comparisons
-    const selectedDayStart = new Date(date);
-    selectedDayStart.setHours(0, 0, 0, 0);
+    const selectedDayStart = new Date(date); selectedDayStart.setHours(0, 0, 0, 0);
+    const selectedDateString = selectedDayStart.toISOString().split('T')[0];
+    const selectedDayName = DAYS_OF_WEEK_ORDERED[selectedDayStart.getDay()];
+    console.log(`Updating schedule for: ${selectedDateString} (Day: ${selectedDayName})`);
 
     try {
-      // Fetch logs for the selected date
-      const dateString = selectedDayStart.toISOString().split('T')[0]; // YYYY-MM-DD
-      const logsForDate = await medicationLogService.getLogsForDate(dateString);
-      // Ensure logsForDate is an array before iterating
-      if (Array.isArray(logsForDate)) {
-          logsForDate.forEach(log => loggedItems.add(log.scheduleItemId));
-      } else {
-          console.warn("Received non-array data for logs:", logsForDate);
-      }
+      // Fetch logs
+      const logsForDate = await medicationLogService.getLogsForDate(selectedDateString);
+      if (Array.isArray(logsForDate)) { logsForDate.forEach(log => loggedItems.add(log.scheduleItemId)); }
+      else { console.warn("Received non-array data for logs:", logsForDate); }
 
-
-      // Calculate schedule based on prescriptions
+      // Calculate schedule
       const schedule = [];
-      meds.forEach((med) => { // Safe to call forEach now
+      meds.forEach((med) => {
+        console.log(`Processing med: ${med.name}, Type: ${med.frequencyType}, Value: ${med.frequencyValue}, Days: ${med.daysOfWeek}`);
+        if (med.isActive === false) { console.log(`  -> Skipped: Inactive`); return; }
 
-        let isActiveOnSelectedDate = false;
+        // 1. Date Range Check
+        let isInDateRange = false; let medStartDate;
         try {
-            if (!med.startDate) { throw new Error("Missing start date"); }
-            const medStartDate = new Date(med.startDate);
-            medStartDate.setHours(0, 0, 0, 0);
-            if (isNaN(medStartDate.getTime())) { throw new Error("Invalid start date"); }
-
+            if (!med.startDate) throw new Error("Missing start date");
+            medStartDate = new Date(med.startDate); medStartDate.setHours(0, 0, 0, 0);
+            if (isNaN(medStartDate.getTime())) throw new Error("Invalid start date");
             const medEndDate = med.endDate ? new Date(med.endDate) : null;
-            if (medEndDate) {
-                 if (isNaN(medEndDate.getTime())) { throw new Error("Invalid end date"); }
-                medEndDate.setHours(23, 59, 59, 999);
-            }
+            if (medEndDate) { if (isNaN(medEndDate.getTime())) throw new Error("Invalid end date"); medEndDate.setHours(23, 59, 59, 999); }
+            if (selectedDayStart >= medStartDate && (!medEndDate || selectedDayStart <= medEndDate)) { isInDateRange = true; }
+        } catch (dateError) { console.error(`  -> Date error for med ${med.name || med._id}:`, dateError); return; }
+        if (!isInDateRange) { console.log(`  -> Skipped: Not in date range`); return; }
 
-            if (selectedDayStart >= medStartDate && (!medEndDate || selectedDayStart <= medEndDate)) {
-                isActiveOnSelectedDate = true;
-            }
-        } catch (dateError) {
-            console.error(`Error processing dates for medication ${med.name || med._id}:`, dateError);
-            isActiveOnSelectedDate = false;
+        // 2. Frequency Check
+        let isDueToday = false;
+        switch (med.frequencyType) {
+            case 'daily':
+                const interval = med.frequencyValue > 0 ? med.frequencyValue : 1;
+                const dayDifference = getDayDifference(medStartDate, selectedDayStart);
+                console.log(`  -> Daily check: Start=${medStartDate.toLocaleDateString()}, Selected=${selectedDayStart.toLocaleDateString()}, Diff=${dayDifference}, Interval=${interval}`);
+                if (dayDifference >= 0 && dayDifference % interval === 0) { isDueToday = true; }
+                break;
+            case 'weekly':
+            case 'specific_days':
+                const daysArray = Array.isArray(med.daysOfWeek) ? med.daysOfWeek : [];
+                console.log(`  -> Weekly check: Selected Day=${selectedDayName}, Prescribed Days=[${daysArray.join(', ')}]`);
+                if (daysArray.includes(selectedDayName)) { isDueToday = true; }
+                break;
+            case 'interval_hours':
+                if (med.frequencyValue > 0) { isDueToday = true; console.log(`  -> Interval check: Potentially due today`); }
+                break;
+            case 'as_needed':
+                console.log(`  -> Skipped: As needed`); isDueToday = false; break;
+            default:
+                console.warn(`  -> Skipped: Unknown frequencyType: ${med.frequencyType}`); isDueToday = false;
         }
 
-        if (isActiveOnSelectedDate && med.isActive !== false) {
-          let isDueToday = false;
-          if (med.frequency?.toLowerCase().includes("daily")) { isDueToday = true; }
-          // TODO: Add more complex frequency logic
-
-          if (isDueToday && med.times && Array.isArray(med.times) && med.times.length > 0) { // Check med.times is array
-            med.times.forEach(time => {
-              if (time) {
-                const scheduleItemId = `${med._id}-${dateString}-${time}`;
-                schedule.push({
-                  id: scheduleItemId, time: time, name: med.name, dosage: med.dosage, medId: med._id,
-                  taken: loggedItems.has(scheduleItemId),
+        // 3. Push to Schedule if Due Today
+        if (isDueToday) {
+            console.log(`  -> DUE TODAY! Calculating times...`);
+            const validTimes = Array.isArray(med.times) ? med.times.filter(t => t && typeof t === 'string' && t.trim() !== '') : [];
+            if (validTimes.length > 0) {
+                validTimes.forEach(time => {
+                    const scheduleItemId = `${med._id}-${selectedDateString}-${time}`;
+                    console.log(`    - Adding schedule item: ${time}, ID: ${scheduleItemId}`);
+                    schedule.push({ id: scheduleItemId, time: time, name: med.name, dosage: med.dosage, medId: med._id, taken: loggedItems.has(scheduleItemId) });
                 });
-              }
-            });
-          } else if (isDueToday && med.frequency) {
-              const scheduleItemId = `${med._id}-${dateString}-anytime`;
-              schedule.push({
-                  id: scheduleItemId, time: "Any time", name: med.name, dosage: med.dosage, medId: med._id,
-                  taken: loggedItems.has(scheduleItemId),
-              });
-          }
+            } else {
+                const scheduleItemId = `${med._id}-${selectedDateString}-anytime`;
+                 console.log(`    - Adding schedule item: Any time, ID: ${scheduleItemId}`);
+                schedule.push({ id: scheduleItemId, time: "Any time", name: med.name, dosage: med.dosage, medId: med._id, taken: loggedItems.has(scheduleItemId) });
+            }
+        } else {
+            console.log(`  -> Not due today based on frequency.`);
         }
-      });
+      }); // End meds.forEach
 
-      schedule.sort((a, b) => {
-          if (a.time === "Any time") return 1;
-          if (b.time === "Any time") return -1;
-          return a.time.localeCompare(b.time);
-      });
-
+      // Sort schedule
+      schedule.sort((a, b) => { if (a.time === "Any time") return 1; if (b.time === "Any time") return -1; return a.time.localeCompare(b.time); });
       setDailySchedule(schedule);
 
-    } catch (err) {
-      console.error("Error fetching logs or calculating schedule:", err);
-      setErrorSchedule("Failed to load schedule or log status.");
-      setDailySchedule([]); // Ensure empty array on error
-    } finally {
-      setIsLoadingSchedule(false);
-    }
-  }, []); // Keep dependency array empty
+    } catch (err) { console.error("Error processing schedule:", err); setErrorSchedule("Failed to load schedule."); setDailySchedule([]); }
+    finally { setIsLoadingSchedule(false); }
+  }, []);
 
-  // Re-calculate schedule when date or medications list changes
-  useEffect(() => {
-    // Only run if medications have been loaded AND medications is confirmed to be an array
-    if (!isLoadingMeds && Array.isArray(medications)) {
-        updateDailySchedule(selectedDate, medications);
-    }
-    // If meds load but aren't an array, updateDailySchedule won't run, preventing map errors
-  }, [selectedDate, medications, isLoadingMeds, updateDailySchedule]);
-
+  // useEffect to recalculate schedule
+  useEffect(() => { if (!isLoadingMeds && Array.isArray(medications)) { updateDailySchedule(selectedDate, medications); } }, [selectedDate, medications, isLoadingMeds, updateDailySchedule]);
 
   // --- Event Handlers ---
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+  const handleDateChange = (date) => { setSelectedDate(date); };
 
+  // handleMarkAsTaken with debugging logs
   const handleMarkAsTaken = async (scheduleItem) => {
-    if (scheduleItem.taken || loggingItemId) return;
-    setLoggingItemId(scheduleItem.id);
-    setErrorSchedule("");
+    console.log("handleMarkAsTaken called for item:", scheduleItem); // Log 1
+    if (scheduleItem.taken || loggingItemId) { console.log("Skipping log: Already taken or another log in progress."); return; } // Log 2
+    setLoggingItemId(scheduleItem.id); setErrorSchedule("");
+    console.log(`Set loggingItemId to: ${scheduleItem.id}`); // Log 3
+    const logPayload = {
+         scheduleItemId: scheduleItem.id, medicationId: scheduleItem.medId,
+         scheduledDate: selectedDate.toISOString().split('T')[0], scheduledTime: scheduleItem.time,
+      };
+    console.log("Attempting to log dose with payload:", logPayload); // Log 4
     try {
-      await medicationLogService.logDose({
-         scheduleItemId: scheduleItem.id,
-         medicationId: scheduleItem.medId,
-         scheduledDate: selectedDate.toISOString().split('T')[0],
-         scheduledTime: scheduleItem.time,
+      const response = await medicationLogService.logDose(logPayload);
+      console.log("logDose API call successful, response:", response); // Log 5
+      setDailySchedule(prevSchedule => {
+          const newState = Array.isArray(prevSchedule) ? prevSchedule.map(item => item.id === scheduleItem.id ? { ...item, taken: true } : item) : [];
+          console.log("Updating dailySchedule state:", newState); // Log 6
+          return newState;
       });
-      setDailySchedule(prevSchedule =>
-        Array.isArray(prevSchedule) ? // Extra safety check
-          prevSchedule.map(item =>
-            item.id === scheduleItem.id ? { ...item, taken: true } : item
-          ) : [] // Default to empty if prevSchedule was somehow not an array
-      );
     } catch (err) {
-      console.error("Failed to log dose:", err);
-      setErrorSchedule(err.message || "Could not mark medication as taken. Please try again.");
+      console.error("Failed to log dose API error:", err); // Log 7
+      const errorMsg = err?.response?.data?.message || err.message || "Could not mark medication as taken.";
+      setErrorSchedule(errorMsg); console.log("Set errorSchedule state:", errorMsg); // Log 8
     } finally {
+      console.log(`Resetting loggingItemId from ${loggingItemId} to null.`); // Log 9
       setLoggingItemId(null);
     }
   };
 
+  // --- Display Frequency Helper ---
+  const displayFrequency = (med) => {
+      switch(med.frequencyType) {
+          case 'daily': return `Daily${med.frequencyValue > 1 ? ` (every ${med.frequencyValue} days)` : ''}`;
+          case 'weekly': return `Weekly (${(Array.isArray(med.daysOfWeek) ? med.daysOfWeek.join(', ') : '') || 'No days'})`;
+          case 'interval_hours': return `Every ${med.frequencyValue || '?'} hours`;
+          case 'as_needed': return 'As Needed';
+          case 'specific_days': return `Specific Days (${(Array.isArray(med.daysOfWeek) ? med.daysOfWeek.join(', ') : '') || 'No days'})`;
+          default: return med.frequencyType || 'Unknown';
+      }
+  };
 
   // --- Rendering ---
   return (
     <div className="medication-page">
-      <header className="top-bar">
-        <h1>Medication Tracking</h1>
-      </header>
-
+      <header className="top-bar"><h1>Medication Tracking</h1></header>
       <div className="medication-content-wrapper">
-        {/* --- Left Column: Calendar & Daily Schedule --- */}
+        {/* --- Left Column --- */}
         <div className="calendar-schedule-column">
            <div className="calendar-container">
              <p>Select a date to view your schedule and log doses:</p>
-             <Calendar
-               onChange={handleDateChange}
-               value={selectedDate}
-               className="styled-calendar"
-             />
+             <Calendar onChange={handleDateChange} value={selectedDate} className="styled-calendar" />
            </div>
            <div className="daily-schedule-section">
              <h2>Schedule for {selectedDate.toLocaleDateString()}</h2>
              {errorSchedule && <p className="error-message">{errorSchedule}</p>}
              {isLoadingSchedule ? ( <p>Loading schedule...</p> )
-               : /* *** ADDED Array.isArray() CHECK *** */
-                 Array.isArray(dailySchedule) && dailySchedule.length > 0 ? (
+               : Array.isArray(dailySchedule) && dailySchedule.length > 0 ? (
                   <ul className="schedule-list">
-                    {dailySchedule.map((item) => { // Safe to map now
+                    {dailySchedule.map((item) => {
                       const isCurrentlyLogging = loggingItemId === item.id;
                       return (
                         <li key={item.id} className={`schedule-item ${item.taken ? 'taken' : ''}`}>
@@ -217,7 +203,7 @@ const MedicationTracking = () => {
                           </div>
                           <button
                             className={`mark-taken-button ${item.taken ? 'button-taken' : ''}`}
-                            onClick={() => handleMarkAsTaken(item)}
+                            onClick={() => handleMarkAsTaken(item)} // Ensure item is passed
                             disabled={item.taken || !!loggingItemId}
                             aria-label={`Mark ${item.name} at ${item.time} as taken`}
                           >
@@ -231,69 +217,43 @@ const MedicationTracking = () => {
              }
            </div>
          </div>
-
-
-        {/* --- Right Column: Prescribed Medication List (with optional status/dates) --- */}
+        {/* --- Right Column --- */}
         <div className="medication-list-column">
           <div className="medication-list-section">
-            <div className="med-list-header">
-              <h2>Your Prescribed Medications</h2>
-            </div>
+            <div className="med-list-header"><h2>Your Prescribed Medications</h2></div>
             {isLoadingMeds && <p>Loading medications...</p>}
             {errorMeds && <p className="error-message">{errorMeds}</p>}
-            {/* *** ADDED Array.isArray() CHECK *** */ }
             {!isLoadingMeds && Array.isArray(medications) && medications.length > 0 ? (
               <ul className="medication-list">
-                {medications.map((med) => { // Safe to map now
-                     const today = new Date(); today.setHours(0,0,0,0);
-                     let medStart, medEnd = null;
-                     let statusText = "";
-                     let statusClass = "";
-                     let datesValid = true;
-
+                {medications.map((med) => {
+                     const today = new Date(); today.setHours(0,0,0,0); let medStart, medEnd = null; let statusText = ""; let statusClass = ""; let datesValid = true;
                      try {
                          if (!med.startDate) throw new Error("Missing start date");
                          medStart = new Date(med.startDate); medStart.setHours(0,0,0,0);
                          if (isNaN(medStart.getTime())) throw new Error("Invalid start date");
-
-                         if (med.endDate) {
-                           medEnd = new Date(med.endDate);
-                           if (isNaN(medEnd.getTime())) throw new Error("Invalid end date");
-                           medEnd.setHours(23,59,59,999);
-                         }
-
+                         if (med.endDate) { medEnd = new Date(med.endDate); if (isNaN(medEnd.getTime())) throw new Error("Invalid end date"); medEnd.setHours(23,59,59,999); }
                          if (medStart > today) { statusText = " (Upcoming)"; statusClass="med-upcoming"; }
                          else if (medEnd && medEnd < today) { statusText = " (Finished)"; statusClass="med-finished"; }
                          else if (med.isActive === false) { statusText = " (Inactive)"; statusClass="med-inactive"; }
                          else { statusText = " (Active)"; statusClass="med-active"; }
-
-                     } catch (e) {
-                         console.error(`Error processing dates for list item ${med.name}:`, e);
-                         statusText = " (Date Error)"; statusClass = "med-error";
-                         datesValid = false;
-                     }
-
+                     } catch (e) { console.error(`List Date Error ${med.name}:`, e); statusText = " (Date Error)"; statusClass = "med-error"; datesValid = false; }
                     return (
                       <li key={med._id} className={`medication-item ${statusClass}`}>
                         <div className="med-info">
-                          <strong>{med.name}</strong>{statusText} ({med.dosage},{" "} {med.frequency})
+                          <strong>{med.name}</strong>{statusText} ({med.dosage}, {displayFrequency(med)})
                            {datesValid ? (
                               <p className="med-dates">
                                 Starts: {medStart.toLocaleDateString()}
-                                {medEnd ? ` - Ends: ${new Date(med.endDate).toLocaleDateString()}` : ' (Ongoing)'}
+                                {med.endDate ? ` - Ends: ${new Date(med.endDate).toLocaleDateString()}` : ' (Ongoing)'}
                               </p>
-                           ) : (
-                              <p className="med-dates error-message">Invalid date information</p>
-                           )}
+                           ) : ( <p className="med-dates error-message">Invalid date information</p> )}
                           {med.notes && <p className="med-notes">Notes: {med.notes}</p>}
                         </div>
                       </li>
                     );
                 })}
               </ul>
-            ) : (
-              !isLoadingMeds && !errorMeds && <p>No medications have been prescribed yet.</p>
-            )}
+            ) : ( !isLoadingMeds && !errorMeds && <p>No medications have been prescribed yet.</p> )}
           </div>
         </div>
       </div>

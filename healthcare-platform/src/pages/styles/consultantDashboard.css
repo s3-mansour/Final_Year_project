@@ -1,230 +1,118 @@
 /* src/pages/styles/ConsultantDashboard.css */
 
-/* Overall Layout */
-.consultant-dashboard {
-  display: flex;
-  min-height: 100vh;
-  background: #f0f2f5; /* subtle light gray background */
-  font-family: "Poppins", Arial, sans-serif;
-  overflow-x: hidden;
-}
+/* Optional Wrapper if you added one in JSX */
+/* .consultant-dashboard-wrapper {
+  position: relative;
+} */
 
-/* Sidebar */
+/* Sidebar Styles */
 .consultant-sidebar {
+  box-sizing: border-box; /* Include padding in width */
   width: 250px;
   background-color: #1e3264;
-  color: #fff;
+  color: #e0e0e0;
   position: fixed;
   left: -250px;
   top: 0;
   bottom: 0;
-  padding: 1rem;
-  transition: left 0.3s ease;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 1rem; /* Base padding */
+  padding-top: 75px; /* Padding below fixed navbar (60px height + 15px space) */
+  transition: left 0.3s ease-in-out;
+  box-shadow: 3px 0 15px rgba(0, 0, 0, 0.25);
+  z-index: 1000; /* Below navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .consultant-sidebar.open {
   left: 0;
 }
 
+/* Close Button */
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
+  top: 15px; /* Relative to sidebar padding top */
+  right: 20px;
+  background: none; border: none; color: #fff; font-size: 24px;
+  cursor: pointer; line-height: 1; padding: 5px;
 }
+.close-btn:hover { color: #ffcc00; }
 
 /* Sidebar Header */
-.sidebar-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.user-icon {
-  font-size: 3rem;
-}
-
-.sidebar-header h3 {
-  margin: 10px 0 5px;
-  font-size: 1.2rem;
-}
-
-.sidebar-header p {
-  font-size: 0.9rem;
-  color: #ccc;
-}
+.sidebar-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #3a4b7e; }
+.user-icon { font-size: 3.5rem; margin-bottom: 0.5rem; color: #a0b0d0; }
+.sidebar-header h3 { margin: 5px 0 5px; font-size: 1.15rem; font-weight: 600; color: #fff; }
+.sidebar-header p { font-size: 0.85rem; color: #a0b0d0; }
 
 /* Sidebar Menu */
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-}
+.sidebar-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; overflow-y: auto; }
+.sidebar-menu li { margin: 0.5rem 0; padding: 12px 15px; display: flex; align-items: center; gap: 0.8rem; cursor: pointer; font-size: 1rem; border-radius: 6px; transition: background-color 0.2s ease, color 0.2s ease; }
+.sidebar-menu li:hover { background-color: #3a4b7e; color: #fff; }
+.sidebar-menu li svg { font-size: 1.1em; width: 20px; text-align: center; margin-right: 5px; color: #a0b0d0; transition: color 0.2s ease; flex-shrink: 0; }
+.sidebar-menu li:hover svg { color: #ffcc00; }
+.sidebar-divider { border: none; border-top: 1px solid #3a4b7e; margin: 1.5rem 0; }
+.logout { color: #ff6b6b; margin-top: auto; padding-top: 1.5rem; }
+.logout:hover { color: #ff9a9a; background-color: rgba(255, 107, 107, 0.1); }
+.logout:hover svg { color: #ff9a9a; }
 
-.sidebar-menu li {
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: color 0.3s;
-}
 
-.sidebar-menu li:hover {
-  color: #ffcc00;
-}
-
-.logout {
-  color: #ff4c4c;
-}
-
-.logout:hover {
-  color: #ffcccc;
-}
-
-/* Sidebar Toggle Button */
-.menu-btn {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  font-size: 22px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-/* Main Content */
+/* Main Content Area */
 .consultant-main-content {
-  flex: 1;
-  padding: 1rem;
-  transition: margin-left 0.3s ease;
-  margin-left: 0;
-}
-
-.consultant-sidebar.open ~ .consultant-main-content {
-  margin-left: 250px;
-}
-
-/* Top Bar */
-.topbar {
-  display: flex;
-  align-items: center;
-  background: #1e3264;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-/* Dashboard Header */
-.consultant-header {
-  background: #4c6ef5;
-  color: #fff;
   padding: 2rem;
-  border-radius: 8px;
-  text-align: center;
-  margin-bottom: 1.5rem;
+  /* Add padding-top to clear the fixed 60px navbar + 20px space */
+  padding-top: 80px;
+  margin-left: 0; /* Start with no margin */
+  transition: margin-left 0.3s ease-in-out;
+  width: 100%; /* Important for margin transition */
+  box-sizing: border-box;
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  background: #f0f2f5; /* Background for content area */
 }
 
-.consultant-header h1 {
-  margin: 0;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+/* Shift main content when sidebar is open */
+.consultant-main-content.shifted {
+  margin-left: 250px; /* Match sidebar width */
 }
+
+/* Dashboard Header Section */
+.consultant-header { background: linear-gradient(90deg, #5c7eff, #4c6ef5); color: #fff; padding: 2.5rem 2rem; border-radius: 10px; text-align: center; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3); }
+.consultant-header h1 { margin: 0 0 0.5rem 0; font-size: 2.2rem; font-weight: 600; }
+.consultant-header p { font-size: 1.1rem; opacity: 0.9; margin: 0; }
 
 /* Cards Section */
-.consultant-cards {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.consultant-card {
-  background: #fff;
-  flex: 1;
-  min-width: 250px;
-  max-width: 300px;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.consultant-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-}
-
-.consultant-card h2 {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  color: #444;
-}
-
-.consultant-card p {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-.consultant-card button {
-  background: #4c6ef5;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-}
-
-.consultant-card button:hover {
-  background: #5a7ffa;
-}
+.consultant-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+.consultant-card { background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem; text-align: center; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; align-items: center; }
+.consultant-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); }
+.consultant-card h2 { margin: 0.8rem 0 0.5rem; font-size: 1.15rem; display: flex; align-items: center; justify-content: center; gap: 8px; color: #333; font-weight: 600; }
+.consultant-card h2 svg { font-size: 1.4em; color: #4c6ef5; }
+.consultant-card p { font-size: 0.9rem; color: #666; margin-bottom: 0; flex-grow: 1; }
 
 /* Emergency Section */
-.consultant-emergency {
-  background: #ff4c4c;
-  color: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.2);
-}
+.consultant-emergency { background: #ff6b6b; color: #fff; padding: 1.5rem; border-radius: 10px; text-align: center; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.25); }
+.consultant-emergency h3 { margin-top: 0; margin-bottom: 0.5rem; font-size: 1.2em; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.emergency-btn { margin-top: 1rem; background: #fff; color: #ff6b6b; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: background 0.3s, transform 0.2s; }
+.emergency-btn:hover { background: #fff0f0; transform: scale(1.05); }
 
-.emergency-btn {
-  margin-top: 0.5rem;
-  background: #fff;
-  color: #ff4c4c;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s, transform 0.2s;
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    /* Sidebar overlays content */
+    .consultant-main-content.shifted { margin-left: 0; }
 }
-
-.emergency-btn:hover {
-  background: #ffd2d2;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .consultant-cards {
-    flex-direction: column;
-    align-items: center;
-  }
+  .consultant-cards { grid-template-columns: 1fr; }
+  .consultant-header h1 { font-size: 1.8rem; }
+  .consultant-main-content { padding: 1.5rem; padding-top: 75px; } /* Adjust top padding (navbar 60px + 15px) */
+}
+@media (max-width: 576px) {
+    .consultant-sidebar { width: 220px; padding-top: 70px; /* navbar 55px + 15px */ }
+    .consultant-main-content.shifted { margin-left: 0; }
+    .consultant-header { padding: 1.5rem 1rem; }
+    .consultant-header h1 { font-size: 1.6rem; }
+    .consultant-header p { font-size: 1rem; }
+    .consultant-card { padding: 1rem; }
+    .consultant-emergency { padding: 1rem; }
+    .consultant-main-content { padding: 1rem; padding-top: 70px; /* Adjust top padding (navbar 55px + 15px) */ }
+    .sidebar-menu li { padding: 10px 12px; font-size: 0.95rem; }
+    .sidebar-header h3 { font-size: 1.1rem; }
 }

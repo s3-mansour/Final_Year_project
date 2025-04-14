@@ -1,0 +1,136 @@
+/* src/components/styles/Modal.css */
+
+/* --- Modal Styles --- */
+.modal-overlay-manage { /* Using existing class name, rename if desired */
+    position: fixed; /* Stick to the viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65); /* Darker semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1100; /* Ensure it's above other content including navbar/sidebar */
+    padding: 20px; /* Padding for smaller screens */
+  
+    /* --- TEMPORARILY COMMENTED OUT FOR DEBUGGING --- */
+    /* opacity: 0; */ /* Start hidden for fade-in */
+    /* visibility: hidden; */
+    /* transition: opacity 0.3s ease, visibility 0s linear 0.3s; */ /* Fade transition */
+    /* --- END TEMPORARY COMMENT OUT --- */
+  }
+  
+  /* This rule might not be needed if visibility is controlled by isOpen prop */
+  /* .modal-overlay-manage.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
+  } */
+  
+  
+  .modal-content-manage { /* Using existing class name, rename if desired */
+    background: white;
+    padding: 0; /* Remove padding, header/body will handle it */
+    border-radius: 8px;
+    position: relative;
+    width: 90%;
+    max-width: 650px; /* Adjust max width as needed */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    max-height: 90vh; /* Limit height */
+    display: flex;
+    flex-direction: column;
+    /* Entrance animation (optional, keep commented out for now) */
+    /* transform: translateY(-20px); */
+    /* transition: transform 0.3s ease; */
+  }
+  /* .modal-overlay-manage.open .modal-content-manage {
+     transform: translateY(0);
+  } */
+  
+  
+  .modal-header-manage {
+      padding: 15px 25px;
+      border-bottom: 1px solid #e0e0e0; /* Lighter border */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f8f9fa; /* Optional light header background */
+      border-radius: 8px 8px 0 0; /* Match top corners */
+      flex-shrink: 0; /* Prevent header shrinking */
+  }
+  .modal-header-manage h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.4em;
+      font-weight: 600;
+  }
+  .modal-close-btn-manage {
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      font-weight: 300; /* Lighter X */
+      cursor: pointer;
+      color: #888;
+      padding: 0 5px; /* Slight padding */
+      line-height: 1;
+      transition: color 0.2s ease;
+  }
+  .modal-close-btn-manage:hover {
+      color: #333;
+  }
+  
+  .modal-body-manage {
+      padding: 25px 30px;
+      overflow-y: auto; /* Enable scroll for long forms/content */
+      flex-grow: 1; /* Allow body to take up available space */
+  }
+  
+  /* --- Form Styles specific to being INSIDE a modal --- */
+  .modal-body-manage .medication-form { /* Example targeting form inside modal */
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+  }
+  
+  /* Error message specific to modal */
+  .modal-body-manage .error-message {
+      margin: 10px 0 0 0; /* Adjust margin for modal context */
+      padding: 10px;
+      font-size: 0.9em;
+  }
+  
+  /* Action buttons typically needed in modal body or footer */
+  .modal-actions-manage { /* Class for the div containing buttons */
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+  }
+  .modal-actions-manage .cancel-button,
+  .modal-actions-manage .submit-button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 500;
+      border: none;
+      transition: background-color 0.2s ease;
+  }
+  .modal-actions-manage .cancel-button { background-color: #6c757d; color: white; }
+  .modal-actions-manage .submit-button { background-color: #007bff; color: white; }
+  .modal-actions-manage .cancel-button:hover { background-color: #5a6268; }
+  .modal-actions-manage .submit-button:hover { background-color: #0056b3; }
+  .modal-actions-manage .submit-button:disabled { background-color: #cccccc; cursor: not-allowed; opacity: 0.7; }
+  
+  /* Optional: Add responsive adjustments for the modal itself */
+  @media (max-width: 768px) {
+      .modal-content-manage {
+          max-width: 95%;
+          max-height: 95vh;
+      }
+       .modal-body-manage { padding: 20px; }
+       .modal-actions-manage { padding-right: 20px; padding-left: 20px;}
+  }

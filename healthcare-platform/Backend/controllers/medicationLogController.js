@@ -1,7 +1,8 @@
 // Backend/controllers/medicationLogController.js
 const asyncHandler = require("express-async-handler");
 const MedicationLog = require("../models/MedicationLog");
-const Medication = require("../models/Medication"); // Needed if validating medId
+const Medication = require("../models/Medication"); // Keep if used in other functions
+const mongoose = require('mongoose'); // Need mongoose for ObjectId validation
 
 // @desc    Log that a medication dose was taken
 // @route   POST /api/medication-logs
@@ -10,47 +11,27 @@ const logDose = asyncHandler(async (req, res) => {
   const { scheduleItemId, medicationId, scheduledDate, scheduledTime } = req.body;
   const patientId = req.user._id;
 
-  // --- Validation ---
   if (!scheduleItemId || !scheduledDate || !scheduledTime) {
-    res.status(400);
-    throw new Error("Missing required fields: scheduleItemId, scheduledDate, scheduledTime");
+    res.status(400); throw new Error("Missing required fields");
   }
-
-  // Optional: Validate medicationId if provided
+  // Optional: Validate medicationId
   if (medicationId) {
       const medicationExists = await Medication.findOne({ _id: medicationId, patient: patientId });
-      if (!medicationExists) {
-          res.status(404);
-          throw new Error("Associated medication not found or does not belong to user.");
-      }
+      if (!medicationExists) { res.status(404); throw new Error("Associated medication not found or invalid."); }
   }
+  // Check for existing log (uses unique index)
+  const existingLog = await MedicationLog.findOne({ patient: patientId, scheduleItemId: scheduleItemId });
+  if (existingLog) { return res.status(200).json({ message: "Dose already logged.", log: existingLog }); }
 
-  // --- Check for existing log for this exact dose instance ---
-  // This uses the unique index defined in the model
-  const existingLog = await MedicationLog.findOne({
-    patient: patientId,
-    scheduleItemId: scheduleItemId,
-  });
-
-  if (existingLog) {
-    // Decide how to handle: return existing log (200), or conflict (409)
-    // Returning existing log might be friendlier for idempotent frontend calls
-    return res.status(200).json({ message: "Dose already logged.", log: existingLog });
-    // Or:
-    // res.status(409); // Conflict
-    // throw new Error("This dose has already been logged.");
-  }
-
-  // --- Create the log entry ---
+  // Create log entry
   const newLog = await MedicationLog.create({
     patient: patientId,
-    medication: medicationId, // Store reference if provided
+    medication: medicationId,
     scheduleItemId: scheduleItemId,
-    scheduledDate: new Date(scheduledDate), // Ensure it's saved as a Date object
+    scheduledDate: new Date(scheduledDate),
     scheduledTime: scheduledTime,
-    takenAt: new Date(), // Record the time the API call was made
+    takenAt: new Date(),
   });
-
   res.status(201).json({ message: "Dose logged successfully.", log: newLog });
 });
 
@@ -60,40 +41,82 @@ const logDose = asyncHandler(async (req, res) => {
 // @access  Private (Patient)
 const getLogsForDate = asyncHandler(async (req, res) => {
   const patientId = req.user._id;
-  const dateString = req.query.date; // Expecting "YYYY-MM-DD"
-
+  const dateString = req.query.date;
   if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-    res.status(400);
-    throw new Error("Invalid or missing date query parameter. Use YYYY-MM-DD format.");
+    res.status(400); throw new Error("Invalid or missing date query parameter (YYYY-MM-DD).");
   }
-
-  // Calculate date range for the *entire day* in UTC
-  // Start of the day (UTC)
+  // Calculate date range for the day in UTC
   const startDate = new Date(dateString + "T00:00:00.000Z");
-  // End of the day (UTC) - Start of the next day
-  const endDate = new Date(startDate);
-  endDate.setUTCDate(startDate.getUTCDate() + 1);
-
-  // Find logs for the patient within the date range based on scheduledDate
+  const endDate = new Date(startDate); endDate.setUTCDate(startDate.getUTCDate() + 1);
+  // Find logs for the patient within the date range
   const logs = await MedicationLog.find({
     patient: patientId,
-    scheduledDate: {
-      $gte: startDate, // Greater than or equal to the start of the day
-      $lt: endDate,   // Less than the start of the next day
-    },
-  }).select('scheduleItemId takenAt'); // Select only needed fields for efficiency
-
-  // Send back the logs (potentially just the scheduleItemIds for easy checking on frontend)
+    scheduledDate: { $gte: startDate, $lt: endDate },
+  }).select('scheduleItemId takenAt'); // Select minimal fields
   res.status(200).json(logs);
 });
 
 
-// --- Controller Functions for Doctors (To be added later) ---
-// const getLogsForPatientByDateRange = asyncHandler(async (req, res) => { ... });
+// *** ADDED FUNCTION FOR DOCTOR ***
+// @desc    Get medication logs for a specific patient within a date range (for Doctor)
+// @route   GET /api/medication-logs/patient/:patientId?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+// @access  Private (Doctor)
+const getLogsForPatientByDateRange = asyncHandler(async (req, res) => {
+    const targetPatientId = req.params.patientId; // Get patientId from URL parameter
+    const { startDate: startDateString, endDate: endDateString } = req.query; // Get dates from query string
+
+    console.log(`Doctor ${req.user.email} requesting logs for patient ${targetPatientId} from ${startDateString} to ${endDateString}`);
+
+    // --- TODO: Add REAL authorization check: Is req.user._id allowed to view targetPatientId's logs? ---
+
+    // Validate inputs
+    if (!mongoose.Types.ObjectId.isValid(targetPatientId)) {
+        res.status(400); throw new Error("Invalid Patient ID format.");
+    }
+    if (!startDateString || !endDateString ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(startDateString) ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(endDateString)) {
+       res.status(400);
+       throw new Error("Invalid or missing startDate/endDate query parameters. Use YYYY-MM-DD format.");
+    }
+
+    // Calculate date range (inclusive) - ensure correct time handling
+    let startDate, endDate;
+    try {
+        startDate = new Date(startDateString); startDate.setHours(0, 0, 0, 0); // Start of start day
+        endDate = new Date(endDateString); endDate.setHours(23, 59, 59, 999); // End of the end day
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) throw new Error("Invalid Date Object");
+        if (endDate < startDate) { res.status(400); throw new Error("End date cannot be before start date."); }
+    } catch (e) {
+        res.status(400); throw new Error("Invalid date format processing.");
+    }
+
+    // Fetch logs within the date range based on scheduledDate
+    try {
+        const logs = await MedicationLog.find({
+            patient: targetPatientId,
+            scheduledDate: { // Query based on the scheduled date of the dose
+                $gte: startDate,
+                $lte: endDate, // Use $lte for inclusive end date
+            },
+        })
+        .populate('medication', 'name dosage') // *** OPTIONAL: Populate medication name/dosage ***
+        .select('scheduleItemId scheduledDate scheduledTime takenAt medication') // Select useful fields
+        .sort({ scheduledDate: 1, takenAt: 1 }); // Sort chronologically
+
+        res.status(200).json(logs);
+
+    } catch (error) {
+        console.error("Error fetching patient logs for doctor:", error);
+        res.status(500);
+        throw new Error("Failed to retrieve patient medication logs.");
+    }
+});
 
 
+// --- Updated Exports ---
 module.exports = {
   logDose,
   getLogsForDate,
-  // getLogsForPatientByDateRange (add later)
+  getLogsForPatientByDateRange, // *** ADDED EXPORT ***
 };
