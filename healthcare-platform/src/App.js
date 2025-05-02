@@ -60,7 +60,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/availability" element={<Availability />} />
-
         {/* Patient Dashboard Route */}
         <Route
           path="/dashboard"

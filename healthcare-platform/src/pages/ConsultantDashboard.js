@@ -9,7 +9,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { getUserProfile, logoutUser } from "../services/authService";
 // Import the new TopNavbar
 import TopNavbar from "../components/TopNavbar"; // Adjust path if needed
-import "./styles/ConsultantDashboard.css"; // Ensure this path is correct
+import "./styles/consultantDashboard.css"; // Ensure this path is correct
 
 const ConsultantDashboard = () => {
   const navigate = useNavigate();

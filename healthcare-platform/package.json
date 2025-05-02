@@ -8,9 +8,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "serve": "serve -s build",
-    "test": "react-scripts test",
+    "dev": "concurrently \"cd Backend && npm run dev\" \"npm start\"",
+    "start:prod": "concurrently \"cd Backend && npm start\" \"npm start\"",
+    "test:backend": "jest --roots Backend --runInBand ",
+    "test:frontend": "cross-env NODE_OPTIONS=--no-deprecation react-scripts test",
+    "test": "npm run test:backend && npm run test:frontend",
     "eject": "react-scripts eject"
   },
+  
   "dependencies": {
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
@@ -44,5 +49,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "axios-mock-adapter": "^2.1.0",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "jest": "^27.5.1",
+    "node-mocks-http": "^1.17.1",
+    "supertest": "^7.1.0"
   }
+  
 }
+
+

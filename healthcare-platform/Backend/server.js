@@ -16,8 +16,7 @@ const Message = require('./models/Message');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
+
 
 const app = express();
 
@@ -181,8 +180,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // --- Add Other Socket Event Handlers Later ---
-    // e.g., typing indicators, read receipts
 
 }); // End io.on('connection')
 
@@ -205,7 +202,11 @@ app.use((err, req, res, next) => {
     });
 });
 
-// --- Start Server ---
-const PORT = process.env.PORT || 5000;
-// *** Use the http server instance to listen ***
-server.listen(PORT, () => console.log(`🚀 Server (with Socket.IO) running on port ${PORT}`));
+ // Only connect DB & start listening when *not* under Jest
+if (process.env.NODE_ENV !== "test") {
+   connectDB();
+   const PORT = process.env.PORT || 5000;
+   server.listen(PORT, () =>
+     console.log(`🚀 Server (with Socket.IO) running on port ${PORT}`)
+   );
+}
