@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import * as medicationService from "../services/medicationService";
 import * as medicationLogService from '../services/medicationLogService';
 import "./styles/MedicationTracking.css";
+import { useNavigate } from "react-router-dom"; 
 
 // Define days of the week consistently - used for calculation
 const DAYS_OF_WEEK_ORDERED = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -18,7 +19,11 @@ const MedicationTracking = () => {
   const [isLoadingSchedule, setIsLoadingSchedule] = useState(false);
   const [errorSchedule, setErrorSchedule] = useState("");
   const [loggingItemId, setLoggingItemId] = useState(null);
+  const navigate = useNavigate();
 
+  const handleBackToDashboard = () => {
+    navigate("/dashboard"); // Navigate to the dashboard
+  };
 
   // --- Data Fetching (Prescriptions) ---
   const fetchMedications = useCallback(async () => {
@@ -257,6 +262,9 @@ const MedicationTracking = () => {
           </div>
         </div>
       </div>
+      <button onClick={handleBackToDashboard} className="back-to-dashboard-btn">
+        Back to Dashboard
+      </button>
     </div>
   );
 };

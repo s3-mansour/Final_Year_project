@@ -18,7 +18,6 @@ const medicationSchema = new mongoose.Schema(
       required: [true, "Please add dosage information"],
     },
 
-    // --- UPDATED: Structured Frequency Fields ---
     frequencyType: {
       type: String,
       required: [true, "Please specify frequency type"],
@@ -36,16 +35,13 @@ const medicationSchema = new mongoose.Schema(
       type: Number,
       min: [1, 'Frequency value must be at least 1'],
       // Validation: This field is conceptually required for 'daily' (if > 1) and 'interval_hours'
-      // We'll add controller validation for this logic.
     },
     daysOfWeek: [ // Used for 'weekly' or 'specific_days'
         {
             type: String, // Recommend storing full names or consistent numbers (0-6)
-            // Example if using strings:
-            // enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+           
         }
     ],
-    // --- End Frequency Fields Update ---
 
     // Times array remains relevant for most scheduled types
     times: [

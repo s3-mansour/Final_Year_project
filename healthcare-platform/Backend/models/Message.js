@@ -22,8 +22,7 @@ const messageSchema = new mongoose.Schema(
             required: [true, "Message content cannot be empty"],
             trim: true
         },
-        // Optional: Track read status per recipient (more complex, add later if needed)
-        // readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+
     },
     {
         timestamps: true // Use createdAt for message timestamp

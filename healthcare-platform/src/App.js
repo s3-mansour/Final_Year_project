@@ -101,13 +101,13 @@ function App() {
         <Route path="/medicationtracking" element={<MedicationTracking />} />
         <Route path="/chat" element={<Chat />} />
         <Route
-    path="/consultant/manage-medications" // Or your preferred path
+    path="/consultant/manage-medications"
     element={
         /* Use your ProtectedRoute logic here */
         isAuthenticated && isDoctor ? (
             <ManagePatientMedications />
         ) : (
-            <Navigate to="/login" replace /> /* Or appropriate redirect */
+            <Navigate to="/login" replace /> 
         )
     }
 />

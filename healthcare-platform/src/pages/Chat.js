@@ -12,7 +12,7 @@ import MessageInput from '../components/chat/MessageInput';
 // Context Hook
 import { useSocket } from '../context/SocketContext';
 // Icons
-import { FaPlus, FaTrashAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaPlus, FaTrashAlt, FaChevronLeft, FaChevronRight,FaArrowLeft  } from 'react-icons/fa';
 // Styles
 import './styles/Chat.css';
 
@@ -43,6 +43,7 @@ const Chat = () => {
     const [errorRecipients, setErrorRecipients] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [isConvSidebarOpen, setIsConvSidebarOpen] = useState(true);
+    
 
     // --- Effects ---
     // Fetch initial data (user profile & conversations)
@@ -154,18 +155,37 @@ const Chat = () => {
     const toggleConvSidebar = () => { setIsConvSidebarOpen(!isConvSidebarOpen); };
 
     // Placeholder for delete conversation
-    const handleDeleteConversation = (e, convId, convName) => { e.stopPropagation(); if (window.confirm(`Delete chat with ${convName}?`)) { console.log("TODO: Implement delete conversation ID:", convId); /* API call -> update state */ } };
+    const handleDeleteConversation = (e, convId, convName) => {
+        e.stopPropagation();
+        if (window.confirm(`Delete chat with ${convName}?`)) {
+            // Emit delete event to the server via Socket.IO
+            socket.emit("deleteConversation", convId);
+    
+            // After the conversation is deleted on the server, update the local state
+            setConversations((prevConversations) =>
+                prevConversations.filter((conv) => conv._id !== convId)
+            );
+        }
+    };
+    const handleBackToDashboard = () => {
+        navigate('/dashboard');  // Navigate to the dashboard
+    };
 
+
+    
     // --- JSX Rendering ---
     return (
         <div className="chat-page-container">
+ 
             {/* --- Sidebar --- */}
             <div className={`chat-sidebar ${isConvSidebarOpen ? "open" : "closed"}`}>
                  <div className="chat-sidebar-header">
                      {isConvSidebarOpen && <h2>Conversations</h2>}
+                
                      <button onClick={isConvSidebarOpen ? openNewChatModal : toggleConvSidebar} className={`new-chat-button ${!isConvSidebarOpen ? 'sidebar-toggle-button' : ''}`} title={isConvSidebarOpen ? "Start New Chat" : "Open Conversations"}>
                          {isConvSidebarOpen ? <FaPlus /> : <FaChevronRight />}
                     </button>
+
                      {isConvSidebarOpen && ( <button className="sidebar-close-toggle" onClick={toggleConvSidebar} title="Close Conversations"><FaChevronLeft /></button> )}
                  </div>
                  {isConvSidebarOpen && (
@@ -207,6 +227,12 @@ const Chat = () => {
                                 })}
                             </ul>
                         )}
+                                   {/* Back Button */}
+                            <div className="back-button-container">
+                                <button onClick={handleBackToDashboard} className="back-to-dashboard-btn">
+                                    <FaArrowLeft /> Back to Dashboard
+                                </button>
+                            </div>
                      </div>
                  )}
             </div>

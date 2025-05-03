@@ -17,7 +17,6 @@ const getConversations = asyncHandler(async (req, res) => {
             .populate('lastMessage') // Populate the last message document
             .sort({ updatedAt: -1 }); // Sort by most recently updated conversation
 
-        // Optional: Further populate sender details within lastMessage if needed
         await Conversation.populate(conversations, {
              path: 'lastMessage.sender',
              select: '_id firstName lastName email role'
@@ -47,7 +46,7 @@ const getMessages = asyncHandler(async (req, res) => {
     }
 
     try {
-        // 1. Verify user is part of the conversation
+        // Verify user is part of the conversation
         const conversation = await Conversation.findOne({
             _id: conversationId,
             participants: userId // Ensure logged-in user is a participant
@@ -58,7 +57,7 @@ const getMessages = asyncHandler(async (req, res) => {
             throw new Error("Conversation not found or user not authorized.");
         }
 
-        // 2. Fetch messages with pagination, sorted oldest first for display
+        //  Fetch messages with pagination, sorted oldest first for display
         const messages = await Message.find({ conversation: conversationId })
             .populate('sender', '_id firstName lastName email role') // Populate sender details
             .sort({ createdAt: -1 }) // Fetch newest first for pagination limit/skip
@@ -66,7 +65,6 @@ const getMessages = asyncHandler(async (req, res) => {
             .limit(limit)
             .sort({ createdAt: 1 }); // Then sort ascending for display order
 
-        // Optional: Get total count for pagination info
         const totalMessages = await Message.countDocuments({ conversation: conversationId });
 
         res.status(200).json({
@@ -110,9 +108,7 @@ const findOrCreateConversation = asyncHandler(async (req, res) => {
     try {
         // Look for an existing conversation with exactly these two participants
         let conversation = await Conversation.findOne({
-            // Ensure it's not a group chat (if you add that later)
-            // isGroupChat: false, // Add this condition if implementing groups
-            participants: { $all: [senderId, recipientId], $size: 2 } // Match both participants exactly, ensure only 2
+            participants: { $all: [senderId, recipientId], $size: 2 } 
         }).populate('participants', '_id firstName lastName email role'); // Populate participants for response
 
         if (conversation) {
@@ -136,10 +132,36 @@ const findOrCreateConversation = asyncHandler(async (req, res) => {
         throw new Error("Server error handling conversation.");
     }
 });
+const deleteConversation = asyncHandler(async (req, res) => {
+    const { conversationId } = req.params;  // Get conversationId from request params
+    const userId = req.user._id;  // Get user ID from logged-in user (assuming authentication middleware is set up)
+  
+    // Try to find and delete the conversation, ensuring the user is a participant in it
+    const conversation = await Conversation.findOneAndDelete({
+      _id: conversationId,
+      participants: userId,  // Ensure the logged-in user is part of the conversation
+    });
+  
+    if (!conversation) {
+      res.status(404);
+      throw new Error('Conversation not found or user is not a participant.');
+    }
+  
+    // Emit a Socket.IO event to all connected clients
+    // This can be used to update the frontend in real-time
+    io.emit('conversationDeleted', conversationId);  // 'io' is your Socket.IO instance
+  
+    res.status(200).json({ message: 'Conversation deleted successfully.' });
+  });
+  
+  module.exports = {
+    deleteConversation,
+  };
 
 
 module.exports = {
     getConversations,
     getMessages,
+    deleteConversation,
     findOrCreateConversation
 };

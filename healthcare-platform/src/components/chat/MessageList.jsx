@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import './styles/MessageList.css'; // Create this CSS file
+import './styles/MessageList.css'; 
 
 // Helper to format date/time display (or import from Chat.jsx/utils)
 const formatDateTimeDisplay = (dateString) => {

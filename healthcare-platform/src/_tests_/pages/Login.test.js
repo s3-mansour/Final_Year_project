@@ -1,4 +1,3 @@
-// src/__tests__/pages/Login.test.js
 
 // 1) Mock authService & api so axios never loads
 jest.mock("../../services/authService");

@@ -1,4 +1,3 @@
-// src/__tests__/services/appointmentService.test.js
 import * as appointmentService from "../../services/appointmentService";
 import API from "../../services/api";
 

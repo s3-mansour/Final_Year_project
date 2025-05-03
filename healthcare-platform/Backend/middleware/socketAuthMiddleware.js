@@ -1,13 +1,11 @@
 // Backend/middleware/socketAuthMiddleware.js
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Adjust path if needed
-const asyncHandler = require('express-async-handler'); // Optional, but good for async error handling
-
+const User = require('../models/User'); 
+const asyncHandler = require('express-async-handler'); 
 const protectSocket = asyncHandler(async (socket, next) => {
     let token;
 
-    // Option 1: Get token from handshake auth object (Recommended)
-    // Client needs to send it like: io({ auth: { token: "Bearer YOUR_TOKEN" } })
+
     if (socket.handshake.auth && socket.handshake.auth.token) {
         token = socket.handshake.auth.token;
         // Optional: Check if it starts with Bearer (if client includes it)
@@ -16,8 +14,7 @@ const protectSocket = asyncHandler(async (socket, next) => {
         }
          console.log("Socket Auth: Token found in handshake.auth");
     }
-    // Option 2: Fallback to query parameter (Less Secure, potentially visible in logs)
-    // Client needs to send it like: io("...", { query: { token: "YOUR_TOKEN" } })
+  
     else if (socket.handshake.query && socket.handshake.query.token) {
         token = socket.handshake.query.token;
         console.warn("Socket Auth: Token found in handshake.query (less secure)");
@@ -41,11 +38,9 @@ const protectSocket = asyncHandler(async (socket, next) => {
             return next(new Error('Authentication error: User not found')); // Reject connection
         }
 
-        // --- Attach user info to the socket object ---
-        // Option A: Attach full user object (minus password)
+   
         socket.user = user;
-        // Option B: Attach only the user ID (might be sufficient)
-        // socket.userId = user._id;
+        
 
         console.log(`Socket Auth Success: User ${user.email} authenticated for socket ${socket.id}`);
         next(); // Allow connection

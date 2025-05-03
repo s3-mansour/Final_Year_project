@@ -16,7 +16,6 @@ const getPatientMedications = asyncHandler(async (req, res) => {
     }
     targetPatientId = req.query.patientId;
     console.log(`Doctor ${req.user.email} fetching medications for patient ${targetPatientId}.`);
-    // --- TODO: Add REAL authorization ---
   } else {
     res.status(403).json({ message: "Unauthorized role." }); return;
   }
@@ -37,7 +36,6 @@ const getPatientMedications = asyncHandler(async (req, res) => {
 // @route   POST /api/medications
 // @access  Private (Patient or Doctor)
 const createMedication = asyncHandler(async (req, res) => {
-  // *** UPDATED: Destructure new frequency fields, remove old 'frequency' ***
   const { name, dosage, frequencyType, frequencyValue, daysOfWeek, times,
           startDate, endDate, notes, isActive, patientId } = req.body;
   let targetPatientId;
@@ -63,12 +61,12 @@ const createMedication = asyncHandler(async (req, res) => {
     throw new Error("Please provide name, dosage, and frequency type.");
   }
 
-  // --- Validation for Dates (logic remains the same) ---
+  // Validation for Dates (logic remains the same) 
    if (!startDate) { res.status(400); throw new Error("Start date required."); }
    let parsedStartDate; try { parsedStartDate = new Date(startDate); if (isNaN(parsedStartDate.getTime())) throw new Error(); } catch (e) { res.status(400); throw new Error("Invalid start date format.");}
    let parsedEndDate = null; if (endDate) { try { parsedEndDate = new Date(endDate); if (isNaN(parsedEndDate.getTime())) throw new Error(); if (parsedEndDate < parsedStartDate) { res.status(400); throw new Error("End date cannot be before start date."); } } catch(e) { res.status(400); throw new Error("Invalid end date format."); } }
 
-  // *** ADDED: Validation based on frequencyType ***
+  //  Validation based on frequencyType ***
   if (frequencyType === 'interval_hours' && (!frequencyValue || frequencyValue < 1)) {
       res.status(400); throw new Error("Frequency value (hours) required for interval_hours type.");
   }
@@ -79,7 +77,6 @@ const createMedication = asyncHandler(async (req, res) => {
       res.status(400); throw new Error("Days of week must be provided for weekly/specific_days frequency type.");
   }
   if (frequencyType !== 'as_needed' && (!Array.isArray(times) || times.filter(t => t).length === 0)) {
-     // Require times for most types, could be made optional if needed
      // res.status(400); throw new Error("Specific times must be provided unless frequency is 'as_needed'.");
      console.warn("No specific times provided for a scheduled medication."); // Or make it an error
   }
@@ -90,7 +87,6 @@ const createMedication = asyncHandler(async (req, res) => {
       patient: targetPatientId,
       name,
       dosage,
-      // *** Use new frequency fields ***
       frequencyType,
       frequencyValue: frequencyValue || (frequencyType === 'daily' ? 1 : undefined), // Default daily value to 1 if not provided
       daysOfWeek: (frequencyType === 'weekly' || frequencyType === 'specific_days') ? daysOfWeek : undefined, // Only save if relevant type
@@ -143,7 +139,6 @@ const updateMedication = asyncHandler(async (req, res) => {
 
   // *** Update frequency fields IF provided ***
   if (frequencyType) {
-      // Add validation similar to createMedication based on the new frequencyType being set
       if (frequencyType === 'interval_hours' && (!frequencyValue || frequencyValue < 1)) { throw new Error("Frequency value required for interval_hours."); }
       if ((frequencyType === 'weekly' || frequencyType === 'specific_days') && (!Array.isArray(daysOfWeek) || daysOfWeek.length === 0)) { throw new Error("Days of week required for weekly/specific_days."); }
 
@@ -160,12 +155,11 @@ const updateMedication = asyncHandler(async (req, res) => {
       }
 
   } else {
-      // If only value or daysOfWeek are provided without type, handle appropriately (maybe update only if type matches?)
-      // Example: Only update frequencyValue if current type allows it
+      //  Only update frequencyValue if current type allows it
        if (frequencyValue && (medication.frequencyType === 'daily' || medication.frequencyType === 'interval_hours')) {
            medication.frequencyValue = frequencyValue;
        }
-       // Example: Only update daysOfWeek if current type allows it
+       // Only update daysOfWeek if current type allows it
        if (daysOfWeek && (medication.frequencyType === 'weekly' || medication.frequencyType === 'specific_days')) {
             medication.daysOfWeek = daysOfWeek;
        }

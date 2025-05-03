@@ -22,6 +22,9 @@ const PatientAppointments = () => {
     time: "",
     notes: "",
   });
+  const handleBackToDashboard = () => {
+    navigate("/dashboard"); // Navigate to the dashboard
+  };
 
   useEffect(() => {
     fetchAppointments();
@@ -106,7 +109,11 @@ const PatientAppointments = () => {
   };
 
   return (
+    
     <div className="patient-appointments-page">
+            <button onClick={handleBackToDashboard} className="back-to-dashboard-btn">
+        Back to Dashboard
+      </button>
       <h1>Your Appointments</h1>
       {loading && <p>Loading...</p>}
       {error && <p className="error-message">{error}</p>}
@@ -196,6 +203,7 @@ const PatientAppointments = () => {
           Create New Appointment
         </button>
       </div>
+
     </div>
   );
 };

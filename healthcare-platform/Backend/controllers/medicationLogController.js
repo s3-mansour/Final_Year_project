@@ -57,7 +57,7 @@ const getLogsForDate = asyncHandler(async (req, res) => {
 });
 
 
-// *** ADDED FUNCTION FOR DOCTOR ***
+
 // @desc    Get medication logs for a specific patient within a date range (for Doctor)
 // @route   GET /api/medication-logs/patient/:patientId?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 // @access  Private (Doctor)
@@ -66,8 +66,6 @@ const getLogsForPatientByDateRange = asyncHandler(async (req, res) => {
     const { startDate: startDateString, endDate: endDateString } = req.query; // Get dates from query string
 
     console.log(`Doctor ${req.user.email} requesting logs for patient ${targetPatientId} from ${startDateString} to ${endDateString}`);
-
-    // --- TODO: Add REAL authorization check: Is req.user._id allowed to view targetPatientId's logs? ---
 
     // Validate inputs
     if (!mongoose.Types.ObjectId.isValid(targetPatientId)) {
@@ -100,7 +98,7 @@ const getLogsForPatientByDateRange = asyncHandler(async (req, res) => {
                 $lte: endDate, // Use $lte for inclusive end date
             },
         })
-        .populate('medication', 'name dosage') // *** OPTIONAL: Populate medication name/dosage ***
+        .populate('medication', 'name dosage') // 
         .select('scheduleItemId scheduledDate scheduledTime takenAt medication') // Select useful fields
         .sort({ scheduledDate: 1, takenAt: 1 }); // Sort chronologically
 

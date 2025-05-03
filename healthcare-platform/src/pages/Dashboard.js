@@ -6,9 +6,8 @@ import {
   FaPills, FaChartBar, FaComments, FaFilePrescription, FaAppleAlt, FaPhoneAlt
 } from "react-icons/fa";
 import { getUserProfile, logoutUser } from "../services/authService";
-// Assuming TopNavbar component exists in ../components/
 import TopNavbar from "../components/TopNavbar";
-import "./styles/Dashboard.css"; // Ensure this path is correct
+import "./styles/Dashboard.css"; 
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logoutUser();
-    window.location.href = "/login"; // Or navigate('/login') after state clears
+    window.location.href = "/login"; 
   };
 
   const handleAccountSettings = () => {

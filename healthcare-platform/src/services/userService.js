@@ -1,5 +1,5 @@
 // src/services/userService.js
-import API from "./api"; // Your pre-configured Axios instance
+import API from "./api"; 
 
 /**
  * Fetches a list of users with the role 'doctor'.
@@ -8,8 +8,6 @@ import API from "./api"; // Your pre-configured Axios instance
  */
 export const getConsultantsList = async () => {
   try {
-    // *** IMPORTANT: Ensure this endpoint exists on your backend ***
-    // *** It should probably be protected (e.g., only logged-in users can fetch it) ***
     const response = await API.get("/api/consultant/doctors"); // Use the correct backend path
     return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
@@ -18,4 +16,3 @@ export const getConsultantsList = async () => {
   }
 };
 
-// Add other user-related service functions here if needed

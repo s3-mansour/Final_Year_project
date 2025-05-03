@@ -27,19 +27,14 @@ const Login = () => {
       }
       alert("Login successful!");
 
-      // Option 1: Hard reload
+      //  Hard reload
       if (response.role === "doctor") {
         window.location.href = "/consultant/dashboard";
       } else {
         window.location.href = "/dashboard";
       }
 
-      // Option 2: Or use navigate:
-      // if (response.role === "doctor") {
-      //   navigate("/consultant/dashboard");
-      // } else {
-      //   navigate("/dashboard");
-      // }
+   
     } catch (error) {
       console.error("Login Error:", error);
       alert("Login failed: " + error.message);

@@ -4,7 +4,7 @@ import { getPatientsList } from '../services/consultantService';
 import * as medicationService from '../services/medicationService';
 import * as medicationLogService from '../services/medicationLogService';
 // Components
-import Modal from '../components/Modal'; // Ensure this path is correct
+import Modal from '../components/Modal'; 
 // Styles
 import './styles/ManagePatientMedications.css';
 

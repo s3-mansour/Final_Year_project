@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// FaBars is no longer needed here, keep FaTimes etc.
 import {
    FaTimes, FaCog, FaSignOutAlt, FaUserInjured,
   FaCalendarCheck, FaComments, FaFileMedical, FaPhoneAlt
 } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
 import { getUserProfile, logoutUser } from "../services/authService";
-// Import the new TopNavbar
 import TopNavbar from "../components/TopNavbar"; // Adjust path if needed
 import "./styles/consultantDashboard.css"; // Ensure this path is correct
 

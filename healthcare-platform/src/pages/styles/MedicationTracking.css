@@ -1,4 +1,3 @@
-/* src/pages/styles/MedicationTracking.css */
 
 /* --- Page Container --- */
 .medication-page {
@@ -224,7 +223,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 400px; /* Example: Add scroll if list gets very long */
+    max-height: 400px; 
     overflow-y: auto;
 }
 .medication-item {
@@ -272,13 +271,6 @@
 }
 
 
-/* Styling based on medication status class added to .medication-item */
-
-/* Style for 'Active' status (optional, mostly default) */
-.medication-item.med-active .med-info strong {
-   /* No specific style needed unless desired */
-}
-
 /* Style for 'Upcoming' status */
 .medication-item.med-upcoming .med-info strong {
    color: #ff9800; /* Example: Orange for upcoming */
@@ -323,11 +315,6 @@
 .medication-item.med-error .med-info strong {
    color: #dc3545; /* Error color for name */
 }
-.medication-item.med-error .med-info {
-    /* Maybe add a light red background or border */
-    /* background-color: #f8d7da; */
-}
-
 
 /* --- Utility Styles --- */
 .error-message {
@@ -363,4 +350,17 @@
     .mark-taken-button {
         margin-top: 8px; /* Add space when wrapped */
     }
+}
+.back-to-dashboard-btn {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding around the button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin-top: 20px; /* Space from other content */
+}
+
+.back-to-dashboard-btn:hover {
+  background-color: #45a049; /* Darker green when hovered */
 }

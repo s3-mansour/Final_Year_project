@@ -179,6 +179,25 @@ io.on('connection', (socket) => {
             // TODO: Optionally broadcast user offline status to relevant contacts/rooms
         }
     });
+    
+
+    socket.on('deleteConversation', async (convId) => {
+        try {
+            const deletedConversation = await Conversation.findByIdAndDelete(convId);
+
+            if (!deletedConversation) {
+                console.log('Conversation not found');
+                return;
+            }
+
+            // Emit confirmation to the client
+            socket.emit('conversationDeleted', convId);
+
+        } catch (error) {
+            console.error("Error deleting conversation:", error);
+        }
+    });
+
 
 
 }); // End io.on('connection')

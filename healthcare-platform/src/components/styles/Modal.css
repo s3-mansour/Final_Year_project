@@ -1,5 +1,3 @@
-/* src/components/styles/Modal.css */
-
 /* --- Modal Styles --- */
 .modal-overlay-manage { /* Using existing class name, rename if desired */
     position: fixed; /* Stick to the viewport */
@@ -14,20 +12,10 @@
     z-index: 1100; /* Ensure it's above other content including navbar/sidebar */
     padding: 20px; /* Padding for smaller screens */
   
-    /* --- TEMPORARILY COMMENTED OUT FOR DEBUGGING --- */
-    /* opacity: 0; */ /* Start hidden for fade-in */
-    /* visibility: hidden; */
-    /* transition: opacity 0.3s ease, visibility 0s linear 0.3s; */ /* Fade transition */
-    /* --- END TEMPORARY COMMENT OUT --- */
+    
   }
   
-  /* This rule might not be needed if visibility is controlled by isOpen prop */
-  /* .modal-overlay-manage.open {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0s linear 0s;
-  } */
-  
+ 
   
   .modal-content-manage { /* Using existing class name, rename if desired */
     background: white;
@@ -40,13 +28,9 @@
     max-height: 90vh; /* Limit height */
     display: flex;
     flex-direction: column;
-    /* Entrance animation (optional, keep commented out for now) */
-    /* transform: translateY(-20px); */
-    /* transition: transform 0.3s ease; */
+   
   }
-  /* .modal-overlay-manage.open .modal-content-manage {
-     transform: translateY(0);
-  } */
+ 
   
   
   .modal-header-manage {
@@ -55,7 +39,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #f8f9fa; /* Optional light header background */
+      background-color: #f8f9fa; 
       border-radius: 8px 8px 0 0; /* Match top corners */
       flex-shrink: 0; /* Prevent header shrinking */
   }
@@ -125,7 +109,6 @@
   .modal-actions-manage .submit-button:hover { background-color: #0056b3; }
   .modal-actions-manage .submit-button:disabled { background-color: #cccccc; cursor: not-allowed; opacity: 0.7; }
   
-  /* Optional: Add responsive adjustments for the modal itself */
   @media (max-width: 768px) {
       .modal-content-manage {
           max-width: 95%;

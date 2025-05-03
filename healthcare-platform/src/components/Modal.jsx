@@ -1,4 +1,3 @@
-// src/components/Modal.jsx
 import React from 'react';
 import './styles/Modal.css'; // Make sure path to CSS is correct
 

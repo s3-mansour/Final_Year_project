@@ -1,4 +1,4 @@
-// src/__tests__/services/medicationService.test.js
+
 import * as svc from "../../services/medicationService";
 import API from "../../services/api";
 

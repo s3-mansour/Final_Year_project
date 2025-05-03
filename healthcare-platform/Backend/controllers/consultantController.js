@@ -8,7 +8,7 @@ const User = require("../models/User");
  * @route GET /api/consultant/patients
  * @access Private (doctor)
  */
-// *** RENAMED for consistency ***
+// 
 const getPatientsList = asyncHandler(async (req, res) => {
   const consultantLocation = req.user.location;
   let query = { role: "patient" }; // Base query
@@ -37,13 +37,11 @@ const getAppointmentsForConsultant = asyncHandler(async (req, res) => {
   // Find appointments where doctor._id matches consultant's _id
   // Consider populating patient details if needed on frontend
   const appointments = await Appointment.find({ "doctor._id": consultantId })
-                                      // .populate('patient', 'firstName lastName') // Optional populate
                                       .sort({ date: -1, time: -1 }); // Sort by most recent first
   res.status(200).json(appointments);
 });
 
 
-// *** NEW FUNCTION ***
 /**
  * Get a list of all users with the role 'doctor'.
  * @route GET /api/consultant/doctors (or could be /api/users/doctors)
@@ -62,14 +60,9 @@ const getConsultantsList = asyncHandler(async (req, res) => {
       query.location = requesterLocation; // Find doctors in the same location
   } else {
       // Decide behavior if requester has no location:
-      // Option A: Return error - Doctor cannot be found without patient location
-       // res.status(400); throw new Error("Your location is not set. Cannot find nearby doctors.");
-      // Option B: Return all doctors (less ideal for this feature)
+
        console.warn(`User ${req.user.email} has no location set. Fetching ALL doctors.`);
-       // query remains { role: 'doctor' }
-      // Option C: Return empty list
-      // console.warn(`User ${req.user.email} has no location set. Returning no doctors.`);
-      // return res.status(200).json([]);
+
   }
 
   // Find doctors based on the constructed query
@@ -80,7 +73,6 @@ const getConsultantsList = asyncHandler(async (req, res) => {
   res.status(200).json(consultants);
 });
 
-// *** UPDATED EXPORTS ***
 module.exports = {
   getPatientsList, // Renamed export
   getAppointmentsForConsultant,

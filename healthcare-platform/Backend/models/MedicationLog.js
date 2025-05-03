@@ -9,14 +9,12 @@ const medicationLogSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    // Optional but helpful: Reference to the specific medication regimen
     medication: {
       type: mongoose.Schema.Types.ObjectId,
       required: false, // Make false if scheduleItemId is primary key for log entry
       ref: "Medication",
     },
-    // Unique identifier for the specific dose instance being logged
-    // e.g., generated on frontend like: `${medication._id}-${isoDateString}-${scheduledTime}`
+
     scheduleItemId: {
       type: String,
       required: true,

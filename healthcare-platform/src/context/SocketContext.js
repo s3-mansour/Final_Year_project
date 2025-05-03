@@ -1,16 +1,16 @@
-// src/context/SocketContext.js
+
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { io } from 'socket.io-client';
 
-// 1. Create the Context
+//  Create the Context
 const SocketContext = createContext(null);
 
-// 2. Create a custom hook to use the context easily
+//  Create a custom hook to use the context easily
 export const useSocket = () => {
   return useContext(SocketContext);
 };
 
-// 3. Create the Provider component
+//  Create the Provider component
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -46,8 +46,7 @@ export const SocketProvider = ({ children }) => {
       auth: {
         token: `Bearer ${token}` // Send with Bearer prefix (middleware expects it)
       },
-      // Consider disabling autoConnect if you want finer control, but true is usually fine
-      // autoConnect: true,
+ 
     });
 
     // Event Listeners
@@ -77,9 +76,7 @@ export const SocketProvider = ({ children }) => {
       // Check if the error is due to authentication failure from our middleware
       if (err.message.includes("Authentication error")) {
           console.error("Authentication failed. Check token or backend middleware.");
-          // Optionally logout user or clear token here
-          // localStorage.removeItem("token");
-          // window.location.href = '/login'; // Force reload/redirect
+       
       }
       setIsConnected(false);
     });
@@ -99,8 +96,7 @@ export const SocketProvider = ({ children }) => {
       setIsConnected(false);
       setSocket(null); // Clear socket from state
     };
-    // Rerun effect if token changes (e.g., user logs in/out)
-    // Be cautious adding dependencies here if they change frequently
+
   }, []); // Run once on mount initially
 
   // Use useMemo to prevent unnecessary re-renders of consumers when socket instance doesn't change

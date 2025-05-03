@@ -1,4 +1,3 @@
-// src/__tests__/services/authService.test.js
 import * as authService from "../../services/authService";
 import API from "../../services/api";
 

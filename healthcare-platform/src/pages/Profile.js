@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getUserProfile, updateUserProfile } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-import "./styles/Profile.css"; // Create a CSS file for styling
+import "./styles/Profile.css"; 
 
 const PatientProfile = () => {
   const navigate = useNavigate();

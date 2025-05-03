@@ -1,4 +1,3 @@
-/* src/pages/styles/Chat.css */
 
 /* --- Main Chat Page Layout --- */
 .chat-page-container {
@@ -121,6 +120,22 @@
 .conversation-list li.conversation-item.selected .delete-conversation-btn { color: #e0e0e0; } /* Lighter delete icon */
 .conversation-list li.conversation-item.selected .delete-conversation-btn:hover { color: #ffc107; } /* Yellow hover on selected */
 
+.back-to-dashboard-btn {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.back-to-dashboard-btn:hover {
+  background-color: #45a049;
+}
 
 .participant-name {
   font-weight: 500;

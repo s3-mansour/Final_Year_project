@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     getConversations,
     getMessages,
+    deleteConversation,
     findOrCreateConversation
 } = require("../controllers/chatController");
 
@@ -19,8 +20,8 @@ router.get("/", getConversations);
 router.post("/findOrCreate", findOrCreateConversation);
 
 // GET messages for a specific conversation (using conversationId from URL param)
-// Includes optional pagination query params (?page=1&limit=30)
 router.get("/:conversationId/messages", getMessages);
-
+// DELETE conversation by ID
+router.delete('/:conversationId', deleteConversation);  // Route for deleting a conversation
 
 module.exports = router;
