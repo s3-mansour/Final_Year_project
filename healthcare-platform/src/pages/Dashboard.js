@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // Import necessary icons
 import {
    FaTimes, FaUser, FaCog, FaSignOutAlt, FaCalendarAlt,
-  FaPills, FaChartBar, FaComments, FaFilePrescription, FaAppleAlt, FaPhoneAlt
+  FaPills,  FaComments, FaFilePrescription, FaAppleAlt
 } from "react-icons/fa";
 import { getUserProfile, logoutUser } from "../services/authService";
 import TopNavbar from "../components/TopNavbar";
@@ -41,8 +41,6 @@ const Dashboard = () => {
     navigate("/profile");
   };
 
-  // Placeholder for emergency action
-  const handleEmergency = () => alert("Emergency support feature not yet implemented.");
 
   // --- Define Features with Accent Colors ---
   const features = [
@@ -51,7 +49,6 @@ const Dashboard = () => {
     { title: "Prescription Management", desc: "View your prescriptions.", icon: <FaFilePrescription />, btn: "View Prescriptions", link: "/prescriptions", accent: "#6f42c1" }, // Purple
     { title: "Consultant-Patient Chat", desc: "Communicate with your provider.", icon: <FaComments />, btn: "Start Chat", link: "/chat", accent: "#0dcaf0" }, // Cyan
     { title: "Lifestyle & Nutrition", desc: "Personalized health tips.", icon: <FaAppleAlt />, btn: "View Tips", link: "/lifestyle", accent: "#198754" }, // Green
-    { title: "Reports and Analytics", desc: "View your health progress.", icon: <FaChartBar />, btn: "View Reports", link: "/reports", accent: "#6c757d" } // Gray
   ];
 
 
@@ -119,12 +116,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Emergency Section */}
-        <div className="emergency-section">
-          <h3><FaPhoneAlt /> Emergency Contact Support</h3>
-          <p>Quickly connect with emergency providers.</p>
-          <button className="emergency-btn" onClick={handleEmergency}>Access Support</button>
-        </div>
+
       </div> {/* End Main Content */}
     </div> // End dashboard-container
   );

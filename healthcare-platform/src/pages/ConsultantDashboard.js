@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
    FaTimes, FaCog, FaSignOutAlt, FaUserInjured,
-  FaCalendarCheck, FaComments, FaFileMedical, FaPhoneAlt
+  FaCalendarCheck, FaComments, FaFileMedical
 } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
 import { getUserProfile, logoutUser } from "../services/authService";
@@ -40,7 +40,6 @@ const ConsultantDashboard = () => {
   const goToAppointments = () => navigate('/consultant/appointments');
   const goToChat = () => navigate('/chat');
   const goToManageMedications = () => navigate('/consultant/manage-medications');
-  const handleEmergency = () => alert("Emergency support feature not yet implemented.");
 
   return (
     // Root container - may not need specific class if just for background
@@ -93,12 +92,6 @@ const ConsultantDashboard = () => {
           ))}
         </div>
 
-        {/* Emergency Section */}
-        <div className="consultant-emergency">
-          <h3><FaPhoneAlt /> Emergency Contact Support</h3>
-          <p>Access critical support information quickly.</p>
-          <button className="emergency-btn" onClick={handleEmergency}>Access Support</button>
-        </div>
 
       </div> {/* End Main Content */}
     </div> // End consultant-dashboard-wrapper or consultant-dashboard
