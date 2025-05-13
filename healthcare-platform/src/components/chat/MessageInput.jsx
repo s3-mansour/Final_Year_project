@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 // Import the useSocket hook to get the socket instance
-import { useSocket } from '../../context/SocketContext'; // Adjust path as needed
-import { FaPaperPlane } from 'react-icons/fa'; // Send icon
-import './styles/MessageInput.css'; // Create this CSS file
+import { useSocket } from '../../context/SocketContext'; 
+import { FaPaperPlane } from 'react-icons/fa'; 
+import './styles/MessageInput.css'; 
 
 const MessageInput = ({ conversationId, recipientId }) => {
     // State for the message input field
@@ -34,13 +34,11 @@ const MessageInput = ({ conversationId, recipientId }) => {
             socket.emit('sendMessage', {
                 recipientId: recipientId,
                 content: trimmedContent,
-                // Optionally include conversationId if needed by backend logic for saving
-                // conversationId: conversationId
+
             });
 
             // Clear the input field after sending
             setMessageContent('');
-            // TODO: Emit 'stopTyping' event here (optional)
 
         } else {
             console.error("Socket not connected or recipient ID missing. Cannot send message.");

@@ -46,9 +46,8 @@ const Dashboard = () => {
   const features = [
     { title: "Medication Tracking", desc: "Track your medication schedule.", icon: <FaPills />, btn: "View Schedule", link: "/MedicationTracking", accent: "#20c997" }, // Teal
     { title: "Appointment Scheduling", desc: "Book, modify, or cancel appointments.", icon: <FaCalendarAlt />, btn: "Manage Appointments", link: "/patient-appointments", accent: "#fd7e14" }, // Orange
-    { title: "Prescription Management", desc: "View your prescriptions.", icon: <FaFilePrescription />, btn: "View Prescriptions", link: "/prescriptions", accent: "#6f42c1" }, // Purple
+    { title: "Prescription Management", desc: "View your prescriptions.", icon: <FaFilePrescription />, btn: "View Prescriptions", link: "/patientprescription", accent: "#6f42c1" }, // Purple
     { title: "Consultant-Patient Chat", desc: "Communicate with your provider.", icon: <FaComments />, btn: "Start Chat", link: "/chat", accent: "#0dcaf0" }, // Cyan
-    { title: "Lifestyle & Nutrition", desc: "Personalized health tips.", icon: <FaAppleAlt />, btn: "View Tips", link: "/lifestyle", accent: "#198754" }, // Green
   ];
 
 
@@ -69,9 +68,11 @@ const Dashboard = () => {
         </div>
         <ul className="sidebar-menu">
            {/* Add relevant patient menu items */}
-           
-           <li onClick={() => navigate('/MedicationTracking"')} style={{cursor: 'pointer'}}><FaPills /> Medication</li>
            <li onClick={() => navigate('/patient-appointments')} style={{cursor: 'pointer'}}><FaCalendarAlt /> Appointments</li>
+           
+           <li onClick={() => navigate('/patientprescription')} style={{cursor: 'pointer'}}><FaCalendarAlt /> Prescriptions</li>
+
+           <li onClick={() => navigate('/MedicationTracking"')} style={{cursor: 'pointer'}}><FaPills /> Medication</li>
            <li onClick={() => navigate('/chat')} style={{cursor: 'pointer'}}><FaComments/> Chat</li>
            <hr className="sidebar-divider"/>
            <li onClick={handleAccountSettings} style={{cursor: 'pointer'}}><FaCog /> Settings</li>

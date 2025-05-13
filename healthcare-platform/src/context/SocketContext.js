@@ -44,7 +44,7 @@ export const SocketProvider = ({ children }) => {
     const newSocket = io(process.env.REACT_APP_SOCKET_URL || "http://localhost:5000", {
       // Send token for authentication via socketAuthMiddleware
       auth: {
-        token: `Bearer ${token}` // Send with Bearer prefix (middleware expects it)
+        token: `Bearer ${token}` // Send with Bearer prefix (middleware expects it) 
       },
  
     });

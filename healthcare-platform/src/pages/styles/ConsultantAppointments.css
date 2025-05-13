@@ -1,59 +1,211 @@
+/* src/styles/ConsultantAppointments.css */
 
-/* Page Container */
+/* --- Overall Page Container --- */
+/* Styles the main page wrapper for consultant appointments */
 .consultant-appointments-page {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  max-width: 900px; /* Slightly wider max-width than patient view */
+  margin: 2rem auto; /* Center the container horizontally with vertical margin */
+  padding: 1.5rem; /* Add internal padding */
+  font-family: "Poppins", Arial, sans-serif; /* Apply a clean font family */
+  background-color: #ffffff; /* White background for the page */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  color: #333; /* Default text color */
 }
 
+/* Page Title */
 .consultant-appointments-page h1 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #2c3e50; /* Darker title color */
+  font-size: 2.2em; /* Adjust font size */
 }
 
-/* Error Message */
+/* --- General Messages (Loading, Error, Empty) --- */
 .error-message {
-  color: red;
+  color: #dc3545; /* Bootstrap danger red */
   text-align: center;
+  margin: 1rem 0;
   font-weight: bold;
-  margin-bottom: 1rem;
 }
 
-/* Loading Indicator */
-.loading {
+/* Styling for the "No appointments found" message */
+.consultant-appointments-page > p {
   text-align: center;
-  color: #666;
+  color: #777;
+  font-size: 1.1em;
+  margin-top: 2rem;
 }
 
-/* List of Appointments */
+/* --- Appointments List Container --- */
+/* Styles the ul element that contains the list items */
 .appointments-list {
-  list-style: none;
-  padding: 0;
+  list-style: none; /* Remove default list bullets */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
 }
 
+/* --- Individual Appointment Item --- */
+/* Styles each li element in the list */
 .appointment-item {
-  background: #fff;
-  border: 1px solid #ddd;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  padding: 1rem;
-  transition: box-shadow 0.3s ease;
+  background: #f9f9f9; /* Light grey background for items */
+  border: 1px solid #eee; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 1.5rem; /* Internal padding */
+  margin-bottom: 1.2rem; /* Space between items */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+  display: flex; /* Use flexbox for layout within the item */
+  flex-direction: column; /* Stack details and actions vertically */
 }
 
-.appointment-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Appointment Details Section */
+.appointment-details p {
+  margin: 0.4rem 0; /* Space between detail lines */
+  font-size: 1em; /* Standard font size */
+  color: #555; /* Dark grey text */
+  line-height: 1.4; /* Space between lines of text */
 }
 
-.appointment-item p {
-  margin: 0.3rem 0;
-  color: #555;
-  line-height: 1.4;
+.appointment-details p strong {
+  color: #333; /* Darker text for labels */
+  display: inline-block; /* Allows setting a min-width */
+  min-width: 120px; /* Align the colons further for doctor view */
 }
 
-.appointment-item p strong {
-  color: #333;
+/* --- Action Buttons for Each List Item --- */
+.appointment-actions {
+  margin-top: 1.5rem; /* Space above buttons */
+  display: flex; /* Use flexbox */
+  gap: 1rem; /* Space between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+  flex-wrap: wrap; /* Allow buttons to wrap if needed */
+}
+
+/* Base styling for action buttons within the item */
+.appointment-actions button {
+  padding: 0.6rem 1.2rem; /* Padding */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em; /* Slightly larger font */
+  font-weight: 600;
+  transition: background-color 0.2s ease, opacity 0.2s ease; /* Smooth transitions */
+  min-width: 100px; /* Give buttons a minimum width */
+  text-align: center;
+}
+
+/* Specific styling for the Accept button (Doctor) */
+.appointment-actions .accept-button {
+  background-color: #5cb85c; /* Success green */
+}
+.appointment-actions .accept-button:hover {
+  background-color: #4cae4c; /* Darker green */
+}
+
+/* Specific styling for the Deny button (Doctor) */
+.appointment-actions .deny-button {
+  background-color: #d9534f; /* Danger red */
+}
+.appointment-actions .deny-button:hover {
+  background-color: #c9302c; /* Darker red */
+}
+
+/* Specific styling for the Cancel button (Doctor) */
+.appointment-actions .cancel-button {
+  background-color: #f0ad4e; /* Warning orange (can also use red like patient cancel) */
+}
+.appointment-actions .cancel-button:hover {
+  background-color: #ec971f; /* Darker orange */
+}
+
+/* Specific styling for the Dismiss button (Doctor) */
+.appointment-actions .dismiss-button {
+  background-color: #6c757d; /* Secondary grey */
+}
+.appointment-actions .dismiss-button:hover {
+  background-color: #5a6268; /* Darker grey */
+}
+
+
+/* Styling for buttons when disabled */
+.appointment-actions button:disabled {
+  background-color: #ccc; /* Grey out disabled buttons */
+  cursor: not-allowed; /* Indicate not clickable */
+  opacity: 0.7; /* Slightly faded */
+}
+
+
+/* --- Status Specific Styling (Add borders to list items) --- */
+/* These classes are applied to the .appointment-item based on its status */
+.appointment-item.status-pending {
+    border-left: 6px solid #f0ad4e; /* Orange/Yellow border for Pending */
+}
+.appointment-item.status-confirmed {
+    border-left: 6px solid #5cb85c; /* Success green border for Confirmed */
+}
+.appointment-item.status-denied {
+    border-left: 6px solid #d9534f; /* Danger red border for Denied */
+    opacity: 0.9; /* Slightly dim denied items if desired */
+    text-decoration: none; /* Ensure text-decoration is NOT applied here if it was inherited */
+}
+ .appointment-item.status-cancelled {
+    border-left: 6px solid #6c757d; /* Secondary grey border for Cancelled */
+     opacity: 0.9; /* Slightly dim cancelled items if desired */
+     text-decoration: none; /* Ensure text-decoration is NOT applied here if it was inherited */
+}
+.appointment-item.status-completed {
+    border-left: 6px solid #0275d8; /* Primary blue border for Completed */
+    font-style: italic; /* Optional: Italicize completed items */
+    opacity: 0.9; /* Slightly dim completed items if desired */
+}
+
+/* --- Back Button --- */
+/* Style for the Back to Dashboard button (placed outside the list) */
+.consultant-appointments-page .back-button {
+   display: block; /* Make it a block element */
+   margin: 2rem auto 0; /* Center horizontally, add space above */
+   padding: 10px 20px;
+   background-color: #6c757d; /* Grey color */
+   color: white;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 1em;
+   font-weight: 600;
+   transition: background-color 0.2s ease, transform 0.1s ease;
+   text-decoration: none; /* Ensure no text decoration */
+}
+
+.consultant-appointments-page .back-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) { /* Adjust breakpoint for smaller screens */
+  .consultant-appointments-page {
+    padding: 1rem; /* Reduce padding */
+  }
+  .consultant-appointments-page h1 {
+    font-size: 1.8em; /* Reduce title size */
+  }
+   .appointment-item {
+       padding: 1rem; /* Reduce item padding */
+   }
+   .appointment-details p strong {
+       min-width: 80px; /* Reduce min-width for labels */
+       font-size: 0.95em;
+   }
+   .appointment-actions {
+       flex-direction: column; /* Stack buttons vertically on small screens */
+       gap: 0.5rem; /* Reduce gap */
+       align-items: stretch; /* Stretch buttons to fill width */
+   }
+    .appointment-actions button {
+        min-width: auto; /* Remove min-width when stacked */
+        width: 100%; /* Make buttons take full width */
+        padding: 0.8rem;
+        font-size: 1em;
+    }
 }

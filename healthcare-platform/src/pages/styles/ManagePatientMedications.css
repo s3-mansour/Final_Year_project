@@ -1,5 +1,3 @@
-/* src/pages/styles/ManagePatientMedications.css */
-
 .manage-meds-page {
     max-width: 1100px;
     margin: 20px auto;
@@ -43,6 +41,11 @@
     font-size: 1em;
     flex-grow: 1; /* Allow select to grow */
 }
+/* Style for loading text inside the select */
+.patient-selector-container select option[disabled] {
+    color: #999;
+}
+
 
 /* --- Medication List Section --- */
 .medication-list-container {
@@ -159,7 +162,7 @@
 .modal-content-manage {
   background: white; padding: 0; border-radius: 8px;
   position: relative; width: 90%; max-width: 650px; /* Slightly wider */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); max-height: 90vh; display: flex; flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25); max-height: 90vh; display: flex; flex-direction: column;
 }
 .modal-header-manage {
     padding: 15px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;
@@ -168,10 +171,11 @@
 }
 .modal-header-manage h2 { margin: 0; color: #333; font-size: 1.4em; font-weight: 600;}
 .modal-close-btn-manage {
-    background: transparent; border: none; font-size: 28px; cursor: pointer; color: #888; padding: 0; line-height: 1;
+    background: transparent; border: none; font-size: 28px; font-weight: 300; /* Lighter X */
+    cursor: pointer; color: #888; padding: 0 5px; line-height: 1;
 }
 .modal-close-btn-manage:hover { color: #333; }
-.modal-body-manage { padding: 25px 30px; overflow-y: auto; /* Enable scroll for long forms */ }
+.modal-body-manage { padding: 25px 30px; overflow-y: auto; /* Enable scroll for long forms/content */ }
 
 /* --- Medication Form Styles --- */
 .medication-form { display: flex; flex-direction: column; gap: 18px; } /* More space between groups */
@@ -260,7 +264,6 @@
 .submit-button:disabled { background-color: #cccccc; cursor: not-allowed; opacity: 0.7; }
 /* --- Adherence Log Section --- */
 .adherence-log-container { margin-top: 40px; padding-top: 20px; border-top: 2px solid #dee2e6; }
-.adherence-log-container h2 { /* ... */ }
 
 /* --- UPDATED Date Range Selector Layout --- */
 .log-date-range-selector { display: flex; flex-wrap: wrap; align-items: flex-end; /* Align button with bottom of inputs */ gap: 20px; margin-bottom: 25px; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef; }
@@ -306,7 +309,7 @@
 
 
 /* Fetch Button */
-.fetch-logs-button { /* Styles remain same, ensure it aligns well */
+.fetch-logs-button { 
     background-color: #28a745; color: white; border: none; padding: 9px 18px;
     border-radius: 5px; cursor: pointer; font-size: 0.9em; font-weight: 500;
     transition: background-color 0.2s ease; height: 38px; /* Match input height approx */
@@ -315,8 +318,6 @@
 .fetch-logs-button:hover { background-color: #218838; }
 .fetch-logs-button:disabled { background-color: #cccccc; cursor: not-allowed; opacity: 0.7; }
 
-/* Logs Table Styling remains the same */
-.logs-table { /* ... */ }
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {

@@ -1,4 +1,6 @@
+/* src/styles/login.css */
 
+/* Container for Login Page */
 .login-page {
   margin: 0;
   font-family: 'Poppins', Arial, sans-serif;
@@ -6,67 +8,115 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100vh; /* Ensure full viewport height */
+  min-height: 100vh; /* Ensure full viewport height */
+  padding: 20px; /* Add padding for smaller screens */
+  box-sizing: border-box; /* Include padding in dimensions */
 }
 
 /* Centering the login container */
 .login-container {
+  text-align: center; /* Center inline content like text */
   width: 100%;
-  max-width: 450px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 450px; /* Set a maximum width */
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center flex items horizontally */
 }
 
-/* Outer Static Box */
+/* Outer Static Box (The main white container) */
 .login-static-box {
-  background: #fff;
-  padding: 60px 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  width: 100%;
-  max-width: 450px;
-  position: relative;
+  background: #fff; /* White background */
+  padding: 60px 40px; /* Internal padding */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+  text-align: center; /* Center inline content within the box */
+  width: 100%; /* Full width within login-container max-width */
+  max-width: 450px; /* Match login-container max-width */
+  position: relative; /* Needed for absolute positioning of children if any */
+   /* Min height to ensure space even if message is hidden */
+   min-height: 400px; /* Adjust this value if needed */
 }
 
 /* Static Title Section */
 .login-title {
   font-size: 28px;
   font-weight: bold;
-  color: #222;
+  color: #222; /* Dark text */
   margin-bottom: 5px;
 }
 
 .login-subtext {
   font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
+  color: #666; /* Grey text */
+  margin-bottom: 20px; /* Space below subtitle */
 }
 
-/* Inner Hoverable Box */
+
+/* --- Message Display Above Form --- */
+/* Base style for the message paragraph */
+.login-message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px; /* Space below the message */
+    font-size: 0.95em;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent; /* Default transparent border */
+    width: 100%; /* Full width within parent */
+    box-sizing: border-box; /* Include padding/border in width */
+    display: block; /* Ensure it's a block element for margin-bottom to work */
+     /* Positioning adjustments to ensure it's above the card */
+     position: relative; /* Give it a stacking context */
+     z-index: 2; /* Ensure it's higher than the login card */
+     margin-left: auto; /* Center the block */
+     margin-right: auto; /* Center the block */
+
+}
+
+/* Styling for error messages */
+.login-message.error {
+    color: #721c24; /* Dark red text */
+    background-color: #f8d7da; /* Light red background */
+    border-color: #f5c6cb; /* Red border */
+}
+
+/* Styling for success messages */
+.login-message.success {
+    color: #155724; /* Dark green text */
+    background-color: #d4edda; /* Light green background */
+    border-color: #c3e6cb; /* Green border */
+}
+
+
+/* Inner Hoverable Box (Around the form) */
 .login-card {
-  background: #fff;
-  padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  width: 90%;
-  max-width: 380px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  margin-left: -10px; /* Pushing it slightly to the left */
+  background: #fff; /* White background */
+  padding: 35px; /* Internal padding */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Shadow */
+  text-align: left; /* Align form content to the left */
+  width: 90%; /* 90% width of login-static-box */
+  max-width: 380px; /* Max width */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transitions for hover */
+   /* Positioning adjustments */
+   margin-top: 20px; /* *** ADJUSTED MARGIN-TOP to prevent overlapping message *** */
+   margin-left: auto; /* Center visually */
+   margin-right: auto; /* Center visually */
+   position: relative; /* Give it a stacking context */
+   z-index: 1; /* Lower z-index than the message */
 }
 
+/* Hover state for the inner card */
 .login-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px); /* Lift effect */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* More prominent shadow */
 }
 
-/* Input Fields */
+
+/* Input Fields (Label + Input/Select) */
 .input-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: 15px; /* Space between input groups */
 }
 
 .input-group label {
@@ -77,19 +127,35 @@
   margin-bottom: 5px;
 }
 
-.input-group input {
+.input-group input:not([type="radio"]),
+.input-group select {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
-/* Login Button */
+/* Placeholder text style */
+.input-group input::placeholder {
+  color: #aaa;
+}
+
+/* Focus state style */
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #0072ff;
+  box-shadow: 0 0 8px rgba(0, 114, 255, 0.3);
+  outline: none;
+}
+
+
+/* Buttons */
 .login-button {
   width: 100%;
   padding: 12px;
-  background: #4c6ef5;
+  background: linear-gradient(90deg, #4c6ef5, #6a4ef5);
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -97,11 +163,28 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(76, 110, 245, 0.3);
 }
 
 .login-button:hover {
-  background: #6a4ef5;
+  background: linear-gradient(90deg, #6a4ef5, #4c6ef5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(76, 110, 245, 0.4);
 }
+
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.8;
+}
+
 
 /* Forgot Password & Signup Links */
 .forgot-password,
@@ -121,4 +204,30 @@
 .forgot-password a:hover,
 .signup-link a:hover {
   text-decoration: underline;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .login-container {
+        max-width: 95%;
+    }
+    .login-static-box {
+        padding: 40px 20px;
+    }
+    .login-card {
+        padding: 20px;
+        margin-top: 10px; /* Adjust overlap on smaller screens */
+    }
+     .login-title {
+         font-size: 24px;
+     }
+     .input-group input,
+     .input-group select {
+         padding: 10px;
+     }
+     .login-button {
+         padding: 10px;
+         font-size: 14px;
+     }
 }

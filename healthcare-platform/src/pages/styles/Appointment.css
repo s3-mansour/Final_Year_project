@@ -2,199 +2,224 @@
    Global Container
 --------------------------- */
 .appointment-page {
-    background: linear-gradient(to bottom right, #4facfe, #00f2fe);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    background: linear-gradient(to bottom right, #4facfe, #00f2fe); /* Apply background gradient */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    min-height: 100vh; /* Ensure it takes at least the full viewport height */
+    padding: 20px; /* Add some padding on smaller screens */
+    box-sizing: border-box; /* Include padding in element's total width/height */
   }
-  
+
   /* --------------------------
-     Appointment Container
+     Appointment Container (The white box)
   --------------------------- */
   .appointment-page .appointment-container {
-    /* Fixed width to prevent expansion beyond 550px */
-    width: 550px;
+    width: 550px; /* Set a fixed width for the container */
+    max-width: 100%; /* Ensure it doesn't overflow on small screens */
     /* Reserve vertical space for error messages */
-    min-height: 600px;
-  
-    margin: 50px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    transition: all 0.3s ease-in-out;
+    min-height: 600px; /* Ensure minimum height */
+
+    margin: 50px auto; /* Center horizontally and add vertical margin */
+    padding: 40px; /* Internal padding */
+    background: #ffffff; /* White background */
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2); /* Prominent shadow */
+    text-align: center; /* Center inline content (like text) */
+    transition: all 0.3s ease-in-out; /* Smooth transitions for size/shadow changes */
+    box-sizing: border-box; /* Include padding in width */
   }
-  
+
   /* --------------------------
      Title & Subtitle
   --------------------------- */
   .appointment-page h1.appointment-title {
     font-size: 28px;
     font-weight: bold;
-    color: #222;
-    margin-bottom: 5px;
-    text-transform: capitalize;
+    color: #222; /* Dark text */
+    margin-bottom: 5px; /* Space below title */
+    text-transform: capitalize; /* Capitalize first letter of each word */
   }
-  
+
   .appointment-page .appointment-subtext {
     font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
+    color: #666; /* Grey text */
+    margin-bottom: 20px; /* Space below subtitle */
   }
-  
+
   /* --------------------------
-     Input Groups
+     Input Groups (Container for Label + Input)
   --------------------------- */
   .appointment-page .input-group {
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 20px; /* Space between input groups */
+    text-align: left; /* Align label and input to the left */
   }
-  
+
   .appointment-page .input-group label {
-    display: block;
+    display: block; /* Label takes its own line */
     font-size: 15px;
     font-weight: bold;
-    color: #444;
-    margin-bottom: 5px;
+    color: #444; /* Dark grey text */
+    margin-bottom: 5px; /* Space below label */
   }
-  
-  .appointment-page .input-group input,
+
+  /* Base styling for all input, select, and textarea elements within input groups */
+  .appointment-page .input-group input:not([type="checkbox"]), /* Exclude checkboxes */
   .appointment-page .input-group select,
   .appointment-page .input-group textarea {
-    width: 100%;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    width: 100%; /* Take full width of parent input-group */
+    padding: 14px; /* Internal padding */
+    border-radius: 10px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light grey border */
     font-size: 16px;
-    background: #f9f9f9;
-    color: #333;
-    transition: all 0.3s ease-in-out;
+    background: #f9f9f9; /* Very light grey background */
+    color: #333; /* Dark text */
+    transition: all 0.3s ease-in-out; /* Smooth transitions for focus states */
+    box-sizing: border-box; /* Include padding in width */
   }
-  
+
   .appointment-page .input-group input::placeholder,
   .appointment-page .input-group textarea::placeholder {
-    color: #aaa;
+    color: #aaa; /* Light grey placeholder text */
   }
-  
+
+  /* Styling for focus state */
   .appointment-page .input-group input:focus,
   .appointment-page .input-group select:focus,
   .appointment-page .input-group textarea:focus {
-    border-color: #0072ff;
-    box-shadow: 0px 0px 12px rgba(0, 114, 255, 0.4);
-    outline: none;
+    border-color: #0072ff; /* Blue border on focus */
+    box-shadow: 0px 0px 12px rgba(0, 114, 255, 0.4); /* Blue glow effect */
+    outline: none; /* Remove default outline */
+    background: #fff; /* White background on focus */
   }
-  
-  /* --------------------------
-     Appointment Button
-  --------------------------- */
+
+  /* --- Submit Button --- */
   .appointment-page .appointment-button {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    background: linear-gradient(90deg, #0072ff, #0052d4);
-    color: white;
+    width: 100%; /* Full width */
+    padding: 16px; /* Internal padding */
+    border: none; /* No border */
+    background: linear-gradient(90deg, #0072ff, #0052d4); /* Blue gradient background */
+    color: white; /* White text */
     font-size: 18px;
     font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0px 7px 20px rgba(0, 114, 255, 0.3);
+    border-radius: 50px; /* Pill shape */
+    cursor: pointer; /* Indicate clickable */
+    transition: transform 0.3s ease, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions */
+    display: flex; /* Use flexbox for content inside button (like icon + text) */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    gap: 12px; /* Space between icon and text */
+    text-transform: uppercase; /* Uppercase text */
+    letter-spacing: 1px; /* Add letter spacing */
+    box-shadow: 0px 7px 20px rgba(0, 114, 255, 0.3); /* Blue shadow */
+    margin-top: 10px; /* Space above button (if needed) */
   }
-  
+
+  /* Hover state for the button */
   .appointment-page .appointment-button:hover {
-    background: linear-gradient(90deg, #0052d4, #0072ff);
-    transform: scale(1.05);
-    box-shadow: 0px 10px 25px rgba(0, 114, 255, 0.5);
-    animation: pulse 1.5s infinite alternate;
+    background: linear-gradient(90deg, #0052d4, #0072ff); /* Reverse gradient on hover */
+    transform: scale(1.02); /* Slightly larger on hover */
+    box-shadow: 0px 10px 25px rgba(0, 114, 255, 0.5); /* More prominent shadow */
+    /* Optional animation */
+    /* animation: pulse 1.5s infinite alternate; */
   }
-  
+
+   /* Remove pulse animation if not desired */
+   /* @keyframes pulse {
+     0% { transform: scale(1); box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3); }
+     50% { transform: scale(1.02); box-shadow: 0px 10px 20px rgba(0, 114, 255, 0.5); }
+     100% { transform: scale(1); box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3); }
+   } */
+
+
+  /* Active state for the button */
   .appointment-page .appointment-button:active {
-    transform: scale(0.98);
+    transform: scale(0.98); /* Slightly smaller when clicked */
   }
-  
+
+  /* Disabled state for the button */
   .appointment-page .appointment-button:disabled {
-    background: gray;
-    cursor: not-allowed;
-    box-shadow: none;
+    background: #ccc; /* Grey background when disabled */
+    cursor: not-allowed; /* Not-allowed cursor */
+    box-shadow: none; /* Remove shadow */
+    opacity: 0.7; /* Slightly transparent */
   }
-  
-  /* Pulse Animation for Button Hover */
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3);
-    }
-    50% {
-      transform: scale(1.02);
-      box-shadow: 0px 10px 20px rgba(0, 114, 255, 0.5);
-    }
-    100% {
-      transform: scale(1);
-      box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.3);
-    }
-  }
-  
+
+
   /* --------------------------
-     Error Message
+     Main Form Error Message
   --------------------------- */
   .error-message {
-    color: red;
+    color: #dc3545; /* Bootstrap danger red */
     margin: 0.5rem 0 1rem; /* Smaller top margin, normal bottom margin */
     font-weight: bold;
     text-align: center;
-    /* Force wrapping if the message is long */
-    white-space: normal;
-    overflow-wrap: break-word;
+    white-space: normal; /* Allow text to wrap */
+    overflow-wrap: break-word; /* Break long words */
     word-break: break-word;
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 90%; /* Ensure it fits within container */
+    margin-left: auto; /* Center the block */
+    margin-right: auto; /* Center the block */
   }
-  
+
+   /* --- Inline Loading/Error Messages (Next to inputs) --- */
+   /* Style for loading text next to dropdowns */
+   .inline-loading {
+       font-size: 0.9em;
+       color: #007bff; /* Blue color */
+       margin-top: 5px;
+   }
+
+   /* Style for error text next to dropdowns */
+   .inline-error {
+       font-size: 0.9em;
+       color: #dc3545; /* Red color */
+       margin-top: 5px;
+   }
+
+
   /* --------------------------
-     Additional Input Field Styling
+     Back Button Styling
   --------------------------- */
-  .appointment-page input,
-  .appointment-page select,
-  .appointment-page textarea {
-    display: block;
-    border: 2px solid transparent;
-    background-color: #f0f0f0;
-    padding: 12px 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
+   .back-button {
+       display: block; /* Make it a block element */
+       margin: 20px auto 0; /* Center horizontally, add space above */
+       padding: 10px 20px;
+       background-color: #6c757d; /* Grey color */
+       color: white;
+       border: none;
+       border-radius: 5px;
+       cursor: pointer;
+       font-size: 1em;
+       font-weight: 600;
+       transition: background-color 0.2s ease, transform 0.1s ease;
+       text-decoration: none; /* Remove underline */
+   }
+
+  .back-button:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+    transform: translateY(-1px); /* Slight lift */
   }
-  
-  .appointment-page input:focus,
-  .appointment-page select:focus,
-  .appointment-page textarea:focus {
-    background-color: white;
-    border-color: #0072ff;
-    box-shadow: 0px 0px 10px rgba(0, 114, 255, 0.4);
-  }
-  
+
+
   /* --------------------------
      Responsive Design
   --------------------------- */
   @media (max-width: 600px) {
     .appointment-page .appointment-container {
-      /* Let it adapt on smaller screens if needed */
-      width: 90%;
-      min-height: auto;
-      padding: 20px;
+      width: 95%; /* Adjust width on smaller screens */
+      min-height: auto; /* Allow height to adapt */
+      padding: 20px; /* Reduce padding */
+      margin: 20px auto; /* Adjust margin */
     }
+     /* Button width is already 100%, adjust padding/font if needed */
     .appointment-page .appointment-button {
-      width: auto;
-      font-size: 16px;
+      padding: 12px; /* Reduce padding */
+      font-size: 16px; /* Reduce font size */
+      gap: 8px; /* Reduce gap */
     }
+     .back-button {
+         padding: 8px 15px;
+         font-size: 0.9em;
+     }
   }
-  

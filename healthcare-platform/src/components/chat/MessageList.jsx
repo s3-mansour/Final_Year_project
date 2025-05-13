@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './styles/MessageList.css'; 
 
-// Helper to format date/time display (or import from Chat.jsx/utils)
+// Helper to format date/time display 
 const formatDateTimeDisplay = (dateString) => {
     if (!dateString) return '';
     try { return new Date(dateString).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }); } catch (e) { return ''; }
@@ -25,7 +25,6 @@ const MessageList = ({ messages = [], currentUser }) => {
             {Array.isArray(messages) && messages.map((msg) => {
                 // Determine if the message was sent by the current user
                 const isSender = msg.sender?._id === currentUser._id;
-                // console.log(`Msg ${msg._id}: Sender=${msg.sender?._id}, Current=${currentUser._id}, isSender=${isSender}`); // Debugging log
 
                 return (
                     <div

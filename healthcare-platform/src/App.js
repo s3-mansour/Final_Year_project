@@ -15,7 +15,10 @@ import Profile from "./pages/Profile";
 import ConsultantPatients from "./pages/ConsultantPatients";
 import ConsultantAppointments from "./pages/ConsultantAppointments";
 import Availability from "./pages/Availability"
+import PatientPrescriptions from './pages/PatientPrescriptions';
 import ManagePatientMedications from './pages/ManagePatientMedications';
+import ForgotPasswordRequest from "./pages/ForgotPasswordRequest";
+import ResetPassword from "./pages/ResetPassword"; 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Full user data including role
@@ -99,6 +102,10 @@ function App() {
         <Route path="/consultant/appointments" element={<ConsultantAppointments />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/medicationtracking" element={<MedicationTracking />} />
+        <Route path="/patientprescription" element={<PatientPrescriptions />} />
+        <Route path="/forgot-password-request" element={<ForgotPasswordRequest />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        
         <Route path="/chat" element={<Chat />} />
         <Route
     path="/consultant/manage-medications"
@@ -111,6 +118,7 @@ function App() {
         )
     }
 />
+
       </Routes>
     </Router>
   );

@@ -5,7 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const http = require('http');
 const { Server } = require("socket.io");
-const { protectSocket } = require('./middleware/socketAuthMiddleware'); // Ensure path is correct
+const { protectSocket } = require('./middleware/socketAuthMiddleware'); 
 
 // *** Import Mongoose and Models ***
 const mongoose = require('mongoose');

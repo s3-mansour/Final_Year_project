@@ -1,173 +1,410 @@
+/* src/styles/PatientAppointments.css */
 
-/* Overall Page Container */
+/* --- Overall Page Container --- */
 .patient-appointments-page {
   max-width: 800px;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 1.5rem;
   font-family: "Poppins", Arial, sans-serif;
   background-color: #f5f5f5;
-  border-radius: 8px; /* Slight rounding on the container */
+  border-radius: 8px;
+  color: #333;
+}
+
+/* --- Header Container for Buttons and Title --- */
+.appointments-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 /* Page Title */
 .patient-appointments-page h1 {
+  flex-grow: 1;
   text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2em;
 }
 
-/* Error Message */
-.error-message {
-  color: red;
+/* --- Buttons in Header (Back and Create) --- */
+.back-to-dashboard-btn,
+.create-appointment-button {
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-decoration: none;
+  display: inline-block;
   text-align: center;
-  margin-bottom: 1rem;
+}
+
+/* Specific styling for the Back button */
+.back-to-dashboard-btn {
+  background-color: #5cb85c;
+  color: white;
+}
+.back-to-dashboard-btn:hover {
+  background-color: #4cae4c;
+  transform: translateY(-1px);
+}
+
+/* Specific styling for the Create button */
+.create-appointment-button {
+  background-color: #0275d8;
+  color: white;
+}
+.create-appointment-button:hover {
+  background-color: #025aa5;
+  transform: translateY(-1px);
+}
+
+
+/* --- General Messages (Loading, Error, Empty) for the List View --- */
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  margin: 1rem 0;
   font-weight: bold;
 }
 
-/* Appointments List */
+/* Styling for the "No appointments found" message when the list is empty */
+.patient-appointments-page > p {
+  text-align: center;
+  color: #777;
+  font-size: 1.1em;
+  margin-top: 2rem;
+}
+
+
+/* --- Appointments List Container --- */
 .appointments-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Individual Appointment Item */
+/* --- Individual Appointment Item --- */
 .appointment-item {
-  background: #fff;
-  border: 1px solid #ddd;
+  background: #f9f9f9;
+  border: 1px solid #eee;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.2rem;
   margin-bottom: 1rem;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Appointment Info */
-.appointment-info p {
-  margin: 0.3rem 0;
-  font-size: 14px;
+/* Appointment Details Section */
+.appointment-details p {
+  margin: 0.4rem 0;
+  font-size: 1em;
   color: #555;
+  line-height: 1.4;
 }
 
-/* Action Buttons for Each Appointment */
+.appointment-details p strong {
+  color: #333;
+  display: inline-block;
+  min-width: 90px;
+}
+
+/* --- Action Buttons for Each List Item --- */
 .appointment-actions {
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   display: flex;
   gap: 1rem;
-  justify-content: center; /* Center the buttons */
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
+/* Base styling for action buttons within the appointment list items */
 .appointment-actions button {
-  flex: 0 0 100px; /* Fixed width so both have same size */
-  padding: 0.5rem;
-  background-color: #4c6ef5;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 14px;
-  text-align: center;
-}
-
-.appointment-actions button:hover {
-  background-color: #0052d4;
-}
-
-/* Inline Edit Form */
-.edit-form {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ddd;
-}
-
-.edit-form .input-group {
-  margin-bottom: 0.5rem;
-}
-
-.edit-form .input-group label {
-  font-weight: bold;
-  margin-bottom: 0.3rem;
-  display: block;
-  font-size: 14px;
-  color: #333;
-}
-
-.edit-form input,
-.edit-form textarea {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.edit-form-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  justify-content: center;
-}
-
-.edit-form-actions button {
-  flex: 0 0 100px;
-  padding: 0.5rem;
-  background-color: #0072ff;
+  padding: 0.6rem 1rem;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  min-width: 90px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Specific styling for the Cancel button on list items (Pending/Confirmed) */
+.appointment-actions .cancel-button {
+  background-color: #d9534f;
+}
+.appointment-actions .cancel-button:hover {
+  background-color: #c9302c;
+}
+
+/* Specific styling for the Delete/Remove button on list items (Denied/Cancelled) */
+.appointment-actions .delete-button {
+  background-color: #f0ad4e;
+}
+.appointment-actions .delete-button:hover {
+  background-color: #ec971f;
+}
+
+
+/* Styling for action buttons when disabled */
+.appointment-actions button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+/* --- Status Specific Styling (Add borders to list items) --- */
+.appointment-item.status-pending {
+    border-left: 6px solid #f0ad4e;
+}
+.appointment-item.status-confirmed {
+    border-left: 6px solid #5cb85c;
+}
+.appointment-item.status-denied {
+    border-left: 6px solid #d9534f;
+    opacity: 0.8;
+    text-decoration: none;
+}
+ .appointment-item.status-cancelled {
+    border-left: 6px solid #6c757d;
+     opacity: 0.7;
+     text-decoration: none;
+}
+.appointment-item.status-completed {
+    border-left: 6px solid #0275d8;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+
+/* -------------------------------------------------
+   Styles for the Booking Form Container and Elements
+---------------------------------------------------- */
+
+/* This container styles the booking form itself as a distinct block */
+.patient-appointments-page .appointment-container {
+    width: 95%;
+    max-width: 550px;
+    min-height: auto;
+
+    margin: 2rem auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title & Subtitle for the Booking Form */
+.patient-appointments-page .appointment-container .appointment-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    text-transform: none;
+}
+
+.patient-appointments-page .appointment-container .appointment-subtext {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Input Groups for the Booking Form */
+.patient-appointments-page .input-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+/* Labels for the Booking Form Inputs */
+.patient-appointments-page .input-group label {
+  display: block;
   font-size: 14px;
-  transition: background 0.3s ease;
-  text-align: center;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.edit-form-actions button:hover {
-  background-color: #0052d4;
-}
-
-/* Container for the 'Create New Appointment' button */
-/* Container for the 'Create New Appointment' button */
-.create-appointment-container {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-/* Book New Appointment Button */
-.create-appointment-btn {
-  padding: 0.75rem 1.5rem;
-  background-color: #4c6ef5;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+/* Styling for input, select, textarea within the booking form */
+.patient-appointments-page .input-group input:not([type="checkbox"]),
+.patient-appointments-page .input-group select,
+.patient-appointments-page .input-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   font-size: 15px;
-  font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 10px rgba(76, 110, 245, 0.3);
+  background: #f9f9f9;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-/* Hover: Slightly darker background and scale up */
-.create-appointment-btn:hover {
-  background-color: #0052d4;
-  transform: scale(1.03);
-  box-shadow: 0 6px 14px rgba(76, 110, 245, 0.5);
+/* Placeholder text style for form inputs */
+.patient-appointments-page .input-group input::placeholder,
+.patient-appointments-page .input-group textarea::placeholder {
+  color: #aaa;
 }
 
-/* Active: Scale down a bit */
-.create-appointment-btn:active {
-  transform: scale(0.98);
-  box-shadow: 0 4px 10px rgba(76, 110, 245, 0.3);
-}
-.back-to-dashboard-btn {
-  background-color: #4CAF50; /* Green background */
-  color: white; /* White text */
-  padding: 10px 20px; /* Padding around the button */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  margin-top: 20px; /* Space from other content */
+/* Focus state style for form inputs */
+.patient-appointments-page .input-group input:focus,
+.patient-appointments-page .input-group select:focus,
+.patient-appointments-page .input-group textarea:focus {
+  border-color: #0072ff;
+  box-shadow: 0px 0px 8px rgba(0, 114, 255, 0.3);
+  outline: none;
+  background: #fff;
 }
 
-.back-to-dashboard-btn:hover {
-  background-color: #45a049; /* Darker green when hovered */
+/* --- Booking Form Submit Button --- */
+.patient-appointments-page .appointment-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(90deg, #0072ff, #0052d4);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0px 5px 15px rgba(0, 114, 255, 0.2);
+  margin-top: 15px;
+}
+
+.patient-appointments-page .appointment-button:hover {
+  background: linear-gradient(90deg, #0052d4, #0072ff);
+  transform: scale(1.01);
+  box-shadow: 0px 7px 18px rgba(0, 114, 255, 0.4);
+   animation: none;
+}
+
+.patient-appointments-page .appointment-button:active {
+  transform: scale(0.99);
+}
+
+.patient-appointments-page .appointment-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+
+/* --- Booking Form Error Message --- */
+/* Reusing the main error-message class for errors within the form */
+
+
+/* --- Inline Loading/Error Messages (Next to inputs) for the Booking Form --- */
+.patient-appointments-page .inline-loading {
+    font-size: 0.9em;
+    color: #007bff;
+    margin-top: 5px;
+    display: block;
+}
+
+.patient-appointments-page .inline-error {
+    font-size: 0.9em;
+    color: #dc3545;
+    margin-top: 5px;
+    display: block;
+}
+
+/* --- Booking Form Cancel Button --- */
+/* Reusing the back-button style for the cancel button within the form */
+.patient-appointments-page .appointment-container .back-button {
+   display: block;
+   margin: 15px auto 0;
+   padding: 10px 20px;
+   background-color: #6c757d;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 1em;
+   font-weight: 600;
+   transition: background-color 0.2s ease, transform 0.1s ease;
+   text-decoration: none;
+}
+
+.patient-appointments-page .appointment-container .back-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+
+/* --------------------------
+   Responsive Design
+--------------------------- */
+@media (max-width: 600px) {
+  /* Adjust header layout on small screens */
+  .appointments-header-container {
+      flex-direction: column;
+  }
+  .appointments-header-container h1 {
+      margin: 10px 0;
+      font-size: 1.5em;
+  }
+  .back-to-dashboard-btn,
+  .create-appointment-button {
+      width: 100%;
+      text-align: center;
+      font-size: 1em;
+  }
+
+
+  /* Adjust booking form container */
+  .patient-appointments-page .appointment-container {
+    width: 95%;
+    padding: 20px;
+    margin: 1rem auto;
+  }
+
+  /* Adjust form elements */
+  .patient-appointments-page .input-group {
+      margin-bottom: 15px;
+  }
+  .patient-appointments-page .input-group label {
+      font-size: 13px;
+  }
+  .patient-appointments-page .input-group input:not([type="checkbox"]),
+  .patient-appointments-page .input-group select,
+  .patient-appointments-page .input-group textarea {
+      padding: 10px;
+      font-size: 14px;
+  }
+
+  /* Adjust form button */
+  .patient-appointments-page .appointment-container .appointment-button {
+    padding: 10px;
+    font-size: 14px;
+    gap: 6px;
+  }
+   /* Adjust form cancel button */
+  .patient-appointments-page .appointment-container .back-button {
+       padding: 8px 15px;
+       font-size: 0.9em;
+   }
+}
+
+/* Ensure text decoration is removed from buttons explicitly if inherited */
+.appointment-item .appointment-actions button {
+    text-decoration: none !important;
 }

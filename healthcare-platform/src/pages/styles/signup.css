@@ -1,116 +1,218 @@
-/* Container for Signup Page - Styles only apply within this container */
+/* src/styles/signup.css */
+
+/* --- Page Container --- */
+/* Styles the root container for the signup page */
 .signup-page {
   margin: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  background: linear-gradient(to bottom right, #4c6ef5, #d6336c);
+  font-family: 'Poppins', Arial, sans-serif; /* Apply Poppins font or fallback */
+  background: linear-gradient(to bottom right, #4c6ef5, #d6336c); /* Apply gradient background */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  min-height: 100vh; /* Ensure it takes at least full viewport height */
+   padding: 20px; /* Add padding for smaller screens */
+   box-sizing: border-box; /* Include padding in dimensions */
 }
 
 /* Centering the signup container */
+/* This container wraps the title, card, and footer */
 .signup-container {
-  text-align: center;
+  text-align: center; /* Center inline content like text */
   width: 100%;
-  max-width: 400px;
+  max-width: 450px; /* Set a maximum width for the container */
 }
 
 /* Sign Up Title */
 .signup-title {
-  font-size: 26px;
+  font-size: 28px; /* Slightly larger title */
   font-weight: bold;
-  color: #fff;
-  margin-bottom: 5px;
+  color: #fff; /* White text color */
+  margin-bottom: 10px; /* More space below title */
 }
 
-/* Signup Card */
+
+
+/* Signup Card (The white box around the form) */
 .signup-card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  margin-top: 20px;
+  background: #fff; /* White background */
+  padding: 30px; /* Internal padding */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: left; /* Align form content to the left */
+  margin-top: 20px; /* Space above the card */
 }
 
-/* Input Group */
+/* --- Message Display Above Form --- */
+/* Base style for the message paragraph (Used for error or success messages) */
+.error-message { /* Reusing error-message class for consistency */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px; /* Space below the message */
+    font-size: 0.95em;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent; /* Default transparent border */
+    width: 100%; /* Full width within parent */
+    box-sizing: border-box; /* Include padding/border in width */
+    /* Specific styling for error state */
+    color: #721c24; /* Dark red text */
+    background-color: #f8d7da; /* Light red background */
+    border-color: #f5c6cb; /* Red border */
+}
+
+/* --- Input Groups --- */
+/* Styles the container div for each label and input/select element */
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Space between input groups */
+  /* text-align: left; Inherited from parent signup-card */
 }
 
 .input-group label {
   font-size: 14px;
-  font-weight: 600;
-  color: #222;
-  display: block;
-  margin-bottom: 5px;
+  font-weight: 600; /* Bold text */
+  color: #222; /* Dark text */
+  display: block; /* Label takes its own line */
+  margin-bottom: 5px; /* Space below label */
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+/* Styling for input, select, textarea elements within input groups */
+.input-group input:not([type="radio"]), /* Apply to text, email, password, date, number types */
+.input-group select,
+.input-group textarea /* Include textarea if used in signup form */ {
+  width: 100%; /* Full width */
+  padding: 10px; /* Internal padding */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 14px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+/* Placeholder text style */
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #aaa;
+}
+
+/* Focus state for inputs/selects/textareas */
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #0072ff; /* Blue border on focus */
+  box-shadow: 0 0 8px rgba(0, 114, 255, 0.3); /* Blue glow effect */
+  outline: none; /* Remove default outline */
+}
+
+
+/* Container for radio buttons (Patient/Doctor) */
+.role-selection {
+  display: flex; /* Arrange radio buttons horizontally */
+  gap: 15px; /* Space between radio button labels */
+   margin-top: 8px; /* Space below 'Register as' label */
+}
+
+/* Style for each radio button label (container for input + span) */
+.role-selection label {
+  display: flex; /* Align radio button and text vertically */
+  align-items: center;
+  gap: 5px; /* Space between radio button input and text */
+  cursor: pointer; /* Indicate clickable */
   font-size: 14px;
 }
 
-/* Role Selection */
-.role-group {
-  display: flex;
-  flex-direction: column;
+.role-selection input[type="radio"] {
+    /* Default browser radio button styling, can customize */
+    cursor: pointer;
 }
 
-.role-selection {
-  display: flex;
-  gap: 10px;
+.role-selection label span {
+    /* Style for the text next to the radio button */
+    color: #444;
 }
 
-.role-selection label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
 
-/* Buttons */
+/* --- Signup Button --- */
 .signup-button {
   width: 100%;
-  padding: 10px;
-  background: #4c6ef5;
+  padding: 12px;
+  background: linear-gradient(90deg, #4c6ef5, #6a4ef5); /* Apply gradient background */
   color: white;
   font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-top: 20px; /* Space above the button */
+  box-shadow: 0 4px 10px rgba(76, 110, 245, 0.3); /* Add shadow */
 }
 
 .signup-button:hover {
-  background: #6a4ef5;
+  background: linear-gradient(90deg, #6a4ef5, #4c6ef5); /* Reverse gradient on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 6px 15px rgba(76, 110, 245, 0.4);
 }
 
-/* Footer */
+.signup-button:active {
+    transform: translateY(0); /* Remove lift on click */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.signup-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.8;
+}
+
+
+/* --- Footer (Link to Login) --- */
+/* Styles the section below the card containing the link back to login */
 .footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+  display: flex; /* Arrange items horizontally */
+  justify-content: center; /* Center items */
+  align-items: center; /* Vertically center items */
+  gap: 5px; /* Space between "Already have an account?" text and link */
   font-size: 14px;
   margin-top: 15px;
+  color: #fff; /* White text for the "Already have an account?" part */
 }
 
-.login-btn {
+/* Style for the "Log in" link button */
+.login-link { /* Apply login-link class to the Link component */
   padding: 5px 10px;
-  border: 1px solid #4c6ef5;
+  border: 1px solid #fff; /* White border */
   border-radius: 5px;
   font-size: 12px;
   font-weight: bold;
-  color: #4c6ef5;
+  color: #fff; /* White text */
   text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.login-btn:hover {
-  background: #4c6ef5;
-  color: white;
+.login-link:hover {
+  background: #fff; /* White background on hover */
+  color: #4c6ef5; /* Blue text on hover */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 480px) {
+    .signup-container {
+        max-width: 95%;
+    }
+    .signup-card {
+        padding: 20px;
+    }
+     .signup-title {
+         font-size: 22px;
+     }
+     .input-group input:not([type="radio"]),
+     .input-group select,
+     .input-group textarea { /* Include textarea if used */
+         padding: 10px;
+         font-size: 14px;
+     }
+     .signup-button {
+         padding: 10px;
+         font-size: 14px;
+     }
 }

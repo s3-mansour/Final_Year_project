@@ -1,10 +1,12 @@
+// src/pages/ManagePatientMedications.js
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 // Services
 import { getPatientsList } from '../services/consultantService';
 import * as medicationService from '../services/medicationService';
 import * as medicationLogService from '../services/medicationLogService';
 // Components
-import Modal from '../components/Modal'; 
+import Modal from '../components/Modal'; // Assuming Modal component
 // Styles
 import './styles/ManagePatientMedications.css';
 
@@ -24,6 +26,8 @@ const formatDateTimeDisplay = (dateString) => {
 };
 
 const ManagePatientMedications = () => {
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
     // --- State Declarations ---
     const [patients, setPatients] = useState([]);
     const [selectedPatientId, setSelectedPatientId] = useState('');
@@ -54,6 +58,7 @@ const ManagePatientMedications = () => {
 
     // Fetch adherence logs
     const fetchPatientLogs = useCallback(async (patientId, startDate, endDate) => { if (!patientId || !startDate || !endDate) { setPatientLogs([]); return; } setIsLoadingLogs(true); setErrorLogs(''); setPatientLogs([]); try { const data = await medicationLogService.getPatientLogsByRange(patientId, startDate, endDate); setPatientLogs(Array.isArray(data) ? data : []); } catch (err) { setErrorLogs(err.message || 'Failed to load logs.'); console.error(err); setPatientLogs([]); } finally { setIsLoadingLogs(false); }}, []);
+
 
     // --- Event Handlers ---
     // Handle patient selection
@@ -124,6 +129,12 @@ const ManagePatientMedications = () => {
     // Display Frequency Helper
     const displayFrequency = (med) => { switch(med?.frequencyType) { case 'daily': return `Daily${med.frequencyValue > 1 ? ` (every ${med.frequencyValue} days)` : ''}`; case 'weekly': return `Weekly (${(Array.isArray(med.daysOfWeek) ? med.daysOfWeek.join(', ') : '') || 'No days'})`; case 'interval_hours': return `Every ${med.frequencyValue || '?'} hours`; case 'as_needed': return 'As Needed'; case 'specific_days': return `Specific Days (${(Array.isArray(med.daysOfWeek) ? med.daysOfWeek.join(', ') : '') || 'No days'})`; default: return med?.frequencyType || 'Unknown'; } };
 
+    // *** Handler for Back to Dashboard button ***
+    const handleBackToDashboard = () => {
+      navigate('/consultant/dashboard'); // Navigate to the doctor's dashboard
+    };
+
+
     // --- JSX Rendering ---
     return (
         <div className="manage-meds-page">
@@ -134,12 +145,15 @@ const ManagePatientMedications = () => {
                 <label htmlFor="patient-select">Select Patient:</label>
                 <select id="patient-select" value={selectedPatientId} onChange={handlePatientSelect} disabled={isLoadingPatients}>
                     <option value="">-- Select a Patient --</option>
-                    {isLoadingPatients ? ( <option disabled>Loading...</option> )
+                    {isLoadingPatients ? ( <option disabled>Loading...</option> ) /* Corrected loading message location */
                      : Array.isArray(patients) && patients.length > 0 ? (
                           patients.map(p => ( <option key={p._id} value={p._id}> {p.firstName} {p.lastName} ({p.email}) </option> ))
                        ) : ( <option disabled>No patients found</option> )
                     }
                 </select>
+                {/* Loading indicator for patients list */}
+                {isLoadingPatients && <p className="inline-loading">Loading patients...</p>} {/* Needs inline-loading CSS */}
+
             </div>
 
             {selectedPatientId && (
@@ -169,6 +183,9 @@ const ManagePatientMedications = () => {
                                </tbody>
                             </table>
                          )}
+                         {/* Loading indicator for medications list */}
+                         {isLoadingMedications && <p className="inline-loading">Loading medications...</p>} {/* Needs inline-loading CSS */}
+
                     </div>
 
                     {/* --- Adherence Log Section --- */}
@@ -189,6 +206,10 @@ const ManagePatientMedications = () => {
                     </div>
                 </>
             )}
+
+            {/* --- Back to Dashboard Button --- */}
+             <button onClick={handleBackToDashboard} className="back-button">Back to Dashboard</button> {/* Apply CSS class */}
+
 
              {/* --- Add/Edit Modal --- */}
              {/* Ensure isOpen prop is correctly passed */}

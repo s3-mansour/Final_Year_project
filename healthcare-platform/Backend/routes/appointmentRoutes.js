@@ -1,24 +1,29 @@
-// src/routes/appointmentRoutes.js
+// Backend/routes/appointmentRoutes.js
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
 const {
   createAppointment,
   getAppointments,
-  deleteAppointment,
-  updateAppointment,
-} = require("../controllers/appointmentController");
+  // REMOVED: deleteAppointment, // We no longer use a separate controller for DELETE /:id
+  updateAppointment, // We use updateAppointment for status changes and dismissal flags
+} = require("../controllers/appointmentController"); // Import necessary appointment controllers
 
-// POST to create
-router.post("/", protect, createAppointment);
+const { protect } = require("../middleware/authMiddleware"); // Import protect middleware
 
-// GET all for logged-in user
-router.get("/", protect, getAppointments);
+// Apply protect middleware to all appointment routes, as they involve specific users.
+router.use(protect);
 
-// PUT to update
-router.put("/:id", protect, updateAppointment);
+// Define routes for /api/appointments
+// POST /api/appointments: Create new appointment (Patient)
+// GET /api/appointments: Get appointments list (Patient or Doctor)
+router.route("/")
+  .post(createAppointment)
+  .get(getAppointments);
 
-// DELETE to cancel
-router.delete("/:id", protect, deleteAppointment);
+
+
+router.route("/:id")
+  .put(updateAppointment);
+
 
 module.exports = router;

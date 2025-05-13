@@ -1,5 +1,5 @@
 // src/services/chatService.js
-import API from "./api"; // Your pre-configured Axios instance
+import API from "./api"; 
 
 /**
  * Fetches all conversations for the logged-in user.
